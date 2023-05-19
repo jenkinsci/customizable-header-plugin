@@ -1,0 +1,4 @@
+<?jelly escape-by-default='true'?>
+<div>
+  This plugin allows to customize the appearance of the header of Jenkins.<br/>
+</div>

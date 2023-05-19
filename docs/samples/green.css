@@ -1,0 +1,13 @@
+.custom-header__page {
+  background-color: green;
+}
+
+.page-header__hyperlinks a:hover,
+.page-header__hyperlinks a:focus,
+.page-header__hyperlinks a.mouseIsOverMenuSelector {
+  background-color: #20af20;
+}
+
+#search-box.main-search__input:focus, #search-box.main-search__input:active {
+	box-shadow: 0 0 0 5px rgb(32,175,32, 1);
+}

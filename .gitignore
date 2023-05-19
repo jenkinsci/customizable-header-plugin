@@ -1,0 +1,8 @@
+/target/
+.checkstyle
+.classpath
+.project
+.settings
+work
+keystore
+.idea

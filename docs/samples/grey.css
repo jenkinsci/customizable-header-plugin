@@ -1,0 +1,17 @@
+.custom-header__page {
+  background-color: #A0A0A0;
+}
+
+.custom-header__title {
+	color:black;
+}
+
+.page-header__hyperlinks a:hover,
+.page-header__hyperlinks a:focus,
+.page-header__hyperlinks a.mouseIsOverMenuSelector {
+  background-color: #d4d4d4;
+}
+
+#search-box.main-search__input:focus, #search-box.main-search__input:active {
+	box-shadow: 0 0 0 5px rgba(212,212,212, 1);
+}

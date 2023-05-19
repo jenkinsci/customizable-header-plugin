@@ -1,0 +1,15 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
+    <f:section title="${%Customizable Header}">
+        <f:entry field="logoText" title="${%Text}">
+            <f:textbox/>
+        </f:entry>
+        <f:entry field="title" title="${%Title}">
+            <f:textbox/>
+        </f:entry>
+        <f:entry field="cssResource" title="${%URL of theme CSS}">
+            <f:textbox/>
+        </f:entry>
+        <f:dropdownDescriptorSelector field="logo" title="${%The logo to show}" default="${descriptor.defaultLogo}"/>
+    </f:section>
+</j:jelly>

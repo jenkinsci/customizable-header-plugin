@@ -1,0 +1,6 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:f="/lib/form" xmlns:i="jelly:fmt" xmlns:x="jelly:xml">
+    <f:entry field="logoUrl" title="${%URL of the image for the logo}">
+        <f:textbox/>
+    </f:entry>
+</j:jelly>
