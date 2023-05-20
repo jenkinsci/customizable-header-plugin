@@ -9,7 +9,7 @@
   color: white;
 }
 
-.custom-header__linktext {
+.custom-header__text {
   flex: 1;
   padding-left: 10px;
   color: var(--text-color);

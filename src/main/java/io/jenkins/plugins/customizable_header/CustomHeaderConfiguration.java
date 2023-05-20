@@ -4,6 +4,7 @@ import hudson.Extension;
 import hudson.Util;
 import java.util.logging.Logger;
 
+import io.jenkins.plugins.customizable_header.color.HeaderColor;
 import io.jenkins.plugins.customizable_header.logo.DefaultLogo;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import jenkins.model.GlobalConfiguration;
@@ -22,6 +23,8 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private Logo logo = new DefaultLogo();
 
+  private HeaderColor headerColor = new HeaderColor("black", "grey", "white");
+
   @DataBoundConstructor
   public CustomHeaderConfiguration() {
     load();
@@ -35,6 +38,15 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   public Logo getLogo() {
     return logo;
+  }
+
+    @DataBoundSetter
+  public void setHeaderColor(HeaderColor headerColor) {
+    this.headerColor = headerColor;
+  }
+
+  public HeaderColor getHeaderColor() {
+    return headerColor;
   }
 
   @DataBoundSetter

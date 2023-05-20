@@ -5,7 +5,7 @@ import hudson.ExtensionPoint;
 import hudson.model.AbstractDescribableImpl;
 import jenkins.model.Jenkins;
 
-public class Logo extends AbstractDescribableImpl<Logo> implements ExtensionPoint{
+public abstract class Logo extends AbstractDescribableImpl<Logo> implements ExtensionPoint {
 
     public static ExtensionList<Logo> all() {
         return Jenkins.get().getExtensionList(Logo.class);
