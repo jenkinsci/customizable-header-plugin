@@ -16,7 +16,7 @@
 
   <name>Customizable Header</name>
   <description>Allows to customize the appearance of the header of Jenkins.</description>
-  <url>https://github.com/mawinter69/customizable-header.git</url>
+  <url>https://github.com/jenkinsci/customizable-header-plugin</url>
   <licenses>
     <license>
       <name>Apache License, Version 2.0</name>
@@ -25,8 +25,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:https://github.com/mawinter69/customizable-header.git</connection>
-    <url>https://github.com/mawinter69/customizable-header.git</url>
+    <connection>scm:git:https://github.com/${gitHubRepo}.git</connection>
+    <developerConnection>scm:git:git@github.com:${gitHubRepo}.git</developerConnection>
+    <url>https://github.com/${gitHubRepo}</url>
     <tag>${scmTag}</tag>
   </scm>
 
@@ -34,6 +35,7 @@
     <revision>0</revision>
     <changelist>99999-SNAPSHOT</changelist>
     <jenkins.version>2.387.3</jenkins.version>
+    <gitHubRepo>jenkinsci/customizable-header-plugin</gitHubRepo>
   </properties>
 
   <dependencyManagement>
