@@ -9,7 +9,7 @@ public class CustomHeader extends PartialHeader {
 
     @Override
   public boolean isEnabled() {
-    return true;
+      return CustomHeaderConfiguration.getInstance().isEnabled();
   }
 
   public String getTitle() {
