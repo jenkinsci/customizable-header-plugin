@@ -1,8 +1,8 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
     <link rel="stylesheet" href="${rootURL}/customizable-header/theme" type="text/css"/>
-    <j:if test="${it.cssResource != null}">
-        <link rel="stylesheet" href="${rootURL}/${it.cssResource}" type="text/css"/>
+    <j:if test="${it.cssResourceUrl != ''}">
+        <link rel="stylesheet" href="${it.cssResourceUrl}" type="text/css"/>
     </j:if>
     <header id="header" class="page-header custom-header__page">
         <div class="custom-header">

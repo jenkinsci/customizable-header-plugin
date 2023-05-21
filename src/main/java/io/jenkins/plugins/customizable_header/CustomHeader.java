@@ -7,7 +7,7 @@ import jenkins.views.PartialHeader;
 @Extension
 public class CustomHeader extends PartialHeader {
 
-  @Override
+    @Override
   public boolean isEnabled() {
     return true;
   }
@@ -20,8 +20,9 @@ public class CustomHeader extends PartialHeader {
     return CustomHeaderConfiguration.getInstance().getLogoText();
   }
 
-  public String getCssResource() {
-    return CustomHeaderConfiguration.getInstance().getCssResource();
+  public String getCssResourceUrl() {
+
+    return CustomHeaderConfiguration.getInstance().getCssResourceUrl();
   }
 
   public Logo getLogo() {

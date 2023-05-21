@@ -2,12 +2,16 @@ package io.jenkins.plugins.customizable_header;
 
 import hudson.Extension;
 import hudson.Util;
+
+import java.net.URI;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import io.jenkins.plugins.customizable_header.color.HeaderColor;
 import io.jenkins.plugins.customizable_header.logo.DefaultLogo;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import jenkins.model.GlobalConfiguration;
+import jenkins.model.Jenkins;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
@@ -22,6 +26,8 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   private String logoText = "Jenkins";
 
   private Logo logo = new DefaultLogo();
+
+  private transient String cssResourceUrl;
 
   private HeaderColor headerColor = new HeaderColor("black", "grey", "white");
 
@@ -40,7 +46,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     return logo;
   }
 
-    @DataBoundSetter
+  @DataBoundSetter
   public void setHeaderColor(HeaderColor headerColor) {
     this.headerColor = headerColor;
   }
@@ -77,11 +83,36 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     return Util.fixEmptyAndTrim(cssResource);
   }
 
+  @DataBoundSetter
   public void setCssResource(String cssResource) {
     this.cssResource = cssResource;
+    setCssResourceUrl();
     save();
   }
 
+  private void setCssResourceUrl() {
+    if (Util.fixEmptyAndTrim(cssResource) != null) {
+      try {
+        URI uri = URI.create(cssResource);
+        if (uri.isAbsolute()) {
+          cssResourceUrl = cssResource;
+        } else {
+          cssResourceUrl = Jenkins.get().getRootUrl() + cssResource;
+        }
+      } catch (IllegalArgumentException iae) {
+        LOGGER.log(Level.WARNING, "The given css resource is not a valid uri", iae);
+        cssResourceUrl = "";
+      }
+    } else {
+      cssResourceUrl = "";
+    }
+  }
+  public String getCssResourceUrl() {
+    if (cssResourceUrl == null) {
+      setCssResourceUrl();
+    }
+    return cssResourceUrl;
+  }
   public Logo defaultLogo() {
     return new DefaultLogo();
   }
