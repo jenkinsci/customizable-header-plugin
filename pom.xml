@@ -40,15 +40,22 @@
 
   <dependencyManagement>
     <dependencies>
-        <dependency>
-            <groupId>io.jenkins.tools.bom</groupId>
-            <artifactId>bom-2.387.x</artifactId>
-            <version>2081.v85885a_d2e5c5</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
+      <dependency>
+        <groupId>io.jenkins.tools.bom</groupId>
+        <artifactId>bom-2.387.x</artifactId>
+        <version>2081.v85885a_d2e5c5</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.jenkins.plugins</groupId>
+      <artifactId>ionicons-api</artifactId>
+    </dependency>
+  </dependencies>
 
   <repositories>
     <repository>
