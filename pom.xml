@@ -11,7 +11,7 @@
 
   <groupId>io.jenkins.plugins</groupId>
   <artifactId>customizable-header</artifactId>
-  <version>${revision}.${changelist}</version>
+  <version>${changelist}</version>
   <packaging>hpi</packaging>
 
   <name>Customizable Header</name>
@@ -32,8 +32,7 @@
   </scm>
 
   <properties>
-    <revision>0</revision>
-    <changelist>99999-SNAPSHOT</changelist>
+    <changelist>999999-SNAPSHOT</changelist>
     <jenkins.version>2.387.3</jenkins.version>
     <gitHubRepo>jenkinsci/customizable-header-plugin</gitHubRepo>
   </properties>
