@@ -8,6 +8,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import io.jenkins.plugins.customizable_header.color.HeaderColor;
+import io.jenkins.plugins.customizable_header.headers.HeaderSelector;
+import io.jenkins.plugins.customizable_header.headers.LogoSelector;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import io.jenkins.plugins.customizable_header.logo.Symbol;
 import jenkins.model.GlobalConfiguration;
@@ -27,6 +29,8 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private Logo logo = new Symbol("symbol-jenkins");
 
+  private HeaderSelector header = new LogoSelector();
+
   private boolean enabled = true;
 
   private transient String cssResourceUrl;
@@ -36,6 +40,15 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   @DataBoundConstructor
   public CustomHeaderConfiguration() {
     load();
+  }
+
+  @DataBoundSetter
+  public void setHeader(HeaderSelector header) {
+    this.header = header;
+  }
+
+  public HeaderSelector getHeader() {
+    return header;
   }
 
   @DataBoundSetter

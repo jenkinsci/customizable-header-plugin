@@ -1,15 +1,16 @@
-package io.jenkins.plugins.customizable_header;
+package io.jenkins.plugins.customizable_header.headers;
 
 import hudson.Extension;
+import io.jenkins.plugins.customizable_header.CustomHeaderConfiguration;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import jenkins.views.PartialHeader;
 
 @Extension
-public class CustomHeader extends PartialHeader {
+public class LogoHeader extends PartialHeader {
 
-    @Override
+  @Override
   public boolean isEnabled() {
-      return CustomHeaderConfiguration.getInstance().isEnabled();
+    return CustomHeaderConfiguration.getInstance().getHeader() instanceof LogoSelector;
   }
 
   public String getTitle() {

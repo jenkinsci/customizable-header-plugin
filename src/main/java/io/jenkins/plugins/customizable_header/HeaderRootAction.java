@@ -1,4 +1,4 @@
-package io.jenkins.plugins.customizable_header.color;
+package io.jenkins.plugins.customizable_header;
 
 import hudson.Extension;
 import hudson.model.UnprotectedRootAction;

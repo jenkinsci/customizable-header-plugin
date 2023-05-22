@@ -4,6 +4,7 @@
         <f:entry field="enabled" title="Enable">
             <f:checkbox/>
         </f:entry>
+        <f:dropdownDescriptorSelector field="header" title="${%The header to use}"/>
         <f:entry field="logoText" title="${%Text}">
             <f:textbox/>
         </f:entry>

@@ -12,7 +12,7 @@
             </a>
         </div>
         <div class="custom-header__title ">
-            ${it.title}
+            <j:out value="${it.title}"/>
         </div>
 
         <div class="searchbox hidden-xs">
