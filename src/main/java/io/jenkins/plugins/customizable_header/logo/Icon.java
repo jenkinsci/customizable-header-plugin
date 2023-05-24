@@ -6,7 +6,7 @@ import hudson.Extension;
 public class Icon extends Logo {
     private String clazz;
 
-    public Icon(String clazz, String description) {
+    public Icon(String clazz) {
         this.clazz = clazz;
     }
 

@@ -48,7 +48,7 @@ public class ContextAwareHeader extends LogoHeader {
         if (header instanceof ContextSelector) {
             contextSelector = (ContextSelector) header;
         }
-        LOGGER.log(Level.FINE, "Path: {0}", Stapler.getCurrentRequest().getPathInfo());
+        //LOGGER.log(Level.FINE, "Path: {0}", Stapler.getCurrentRequest().getPathInfo());
         for (Ancestor ancestor: ancestors) {
             Object obj = ancestor.getObject();
             LOGGER.log(Level.FINE, "Context: {0}", obj.getClass().getName());
@@ -58,7 +58,7 @@ public class ContextAwareHeader extends LogoHeader {
                 if (symbol != null) {
                     return new Symbol(symbol);
                 }
-                return new Icon(run.getBuildStatusIconClassName(), run.getIconColor().getImage());
+                return new Icon(run.getBuildStatusIconClassName());
             }
             if (obj instanceof Job) {
                 Job<?, ?> job = (Job<?, ?>) obj;
@@ -70,7 +70,7 @@ public class ContextAwareHeader extends LogoHeader {
                 if (symbol != null) {
                     return new Symbol(symbol);
                 }
-                return new Icon(job.getBuildStatusIconClassName(), job.getIconColor().getImage());
+                return new Icon(job.getBuildStatusIconClassName());
             }
             if (obj instanceof AbstractFolder) {
                 AbstractFolder<?> folder = (AbstractFolder<?>) obj;
@@ -79,12 +79,12 @@ public class ContextAwareHeader extends LogoHeader {
                     return getLogoOrDefault(health.getIconClassName());
                 }
                 FolderIcon folderIcon = folder.getIcon();
-                return new Icon(folderIcon.getIconClassName(), folderIcon.getDescription());
+                return new Icon(folderIcon.getIconClassName());
             }
             if (obj instanceof Computer) {
                 Computer computer = (Computer) obj;
                 Logo logo = handleComputerUrl("hudson.model.Computer");
-                return Objects.requireNonNullElseGet(logo, () -> new Icon(computer.getIconClassName(), null));
+                return Objects.requireNonNullElseGet(logo, () -> new Icon(computer.getIconClassName()));
             }
             if (obj instanceof LabelAtom || obj instanceof LabelExpression) {
                 return new Symbol("symbol-pricetag-outline");

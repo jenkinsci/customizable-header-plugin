@@ -4,6 +4,8 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Util;
 import jenkins.model.Jenkins;
+import org.kohsuke.accmod.Restricted;
+import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
@@ -11,6 +13,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,7 +48,7 @@ public class ContextSelector extends HeaderSelector {
     @DataBoundSetter
     public void setSymbolMappingFile(String symbolMappingFile) {
         this.symbolMappingFile = symbolMappingFile;
-        updateMappingFile();
+        lastModified = 0;
     }
 
     public String getSymbolMappingFile() {
@@ -69,7 +72,8 @@ public class ContextSelector extends HeaderSelector {
         lastModified = -1;
     }
 
-    public synchronized Properties getSymbolMapping() {
+    @Restricted(NoExternalUse.class)
+    public Properties getSymbolMapping() {
         if (customMapping == null) {
             customMapping = new Properties();
         }
@@ -80,7 +84,7 @@ public class ContextSelector extends HeaderSelector {
             File file = new File(mappingFile);
             if (file.lastModified() != lastModified) {
                 lastModified = file.lastModified();
-                try (Reader reader = new FileReader(file)) {
+                try (Reader reader = new FileReader(file, StandardCharsets.UTF_8)) {
                     customMapping.clear();
                     customMapping.load(reader);
                 } catch (IOException e) {
