@@ -16,6 +16,11 @@
     color: ${it.color};
 }
 
+.custom-header__title a:link, .custom-header__title a:visited {
+    font-weight: bold;
+    color: ${it.color};
+}
+
 .custom-header__text {
     flex: 1;
     padding-left: 10px;

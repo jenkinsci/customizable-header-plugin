@@ -12,8 +12,6 @@ public class ImageLogo extends Logo {
 
     private String logoUrl;
 
-    private transient String url;
-
     @DataBoundConstructor
     public ImageLogo(String logoUrl) {
         this.logoUrl = logoUrl;
