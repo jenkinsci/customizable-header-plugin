@@ -6,4 +6,7 @@
     <f:entry field="showFolderWeather" title="${%Show the weather as logo for folders}">
         <f:checkbox/>
     </f:entry>
+    <f:entry field="symbolMappingFile" title="${%Additional Mappings}">
+        <f:textbox/>
+    </f:entry>
 </j:jelly>

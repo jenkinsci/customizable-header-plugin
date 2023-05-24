@@ -4,17 +4,10 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 
 public class Icon extends Logo {
-    private String description;
-
     private String clazz;
 
     public Icon(String clazz, String description) {
-        this.description = description;
         this.clazz = clazz;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public String getClazz() {
