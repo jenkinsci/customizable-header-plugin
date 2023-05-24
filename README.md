@@ -4,8 +4,13 @@ Customizable Header Plugin
 ## About the plugin
 This plugin allows to customize the Jenkins header.
 
-You can adjust the logo, the text next to the logo, add another title and easily change colors.  
-Search box, alerts (for admin) and user links are the same as in the original header.
+The header is visually divided into 2 parts. 
+- On the left there is a logo followed by a text. As the original header this is a link to Jenkins root. 
+This part uses the jenkins theme, thus colors change together with the selected theme.
+- After a separator (just some simple clip-path with a polygon) the title is shown followed by the search box, alerts and user links.
+
+Logo, text, title and colors can be easily changed without the need to write your own css.
+In case fine-tuning is required (e.g. to change the padding between logo and text) you can include your own css file. 
 
 Currently, there are 2 headers available:
 - The logo header will display the same logo on all pages
@@ -64,7 +69,6 @@ Following code snippet shows the basic layout of the header and the relevant cla
 </header>
 ```
 
-To adjust the links inside the alerts and users apply your styling to the class `.page-header__hyperlinks a `.
 
 ### Screenshots
 ![Red](/docs/pics/red-header.png)<br/>
@@ -74,7 +78,6 @@ To adjust the links inside the alerts and users apply your styling to the class 
 
 #### Dark Theme
 ![Red Dark Theme](/docs/pics/red-header-dark-theme.png)
-
 
 
 ### Context Aware Header Screenshots
