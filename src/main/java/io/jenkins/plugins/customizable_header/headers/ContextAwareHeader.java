@@ -28,22 +28,24 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Extension
+@Extension(ordinal = 99998)
 public class ContextAwareHeader extends LogoHeader {
 
     private static final Logger LOGGER = Logger.getLogger(ContextAwareHeader.class.getName());
 
-    private static Map<String, Logo> defaultLogoMapping = new HashMap<>();
+    private static final Map<String, Logo> defaultLogoMapping = new HashMap<>();
+    private static final List<String> knownPathes = new ArrayList<>();
+
     @Override
     public boolean isEnabled() {
-        return CustomHeaderConfiguration.getInstance().getHeader() instanceof ContextSelector;
+        return CustomHeaderConfiguration.get().getActiveHeader() instanceof ContextSelector;
     }
 
     @Override
     public Logo getLogo() {
         List<Ancestor> ancestors = new ArrayList<>(Stapler.getCurrentRequest().getAncestors());
         Collections.reverse(ancestors);
-        HeaderSelector header = CustomHeaderConfiguration.getInstance().getHeader();
+        HeaderSelector header = CustomHeaderConfiguration.get().getActiveHeader();
         ContextSelector contextSelector = null;
         if (header instanceof ContextSelector) {
             contextSelector = (ContextSelector) header;
@@ -129,17 +131,13 @@ public class ContextAwareHeader extends LogoHeader {
 
     @CheckForNull
     private String translateSymbol(String name) {
-        HeaderSelector header = CustomHeaderConfiguration.getInstance().getHeader();
+        HeaderSelector header = CustomHeaderConfiguration.get().getHeader();
         if (header instanceof ContextSelector) {
-            String symbol = ((ContextSelector) header).getSymbolMapping().getProperty(name);
-            if (symbol != null) {
-                return symbol;
-            }
+            return ((ContextSelector) header).getSymbolMapping().getProperty(name);
         }
         return null;
     }
 
-    private static List<String> knownPathes = new ArrayList<>();
     static {
         knownPathes.add("/script");
         knownPathes.add("/systemInfo");

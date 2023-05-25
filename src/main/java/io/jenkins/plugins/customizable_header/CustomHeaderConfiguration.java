@@ -7,8 +7,10 @@ import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import hudson.model.User;
 import io.jenkins.plugins.customizable_header.color.HeaderColor;
 import io.jenkins.plugins.customizable_header.headers.HeaderSelector;
+import io.jenkins.plugins.customizable_header.headers.JenkinsHeaderSelector;
 import io.jenkins.plugins.customizable_header.headers.LogoSelector;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import io.jenkins.plugins.customizable_header.logo.Symbol;
@@ -75,8 +77,42 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     this.headerColor = headerColor;
   }
 
+  /**
+   * The globally configured Headercolor.
+   * @return global headercolor.
+   */
   public HeaderColor getHeaderColor() {
     return headerColor;
+  }
+
+  /**
+   * The active header color.
+   * If the user has overwritten the colors those colors are used.
+   * @return
+   */
+  public HeaderColor getActiveHeaderColor() {
+    User user = User.current();
+    if (user != null) {
+      UserHeader userHeader = user.getProperty(UserHeader.class);
+      if (userHeader != null && userHeader.isOverwriteColors()) {
+        return userHeader.getHeaderColor();
+      }
+    }
+    return headerColor;
+  }
+
+  public HeaderSelector getActiveHeader() {
+    if (enabled) {
+      User user = User.current();
+      if (user != null) {
+        UserHeader userHeader = user.getProperty(UserHeader.class);
+        if (userHeader != null && userHeader.isOverwriteHeader()) {
+          return userHeader.getHeaderSelector();
+        }
+      }
+      return header;
+    }
+    return new JenkinsHeaderSelector();
   }
 
   @DataBoundSetter
@@ -89,7 +125,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     return logoText;
   }
 
-  public static CustomHeaderConfiguration getInstance() {
+  public static CustomHeaderConfiguration get() {
     return GlobalConfiguration.all().get(CustomHeaderConfiguration.class);
   }
 

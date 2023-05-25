@@ -20,6 +20,9 @@ Currently, there are 2 headers available:
   create a properties file with a custom mapping between the class and the symbol to replace. This feature allows to overwrite
   the weather with your own symbols.
 
+Users can choose to use a different header than what is globally defined.
+This includes showing the original header. They can also just overwrite the coloring
+
 ## The weather symbols
 To demonstrate the custom weather symbols download the svgs from `docs/svgs` to `userContent/svgs` in your 
 `JENKINS_HOME`, put the following into a properties file in your `JENKINS_HOME` and configure the additional mappings 

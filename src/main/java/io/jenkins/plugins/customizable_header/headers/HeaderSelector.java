@@ -1,8 +1,9 @@
 package io.jenkins.plugins.customizable_header.headers;
 
+import hudson.ExtensionPoint;
 import hudson.model.AbstractDescribableImpl;
 
-public class HeaderSelector extends AbstractDescribableImpl<HeaderSelector> {
+public abstract class HeaderSelector extends AbstractDescribableImpl<HeaderSelector> implements ExtensionPoint {
     @Override
     public HeaderDescriptor getDescriptor() {
         return (HeaderDescriptor) super.getDescriptor();
