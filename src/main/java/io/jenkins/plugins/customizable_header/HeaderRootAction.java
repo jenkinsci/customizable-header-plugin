@@ -2,7 +2,6 @@ package io.jenkins.plugins.customizable_header;
 
 import hudson.Extension;
 import hudson.model.UnprotectedRootAction;
-import io.jenkins.plugins.customizable_header.CustomHeaderConfiguration;
 
 /**
  * Allows to access the css for anonymous users.
@@ -26,15 +25,15 @@ public class HeaderRootAction implements UnprotectedRootAction {
     }
 
     public String getBackgroundColor() {
-        return CustomHeaderConfiguration.getInstance().getHeaderColor().getBackgroundColor();
+        return CustomHeaderConfiguration.get().getActiveHeaderColor().getBackgroundColor();
     }
 
     public String getHoverColor() {
-        return CustomHeaderConfiguration.getInstance().getHeaderColor().getHoverColor();
+        return CustomHeaderConfiguration.get().getActiveHeaderColor().getHoverColor();
     }
 
     public String getColor() {
-        return CustomHeaderConfiguration.getInstance().getHeaderColor().getColor();
+        return CustomHeaderConfiguration.get().getActiveHeaderColor().getColor();
     }
 
 }

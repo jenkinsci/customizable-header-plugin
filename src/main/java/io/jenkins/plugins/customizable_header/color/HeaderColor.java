@@ -19,6 +19,13 @@ public class HeaderColor extends AbstractDescribableImpl<HeaderColor> {
         this.color = color;
     }
 
+    public HeaderColor(HeaderColor headerColor) {
+        this.backgroundColor = headerColor.getBackgroundColor();
+        this.color = headerColor.getColor();
+        this.hoverColor = headerColor.getHoverColor();
+    }
+
+
     public String getBackgroundColor() {
         return backgroundColor;
     }
