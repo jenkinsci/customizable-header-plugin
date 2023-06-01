@@ -82,6 +82,8 @@ Following code snippet shows the basic layout of the header and the relevant cla
 #### Dark Theme
 ![Red Dark Theme](/docs/pics/red-header-dark-theme.png)
 
+#### Gradient
+![Gradient](/docs/pics/gradient.png)
 
 ### Context Aware Header Screenshots
 #### Job Status
