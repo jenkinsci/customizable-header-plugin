@@ -54,7 +54,7 @@ a.custom-header__link {
     text-decoration-color: ${it.color};
 }
 
-#page-header .login a, #header .login a:visited {
+.page-header__hyperlinks a:link, .page-header__hyperlinks a:visited {
     color: ${it.color};
 }
 
