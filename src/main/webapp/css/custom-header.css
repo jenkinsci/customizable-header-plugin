@@ -29,7 +29,7 @@ a.custom-header__link {
   height: 100%;
   padding:  16px 16px 16px 16px;
   clip-path: polygon(0 0, 95% 0, 100% 50%, 95% 100%, 0 100%);
-  background-color: var(--logo-bg);
+  background-color: var(--background);
   color: var(--text-color);
   font-size: 150%;
   font-weight: bold;
