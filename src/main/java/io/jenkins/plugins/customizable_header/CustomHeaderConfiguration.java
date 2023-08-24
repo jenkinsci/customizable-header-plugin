@@ -1,5 +1,6 @@
 package io.jenkins.plugins.customizable_header;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Util;
 
@@ -14,7 +15,9 @@ import io.jenkins.plugins.customizable_header.headers.JenkinsHeaderSelector;
 import io.jenkins.plugins.customizable_header.headers.LogoSelector;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import io.jenkins.plugins.customizable_header.logo.Symbol;
+import jenkins.appearance.AppearanceCategory;
 import jenkins.model.GlobalConfiguration;
+import jenkins.model.GlobalConfigurationCategory;
 import jenkins.model.Jenkins;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
@@ -42,6 +45,12 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   @DataBoundConstructor
   public CustomHeaderConfiguration() {
     load();
+  }
+
+  @NonNull
+  @Override
+  public GlobalConfigurationCategory getCategory() {
+    return GlobalConfigurationCategory.get(AppearanceCategory.class);
   }
 
   @DataBoundSetter
