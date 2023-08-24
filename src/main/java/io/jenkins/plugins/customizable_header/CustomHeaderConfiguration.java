@@ -23,6 +23,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
 @Extension
+@org.jenkinsci.Symbol("customHeader")
 public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private static final Logger LOGGER = Logger.getLogger(CustomHeaderConfiguration.class.getName());
