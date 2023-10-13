@@ -39,9 +39,20 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private HeaderColor headerColor = new HeaderColor("black", "grey", "white");
 
+  private boolean thinHeader;
+
   @DataBoundConstructor
   public CustomHeaderConfiguration() {
     load();
+  }
+
+  public boolean isThinHeader() {
+    return thinHeader;
+  }
+
+  @DataBoundSetter
+  public void setThinHeader(boolean thinHeader) {
+    this.thinHeader = thinHeader;
   }
 
   @DataBoundSetter
