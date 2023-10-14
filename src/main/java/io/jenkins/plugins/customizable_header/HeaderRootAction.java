@@ -36,4 +36,9 @@ public class HeaderRootAction implements UnprotectedRootAction {
         return CustomHeaderConfiguration.get().getActiveHeaderColor().getColor();
     }
 
+    public boolean isThinHeader() {
+        return CustomHeaderConfiguration.get().isThinHeader();
+    }
+
+
 }

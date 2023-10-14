@@ -2,6 +2,7 @@ package io.jenkins.plugins.customizable_header.logo;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
+import io.jenkins.plugins.customizable_header.CustomHeaderConfiguration;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 public class Symbol extends Logo {
@@ -15,6 +16,13 @@ public class Symbol extends Logo {
 
     public String getSymbol() {
         return symbol;
+    }
+
+    public String getSize() {
+        if (CustomHeaderConfiguration.get().isThinHeader()) {
+            return "icon-lg";
+        }
+        return "icon-xlg";
     }
 
     @Extension

@@ -1,8 +1,30 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler">
     <st:contentType value="text/css" />
+    <j:if test="${it.thinHeader}">
+.jenkins-breadcrumbs {
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    overflow-x: initial;
+}
+
+#searchform {
+    height: 2rem;
+}
+
+#jenkins-head-icon {
+    height: 2rem;
+}
+.main-search__icon-leading, .main-search__icon-trailing {
+    height: 2rem;
+    width: 2rem;
+}
+    </j:if>
 .custom-header__page {
     background: ${it.backgroundColor};
+    <j:if test="${it.thinHeader}">
+        height: 2.5rem;
+    </j:if>
 }
 
 .custom-header {
@@ -28,7 +50,12 @@
 }
 
 .custom-header__logo {
-    height: 3.5rem;
+    <j:if test="${it.thinHeader}">
+    height: 2.5rem;
+    </j:if>
+    <j:if test="!${it.thinHeader}">
+        height: 3.5rem;
+    </j:if>
 }
 
 a.custom-header__link:hover {
