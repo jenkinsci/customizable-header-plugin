@@ -15,6 +15,7 @@
 #jenkins-head-icon {
     height: 2rem;
 }
+
 .main-search__icon-leading, .main-search__icon-trailing {
     height: 2rem;
     width: 2rem;
@@ -27,8 +28,40 @@
     </j:if>
 }
 
+.custom-header__app-nav-button {
+    <j:if test="${it.thinHeader}">
+        height: 2.5rem;
+    </j:if>
+    <j:if test="!${it.thinHeader}">
+        height: 3.5rem;
+    </j:if>
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--background);
+    border: none;
+}
+
+.custom-header__app-nav {
+    background-color: var(--background);
+    margin-right: 0;
+}
+
+.custom-header__app-nav-button:hover {
+    background-color: var(--item-background--hover) !important;
+    cursor: pointer;
+}
+
+
+
 .custom-header {
-    height: 3.5rem;
+    <j:if test="${it.thinHeader}">
+        height: 2.5rem;
+    </j:if>
+    <j:if test="!${it.thinHeader}">
+        height: 3.5rem;
+    </j:if>
 }
 
 .custom-header__title {
@@ -51,7 +84,7 @@
 
 .custom-header__logo {
     <j:if test="${it.thinHeader}">
-    height: 2.5rem;
+        height: 2.5rem;
     </j:if>
     <j:if test="!${it.thinHeader}">
         height: 3.5rem;
@@ -66,7 +99,12 @@ a.custom-header__link {
     display: inline-flex;
     align-items: center;
     height: 100%;
-    padding:  16px 16px 16px 16px;
+    <j:if test="${it.hasLinks()}">
+        padding:  16px 16px 16px 8px;
+    </j:if>
+    <j:if test="${!it.hasLinks()}">
+        padding:  16px 16px 16px 16px;
+    </j:if>
     clip-path: polygon(0 0, 95% 0, 100% 50%, 95% 100%, 0 100%);
     background-color: var(--background);
     color: var(--text-color);

@@ -4,6 +4,8 @@ import hudson.Extension;
 import hudson.Util;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,8 +18,10 @@ import io.jenkins.plugins.customizable_header.logo.Logo;
 import io.jenkins.plugins.customizable_header.logo.Symbol;
 import jenkins.model.GlobalConfiguration;
 import jenkins.model.Jenkins;
+import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
+import org.kohsuke.stapler.StaplerRequest;
 
 @Extension
 public class CustomHeaderConfiguration extends GlobalConfiguration {
@@ -41,9 +45,34 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private boolean thinHeader;
 
+  private List<AppNavLink> links = new ArrayList<>();
+
   @DataBoundConstructor
   public CustomHeaderConfiguration() {
     load();
+  }
+
+  @Override
+  public boolean configure(StaplerRequest req, JSONObject json) throws FormException {
+    links.clear();
+    return super.configure(req, json);
+  }
+
+  public List<AppNavLink> getLinks() {
+    return links;
+  }
+
+  @DataBoundSetter
+  public void setLinks(List<AppNavLink> links) {
+    this.links = links;
+    save();
+  }
+
+  public boolean hasLinks() {
+    if (links == null) {
+      return false;
+    }
+    return links.size() != 0;
   }
 
   public boolean isThinHeader() {
@@ -53,11 +82,13 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   @DataBoundSetter
   public void setThinHeader(boolean thinHeader) {
     this.thinHeader = thinHeader;
+    save();
   }
 
   @DataBoundSetter
   public void setHeader(HeaderSelector header) {
     this.header = header;
+    save();
   }
 
   public HeaderSelector getHeader() {
@@ -67,6 +98,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   @DataBoundSetter
   public void setEnabled(boolean enabled) {
     this.enabled = enabled;
+    save();
   }
 
   public boolean isEnabled() {
@@ -86,6 +118,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   @DataBoundSetter
   public void setHeaderColor(HeaderColor headerColor) {
     this.headerColor = headerColor;
+    save();
   }
 
   /**
