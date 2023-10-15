@@ -44,6 +44,7 @@ function menuItem(options) {
 
 function generateItems(items) {
   const menuItems = document.createElement("div");
+  menuItems.classList.add("jenkins-dropdown");
   items.map((item) => {
     return menuItem(item);
   })

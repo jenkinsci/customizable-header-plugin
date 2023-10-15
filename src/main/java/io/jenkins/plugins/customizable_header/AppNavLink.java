@@ -1,9 +1,7 @@
 package io.jenkins.plugins.customizable_header;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import hudson.DescriptorExtensionList;
 import hudson.Extension;
-import hudson.Functions;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import io.jenkins.plugins.customizable_header.logo.ImageLogo;
@@ -24,7 +22,6 @@ import org.kohsuke.stapler.export.ExportedBean;
 @ExportedBean
 public class AppNavLink extends AbstractDescribableImpl<AppNavLink> {
 
-  private static final Logger LOGGER = Logger.getLogger(AppNavLink.class.getName());
   private String url;
   private String label;
   private Logo logo;
@@ -65,12 +62,10 @@ public class AppNavLink extends AbstractDescribableImpl<AppNavLink> {
   @Exported
   public String getIconXml() {
     if (logo instanceof SvgLogo) {
-      LOGGER.log(Level.INFO, "Serving logo {0}", ((SvgLogo) logo).getLogoPath());
       return ((SvgLogo) logo).getContent();
     }
     if (logo instanceof Symbol) {
       String symbol = ((Symbol) logo).getSymbol();
-      LOGGER.log(Level.INFO, "Serving Symbol {0}", symbol);
       return org.jenkins.ui.symbol.Symbol.get(new SymbolRequest.Builder()
         .withName(symbol.split(" ")[0].substring(7))
         .withPluginName(extractPluginNameFromIconSrc(symbol))
@@ -78,14 +73,12 @@ public class AppNavLink extends AbstractDescribableImpl<AppNavLink> {
         .build()
       );
     }
-    LOGGER.log(Level.INFO, "Not a Symbol or SVG");
     return null;
   }
 
   @Exported
   public String getIconUrl() {
     if (logo instanceof ImageLogo) {
-      LOGGER.log(Level.INFO, "Serving icon {0}", ((ImageLogo) logo).getLogoUrl());
       return ((ImageLogo) logo).getLogoUrl();
     }
     if (logo instanceof NoLogo) {

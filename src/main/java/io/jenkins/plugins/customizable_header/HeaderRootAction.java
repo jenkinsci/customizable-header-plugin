@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import org.kohsuke.stapler.HttpResponse;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
+import org.kohsuke.stapler.export.ExportConfig;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 import org.kohsuke.stapler.export.Flavor;
@@ -63,12 +64,12 @@ public class HeaderRootAction implements UnprotectedRootAction {
 
         @Override
         public void generateResponse(StaplerRequest req, StaplerResponse rsp, Object o) throws IOException, ServletException {
-            rsp.serveExposedBean(req, this, Flavor.JSON);
+            rsp.serveExposedBean(req, this, new ExportConfig().withFlavor(Flavor.JSON));
         }
     }
 
     @GET
-    public Links doGetLinks(StaplerRequest request, StaplerResponse response) throws Exception {
+    public Links doGetLinks() throws Exception {
         return new Links();
     }
 
