@@ -18,7 +18,7 @@
             </f:entry>
             <f:dropdownDescriptorSelector field="logo" title="${%The logo to show}"/>
             <f:entry title="${%Application Links}" field="links">
-                <f:repeatableProperty field="links" add="${%Add Link}">
+                <f:repeatableProperty field="links" add="${%Add Link}" header="Link">
                     <f:repeatableDeleteButton/>
                 </f:repeatableProperty>
             </f:entry>
