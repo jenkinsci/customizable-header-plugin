@@ -32,7 +32,7 @@
     <j:if test="${it.thinHeader}">
         height: 2.5rem;
     </j:if>
-    <j:if test="!${it.thinHeader}">
+    <j:if test="${!it.thinHeader}">
         height: 3.5rem;
     </j:if>
     padding-left: 0.75rem;
@@ -59,7 +59,7 @@
     <j:if test="${it.thinHeader}">
         height: 2.5rem;
     </j:if>
-    <j:if test="!${it.thinHeader}">
+    <j:if test="${!it.thinHeader}">
         height: 3.5rem;
     </j:if>
 }
@@ -86,7 +86,7 @@
     <j:if test="${it.thinHeader}">
         height: 2.5rem;
     </j:if>
-    <j:if test="!${it.thinHeader}">
+    <j:if test="${!it.thinHeader}">
         height: 3.5rem;
     </j:if>
 }
