@@ -6,3 +6,5 @@
 work
 keystore
 .idea
+node/
+node_modules/
