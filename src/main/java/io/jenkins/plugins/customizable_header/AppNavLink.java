@@ -79,7 +79,7 @@ public class AppNavLink extends AbstractDescribableImpl<AppNavLink> {
   @Exported
   public String getIconUrl() {
     if (logo instanceof ImageLogo) {
-      return ((ImageLogo) logo).getLogoUrl();
+      return ((ImageLogo) logo).getUrl();
     }
     if (logo instanceof NoLogo) {
       return "";
