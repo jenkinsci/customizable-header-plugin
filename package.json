@@ -5,12 +5,10 @@
   "name": "customizable-header",
   "private": true,
   "scripts": {
-    "dev": "webpack --config webpack.config.js",
-    "prod": "webpack --config webpack.config.js --mode=production",
     "test": "echo \"Error: no test specified\" && exit 0",
-    "build": "yarn prod",
-    "mvntest": "yarn test",
-    "mvnbuild": "yarn build"
+    "build": "webpack --config webpack.config.js --mode=production",
+    "mvntest": "npm test",
+    "mvnbuild": "npm run build"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.0",
