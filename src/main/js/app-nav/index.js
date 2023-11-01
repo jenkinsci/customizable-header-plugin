@@ -32,7 +32,7 @@ function menuItem(options) {
           ? `<div class="jenkins-dropdown__item__icon">${
               options.iconXml
                 ? options.iconXml
-                : `<img alt="${label}" src="${options.iconUrl}" />`
+                : `<img src="${options.iconUrl}" />`
             }</div>`
           : ``
       }
