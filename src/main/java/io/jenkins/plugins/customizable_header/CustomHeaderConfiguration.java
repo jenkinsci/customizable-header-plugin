@@ -3,6 +3,9 @@ package io.jenkins.plugins.customizable_header;
 import hudson.Extension;
 import hudson.Util;
 
+import hudson.model.Descriptor;
+import io.jenkins.plugins.customizable_header.logo.Icon;
+import io.jenkins.plugins.customizable_header.logo.LogoDescriptor;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +19,7 @@ import io.jenkins.plugins.customizable_header.headers.JenkinsHeaderSelector;
 import io.jenkins.plugins.customizable_header.headers.LogoSelector;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import io.jenkins.plugins.customizable_header.logo.Symbol;
+import java.util.stream.Collectors;
 import jenkins.model.GlobalConfiguration;
 import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
@@ -219,5 +223,11 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   }
   public Logo defaultLogo() {
     return new Symbol("symbol-jenkins");
+  }
+
+  public List<Descriptor<Logo>> getLogoDescriptors() {
+    return LogoDescriptor.all().stream().filter(
+            d -> !(d instanceof Icon.DescriptorImpl)
+    ).collect(Collectors.toList());
   }
 }
