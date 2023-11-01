@@ -55,6 +55,14 @@ These links will open in a new window.
 
 ![App Links](/docs/pics/app-links.png)<br/>
 
+## System Message
+A system message can be shown between the header and the breadcrumb bar. This allows to notify users about important
+things related to the instance, e.g. a planned update of Jenkins, a downtime due to hardware replacement or an ongoing 
+incident. You can include html (sanitized with owasp) in the message to apply some simple styling or include a link
+with more details.
+
+![System Message](/docs/pics/system-message.png)<br/>
+
 ## CSS classes assigned to the different elements
 To style the header beyond changing colors you can specify your own css file.
 Following code snippet shows the basic layout of the header and the relevant classes and ids used in the plugin.

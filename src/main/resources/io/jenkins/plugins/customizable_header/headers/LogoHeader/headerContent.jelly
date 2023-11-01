@@ -80,5 +80,12 @@
             </j:if>
         </div>
     </header>
+    <j:if test="${it.systemMessage != ''}">
+        <header class="custom-header__system-message-header custom-header__system-message-header-${it.systemMessageColor}">
+            <div class="custom-header__system-message">
+                <j:out value="${it.systemMessage}"/>
+            </div>
+        </header>
+    </j:if>
     <script src="${resURL}/jsbundles/keyboard-shortcuts.js" type="text/javascript"/>
 </j:jelly>
