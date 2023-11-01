@@ -1,5 +1,6 @@
 package io.jenkins.plugins.customizable_header;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import hudson.Extension;
 import hudson.Util;
 
@@ -49,6 +50,8 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private boolean thinHeader;
 
+  private SystemMessage systemMessage;
+
   private List<AppNavLink> links = new ArrayList<>();
 
   @DataBoundConstructor
@@ -60,6 +63,22 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   public boolean configure(StaplerRequest req, JSONObject json) throws FormException {
     links.clear();
     return super.configure(req, json);
+  }
+
+  public Object readResolve() {
+    if (systemMessage == null) {
+      systemMessage = new SystemMessage("", SystemMessage.SystemMessageColor.lightyellow);
+    }
+    return this;
+  }
+
+  public SystemMessage getSystemMessage() {
+    return systemMessage;
+  }
+
+  @DataBoundSetter
+  public void setSystemMessage(SystemMessage systemMessage) {
+    this.systemMessage = systemMessage;
   }
 
   public List<AppNavLink> getLinks() {
