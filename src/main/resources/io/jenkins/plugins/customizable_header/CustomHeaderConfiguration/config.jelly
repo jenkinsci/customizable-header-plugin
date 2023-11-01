@@ -16,7 +16,7 @@
             <f:entry field="cssResource" title="${%URL of theme CSS}">
                 <f:textbox/>
             </f:entry>
-            <f:dropdownDescriptorSelector field="logo" title="${%The logo to show}"/>
+            <f:dropdownDescriptorSelector field="logo" title="${%The logo to show}" descriptors="${descriptor.logoDescriptors}"/>
             <f:entry title="${%Application Links}" field="links">
                 <f:repeatableProperty field="links" add="${%Add Link}" header="Link">
                     <f:repeatableDeleteButton/>
