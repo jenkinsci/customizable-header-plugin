@@ -3,6 +3,7 @@ package io.jenkins.plugins.customizable_header.headers;
 import hudson.Extension;
 import hudson.markup.RawHtmlMarkupFormatter;
 import io.jenkins.plugins.customizable_header.CustomHeaderConfiguration;
+import io.jenkins.plugins.customizable_header.SystemMessage;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import jenkins.views.PartialHeader;
 
@@ -34,6 +35,32 @@ public class LogoHeader extends PartialHeader {
   public String getCssResourceUrl() {
 
     return CustomHeaderConfiguration.get().getCssResourceUrl();
+  }
+
+  public boolean hasLinks() {
+    return CustomHeaderConfiguration.get().hasLinks();
+  }
+
+  public String getSystemMessage() {
+    SystemMessage systemMessage = CustomHeaderConfiguration.get().getSystemMessage();
+    if (systemMessage == null) {
+      return "";
+    }
+    StringWriter writer = new StringWriter();
+    try {
+      RawHtmlMarkupFormatter.INSTANCE.translate(systemMessage.getMessage(), writer);
+      return writer.toString();
+    } catch (IOException e) {
+      return "";
+    }
+  }
+
+  public String getSystemMessageColor() {
+    SystemMessage systemMessage = CustomHeaderConfiguration.get().getSystemMessage();
+    if (systemMessage == null) {
+      return "";
+    }
+    return systemMessage.getColor().name();
   }
 
   public Logo getLogo() {

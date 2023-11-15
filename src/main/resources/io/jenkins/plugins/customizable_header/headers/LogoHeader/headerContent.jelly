@@ -5,6 +5,14 @@
         <link rel="stylesheet" href="${it.cssResourceUrl}" type="text/css"/>
     </j:if>
     <header id="header" class="page-header custom-header__page">
+        <j:if test="${it.hasLinks()}">
+            <div class="custom-header__app-nav">
+                <button class="custom-header__app-nav-button" data-href="${rootURL}/customizable-header/getLinks">
+                    <l:icon src="symbol-apps-sharp plugin-ionicons-api" class="icon-md"/>
+                </button>
+            </div>
+            <script src="${rootURL}/plugin/customizable-header/js/bundles/app-nav.js" type="text/javascript"></script>
+        </j:if>
         <div class="custom-header">
             <a class="custom-header__link" href="${rootURL}/">
                 <st:include page="logo" it="${it.logo}"/>
@@ -72,5 +80,12 @@
             </j:if>
         </div>
     </header>
+    <j:if test="${it.systemMessage != ''}">
+        <header class="custom-header__system-message-header custom-header__system-message-header-${it.systemMessageColor}">
+            <div class="custom-header__system-message">
+                <j:out value="${it.systemMessage}"/>
+            </div>
+        </header>
+    </j:if>
     <script src="${resURL}/jsbundles/keyboard-shortcuts.js" type="text/javascript"/>
 </j:jelly>

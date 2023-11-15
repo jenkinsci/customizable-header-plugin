@@ -1,10 +1,16 @@
 package io.jenkins.plugins.customizable_header;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Util;
 
+import hudson.model.Descriptor;
+import io.jenkins.plugins.customizable_header.logo.Icon;
+import io.jenkins.plugins.customizable_header.logo.LogoDescriptor;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,12 +21,15 @@ import io.jenkins.plugins.customizable_header.headers.JenkinsHeaderSelector;
 import io.jenkins.plugins.customizable_header.headers.LogoSelector;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import io.jenkins.plugins.customizable_header.logo.Symbol;
+import java.util.stream.Collectors;
 import jenkins.appearance.AppearanceCategory;
 import jenkins.model.GlobalConfiguration;
 import jenkins.model.GlobalConfigurationCategory;
 import jenkins.model.Jenkins;
+import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
+import org.kohsuke.stapler.StaplerRequest;
 
 @Extension
 @org.jenkinsci.Symbol("customHeader")
@@ -43,6 +52,12 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private HeaderColor headerColor = new HeaderColor("black", "grey", "white");
 
+  private boolean thinHeader;
+
+  private SystemMessage systemMessage;
+
+  private List<AppNavLink> links = new ArrayList<>();
+
   @DataBoundConstructor
   public CustomHeaderConfiguration() {
     load();
@@ -53,10 +68,60 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   public GlobalConfigurationCategory getCategory() {
     return GlobalConfigurationCategory.get(AppearanceCategory.class);
   }
+    
+  @Override
+  public boolean configure(StaplerRequest req, JSONObject json) throws FormException {
+    links.clear();
+    return super.configure(req, json);
+  }
+
+  public Object readResolve() {
+    if (systemMessage == null) {
+      systemMessage = new SystemMessage("", SystemMessage.SystemMessageColor.lightyellow);
+    }
+    return this;
+  }
+
+  public SystemMessage getSystemMessage() {
+    return systemMessage;
+  }
+
+  @DataBoundSetter
+  public void setSystemMessage(SystemMessage systemMessage) {
+    this.systemMessage = systemMessage;
+  }
+
+  public List<AppNavLink> getLinks() {
+    return links;
+  }
+
+  @DataBoundSetter
+  public void setLinks(List<AppNavLink> links) {
+    this.links = links;
+    save();
+  }
+
+  public boolean hasLinks() {
+    if (links == null) {
+      return false;
+    }
+    return links.size() != 0;
+  }
+
+  public boolean isThinHeader() {
+    return thinHeader;
+  }
+
+  @DataBoundSetter
+  public void setThinHeader(boolean thinHeader) {
+    this.thinHeader = thinHeader;
+    save();
+  }
 
   @DataBoundSetter
   public void setHeader(HeaderSelector header) {
     this.header = header;
+    save();
   }
 
   public HeaderSelector getHeader() {
@@ -66,6 +131,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   @DataBoundSetter
   public void setEnabled(boolean enabled) {
     this.enabled = enabled;
+    save();
   }
 
   public boolean isEnabled() {
@@ -85,6 +151,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   @DataBoundSetter
   public void setHeaderColor(HeaderColor headerColor) {
     this.headerColor = headerColor;
+    save();
   }
 
   /**
@@ -185,5 +252,11 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   }
   public Logo defaultLogo() {
     return new Symbol("symbol-jenkins");
+  }
+
+  public List<Descriptor<Logo>> getLogoDescriptors() {
+    return LogoDescriptor.all().stream().filter(
+            d -> !(d instanceof Icon.DescriptorImpl)
+    ).collect(Collectors.toList());
   }
 }

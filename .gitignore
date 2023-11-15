@@ -6,3 +6,6 @@
 work
 keystore
 .idea
+node/
+node_modules/
+src/main/webapp/js/bundles

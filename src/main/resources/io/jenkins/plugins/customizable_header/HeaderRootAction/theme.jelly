@@ -1,12 +1,88 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler">
     <st:contentType value="text/css" />
-.custom-header__page {
-    background: ${it.backgroundColor};
+    <j:if test="${it.thinHeader}">
+.jenkins-breadcrumbs {
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    overflow-x: initial;
 }
 
+#searchform {
+    height: 2rem;
+}
+
+#jenkins-head-icon {
+    height: 2rem;
+}
+
+.main-search__icon-leading, .main-search__icon-trailing {
+    height: 2rem;
+    width: 2rem;
+}
+    </j:if>
+.custom-header__page {
+    background: ${it.backgroundColor};
+    <j:if test="${it.thinHeader}">
+        height: 2.5rem;
+    </j:if>
+}
+
+.custom-header__app-nav-button {
+    <j:if test="${it.thinHeader}">
+        height: 2.5rem;
+    </j:if>
+    <j:if test="${!it.thinHeader}">
+        height: 3.5rem;
+    </j:if>
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--background);
+    border: none;
+}
+
+.custom-header__app-nav {
+    background-color: var(--background);
+    margin-right: 0;
+}
+
+.custom-header__app-nav-button:hover {
+    background-color: var(--item-background--hover) !important;
+    cursor: pointer;
+}
+
+.custom-header__system-message-header-red {
+    background-color: red;
+    color: white;
+}
+
+.custom-header__system-message-header-orange {
+    background-color: darkorange;
+    color: white;
+}
+
+.custom-header__system-message-header-lightyellow {
+    background-color: lightyellow;
+    color: coral;
+}
+
+.custom-header__system-message-header {
+    min-height: 1.5rem;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+
 .custom-header {
-    height: 3.5rem;
+    <j:if test="${it.thinHeader}">
+        height: 2.5rem;
+    </j:if>
+    <j:if test="${!it.thinHeader}">
+        height: 3.5rem;
+    </j:if>
 }
 
 .custom-header__title {
@@ -28,7 +104,12 @@
 }
 
 .custom-header__logo {
-    height: 3.5rem;
+    <j:if test="${it.thinHeader}">
+        height: 2.5rem;
+    </j:if>
+    <j:if test="${!it.thinHeader}">
+        height: 3.5rem;
+    </j:if>
 }
 
 a.custom-header__link:hover {
@@ -39,7 +120,12 @@ a.custom-header__link {
     display: inline-flex;
     align-items: center;
     height: 100%;
-    padding:  16px 16px 16px 16px;
+    <j:if test="${it.hasLinks()}">
+        padding:  16px 16px 16px 8px;
+    </j:if>
+    <j:if test="${!it.hasLinks()}">
+        padding:  16px 16px 16px 16px;
+    </j:if>
     clip-path: polygon(0 0, 95% 0, 100% 50%, 95% 100%, 0 100%);
     background-color: var(--background);
     color: var(--text-color);

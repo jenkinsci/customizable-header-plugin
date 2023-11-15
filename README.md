@@ -46,8 +46,22 @@ By default, the text `Jenkins` is displayed. You can choose any text you like or
 Logo and logo text form a hyperlink that gets you back to the Jenkins root page (similar to the original header).
 
 ## The title
-Optionally an additional title can be shown after a separator. This can contain html (sanitized with owasp), e.g. to include a link to some
-other site. Css already takes care to make the link properly styled.
+Optionally an additional title can be shown after a separator. This can contain html (sanitized with owasp), e.g. to 
+include a link to some other site. Css already takes care to make the link properly styled.
+
+## Application links
+The plugin allows to configure additional links that are accessible via a button to the left of the logo.
+These links will open in a new window.
+
+![App Links](/docs/pics/app-links.png)<br/>
+
+## System Message
+A system message can be shown between the header and the breadcrumb bar. This allows to notify users about important
+things related to the instance, e.g. a planned update of Jenkins, a downtime due to hardware replacement or an ongoing 
+incident. You can include html (sanitized with owasp) in the message to apply some simple styling or include a link
+with more details.
+
+![System Message](/docs/pics/system-message.png)<br/>
 
 ## CSS classes assigned to the different elements
 To style the header beyond changing colors you can specify your own css file.

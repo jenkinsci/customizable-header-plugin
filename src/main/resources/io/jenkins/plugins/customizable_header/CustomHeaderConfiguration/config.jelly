@@ -1,7 +1,11 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
     <f:section title="${%Customizable Header}">
+        <f:property field="systemMessage"/>
         <f:optionalBlock field="enabled" title="Enable" inline="true">
+            <f:entry field="thinHeader" title="Thin Header">
+                <f:checkbox/>
+            </f:entry>
             <f:dropdownDescriptorSelector field="header" title="${%The header to use}"/>
             <f:entry field="logoText" title="${%Text}">
                 <f:textbox/>
@@ -13,7 +17,12 @@
             <f:entry field="cssResource" title="${%URL of theme CSS}">
                 <f:textbox/>
             </f:entry>
-            <f:dropdownDescriptorSelector field="logo" title="${%The logo to show}"/>
+            <f:dropdownDescriptorSelector field="logo" title="${%The logo to show}" descriptors="${descriptor.logoDescriptors}"/>
+            <f:entry title="${%Application Links}" field="links">
+                <f:repeatableProperty field="links" add="${%Add Link}" header="Link">
+                    <f:repeatableDeleteButton/>
+                </f:repeatableProperty>
+            </f:entry>
         </f:optionalBlock>
     </f:section>
 </j:jelly>
