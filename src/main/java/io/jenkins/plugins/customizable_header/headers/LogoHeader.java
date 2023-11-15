@@ -32,11 +32,6 @@ public class LogoHeader extends PartialHeader {
     return CustomHeaderConfiguration.get().getLogoText();
   }
 
-  public String getCssResourceUrl() {
-
-    return CustomHeaderConfiguration.get().getCssResourceUrl();
-  }
-
   public boolean hasLinks() {
     return CustomHeaderConfiguration.get().hasLinks();
   }

@@ -1,9 +1,5 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
-    <link rel="stylesheet" href="${rootURL}/customizable-header/theme" type="text/css"/>
-    <j:if test="${it.cssResourceUrl != ''}">
-        <link rel="stylesheet" href="${it.cssResourceUrl}" type="text/css"/>
-    </j:if>
     <header id="header" class="page-header custom-header__page">
         <j:if test="${it.hasLinks()}">
             <div class="custom-header__app-nav">
@@ -11,7 +7,6 @@
                     <l:icon src="symbol-apps-sharp plugin-ionicons-api" class="icon-md"/>
                 </button>
             </div>
-            <script src="${rootURL}/plugin/customizable-header/js/bundles/app-nav.js" type="text/javascript"></script>
         </j:if>
         <div class="custom-header">
             <a class="custom-header__link" href="${rootURL}/">
@@ -87,5 +82,4 @@
             </div>
         </header>
     </j:if>
-    <script src="${resURL}/jsbundles/keyboard-shortcuts.js" type="text/javascript"/>
 </j:jelly>
