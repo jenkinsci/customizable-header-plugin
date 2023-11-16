@@ -1,6 +1,7 @@
 package io.jenkins.plugins.customizable_header;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Util;
 
@@ -21,7 +22,9 @@ import io.jenkins.plugins.customizable_header.headers.LogoSelector;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import io.jenkins.plugins.customizable_header.logo.Symbol;
 import java.util.stream.Collectors;
+import jenkins.appearance.AppearanceCategory;
 import jenkins.model.GlobalConfiguration;
+import jenkins.model.GlobalConfigurationCategory;
 import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -29,6 +32,7 @@ import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.StaplerRequest;
 
 @Extension
+@org.jenkinsci.Symbol("customHeader")
 public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private static final Logger LOGGER = Logger.getLogger(CustomHeaderConfiguration.class.getName());
@@ -59,6 +63,12 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     load();
   }
 
+  @NonNull
+  @Override
+  public GlobalConfigurationCategory getCategory() {
+    return GlobalConfigurationCategory.get(AppearanceCategory.class);
+  }
+    
   @Override
   public boolean configure(StaplerRequest req, JSONObject json) throws FormException {
     links.clear();
