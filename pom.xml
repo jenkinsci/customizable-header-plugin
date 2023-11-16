@@ -37,6 +37,7 @@
     <gitHubRepo>jenkinsci/customizable-header-plugin</gitHubRepo>
     <node.version>20.8.0</node.version>
     <yarn.version>1.22.19</yarn.version>
+    <hpi.compatibleSinceVersion>54</hpi.compatibleSinceVersion>
   </properties>
 
   <dependencyManagement>
