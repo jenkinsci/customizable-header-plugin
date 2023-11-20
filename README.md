@@ -49,9 +49,10 @@ Logo and logo text form a hyperlink that gets you back to the Jenkins root page 
 Optionally an additional title can be shown after a separator. This can contain html (sanitized with owasp), e.g. to 
 include a link to some other site. Css already takes care to make the link properly styled.
 
-## Application links
+## Application links and Favorites
 The plugin allows to configure additional links that are accessible via a button to the left of the logo.
-These links will open in a new window.
+When the [Favorite Plugin](https://plugins.jenkins.io/favorite) is installed, your personal favorites will
+be added as well to this menu.
 
 ![App Links](/docs/pics/app-links.png)<br/>
 

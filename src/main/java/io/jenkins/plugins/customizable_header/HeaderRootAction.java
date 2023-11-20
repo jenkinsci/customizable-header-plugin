@@ -58,8 +58,13 @@ public class HeaderRootAction implements UnprotectedRootAction {
     @ExportedBean
     static class Links implements HttpResponse {
         @Exported(inline = true)
-        public List<AppNavLink> getItems() {
+        public List<AppNavLink> getLinks() {
             return CustomHeaderConfiguration.get().getLinks();
+        }
+
+        @Exported(inline = true)
+        public List<AppNavLink> getFavorites() {
+            return CustomHeaderConfiguration.get().getFavorites();
         }
 
         @Override
@@ -72,5 +77,4 @@ public class HeaderRootAction implements UnprotectedRootAction {
     public Links doGetLinks() throws Exception {
         return new Links();
     }
-
 }
