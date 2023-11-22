@@ -1,26 +1,26 @@
 package io.jenkins.plugins.customizable_header;
 
-import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Util;
-
 import hudson.model.Descriptor;
-import io.jenkins.plugins.customizable_header.logo.Icon;
-import io.jenkins.plugins.customizable_header.logo.LogoDescriptor;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import hudson.model.Item;
 import hudson.model.User;
+import hudson.plugins.favorite.Favorites;
 import io.jenkins.plugins.customizable_header.color.HeaderColor;
 import io.jenkins.plugins.customizable_header.headers.HeaderSelector;
 import io.jenkins.plugins.customizable_header.headers.JenkinsHeaderSelector;
 import io.jenkins.plugins.customizable_header.headers.LogoSelector;
+import io.jenkins.plugins.customizable_header.logo.Icon;
 import io.jenkins.plugins.customizable_header.logo.Logo;
+import io.jenkins.plugins.customizable_header.logo.LogoDescriptor;
 import io.jenkins.plugins.customizable_header.logo.Symbol;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import jenkins.appearance.AppearanceCategory;
 import jenkins.model.GlobalConfiguration;
@@ -58,6 +58,8 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private List<AppNavLink> links = new ArrayList<>();
 
+  private final static transient Symbol star = new Symbol("symbol-star plugin-ionicons-api");
+
   @DataBoundConstructor
   public CustomHeaderConfiguration() {
     load();
@@ -68,7 +70,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   public GlobalConfigurationCategory getCategory() {
     return GlobalConfigurationCategory.get(AppearanceCategory.class);
   }
-    
+
   @Override
   public boolean configure(StaplerRequest req, JSONObject json) throws FormException {
     links.clear();
@@ -80,6 +82,28 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
       systemMessage = new SystemMessage("", SystemMessage.SystemMessageColor.lightyellow);
     }
     return this;
+  }
+
+  private static List<AppNavLink> getFavorites(User user) {
+    String rootUrl = Jenkins.get().getRootUrl();
+    Iterable<Item> items = Favorites.getFavorites(user);
+    List<AppNavLink> favorites = new ArrayList<>();
+    items.forEach(item -> {
+      AppNavLink fav = new AppNavLink(rootUrl + item.getUrl(), item.getFullDisplayName(), star);
+      fav.setColor("jenkins-!-color-yellow");
+      favorites.add(fav);
+    });
+    return favorites;
+  }
+
+  public List<AppNavLink> getFavorites() {
+    if (Jenkins.get().getPlugin("favorite") != null) {
+      User user = User.current();
+      if (user != null) {
+        return getFavorites(user);
+      }
+    }
+    return Collections.emptyList();
   }
 
   public SystemMessage getSystemMessage() {
@@ -101,11 +125,26 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     save();
   }
 
-  public boolean hasLinks() {
+  private boolean hasFavorites() {
+    if (Jenkins.get().getPlugin("favorite") != null) {
+      User user = User.current();
+      if (user != null) {
+        Iterable<Item> items = Favorites.getFavorites(user);
+        return items.iterator().hasNext();
+      }
+    }
+    return false;
+  }
+
+  private boolean hasAppLinks() {
     if (links == null) {
       return false;
     }
     return links.size() != 0;
+  }
+
+  public boolean hasLinks() {
+    return hasFavorites() || hasAppLinks();
   }
 
   public boolean isThinHeader() {
@@ -156,6 +195,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   /**
    * The globally configured Headercolor.
+   *
    * @return global headercolor.
    */
   public HeaderColor getHeaderColor() {
@@ -165,6 +205,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   /**
    * The active header color.
    * If the user has overwritten the colors those colors are used.
+   *
    * @return
    */
   public HeaderColor getActiveHeaderColor() {
@@ -244,12 +285,14 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
       cssResourceUrl = "";
     }
   }
+
   public String getCssResourceUrl() {
     if (cssResourceUrl == null) {
       setCssResourceUrl();
     }
     return cssResourceUrl;
   }
+
   public Logo defaultLogo() {
     return new Symbol("symbol-jenkins");
   }

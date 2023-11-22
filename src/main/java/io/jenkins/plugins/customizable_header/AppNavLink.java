@@ -11,8 +11,6 @@ import io.jenkins.plugins.customizable_header.logo.NoLogo;
 import io.jenkins.plugins.customizable_header.logo.SvgLogo;
 import io.jenkins.plugins.customizable_header.logo.Symbol;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.jenkins.ui.symbol.SymbolRequest;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -26,11 +24,22 @@ public class AppNavLink extends AbstractDescribableImpl<AppNavLink> {
   private String label;
   private Logo logo;
 
+  private transient String color = "";
+
   @DataBoundConstructor
   public AppNavLink(String url, String label, Logo logo) {
     this.url = url;
     this.label = label;
     this.logo = logo;
+  }
+
+  @Exported
+  public String getColor() {
+    return color;
+  }
+
+  public void setColor(String color) {
+    this.color = color;
   }
 
   @Exported

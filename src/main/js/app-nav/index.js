@@ -26,13 +26,13 @@ function createElementFromHtml(html) {
 function menuItem(options) {
   const label = xmlEscape(options.label);
   const item = createElementFromHtml(`
-    <a class="jenkins-dropdown__item" href="${options.url}" target="_blank">
+    <a class="jenkins-dropdown__item" href="${options.url}">
       ${
         options.iconUrl
-          ? `<div class="jenkins-dropdown__item__icon">${
+          ? `<div class="jenkins-dropdown__item__icon ${options.color}">${
               options.iconXml
                 ? options.iconXml
-                : `<img src="${options.iconUrl}" />`
+                : `<img src="${options.iconUrl}" class="custom-header__link-image"/>`
             }</div>`
           : ``
       }
@@ -42,10 +42,20 @@ function menuItem(options) {
   return item;
 };
 
-function generateItems(items) {
+function generateItems(links, favorites) {
   const menuItems = document.createElement("div");
   menuItems.classList.add("jenkins-dropdown");
-  items.map((item) => {
+  links.map((item) => {
+    return menuItem(item);
+  })
+  .forEach((item) => menuItems.appendChild(item));
+  if (favorites.length != 0 && links.length != 0) {
+    const separator = createElementFromHtml(
+      `<div class="jenkins-dropdown__separator"></div>`,
+    );
+    menuItems.appendChild(separator);
+  }
+  favorites.map((item) => {
     return menuItem(item);
   })
   .forEach((item) => menuItems.appendChild(item));
@@ -56,15 +66,11 @@ function generateItems(items) {
 function callback(element, instance) {
   const href = element.dataset.href;
 
-  fetch(href)
-    .then((response) => response.json())
-    .then((json) =>
-      instance.setContent(
-        generateItems(json.items)
-      )
-    )
-    .catch((error) => console.log(`AppNav request failed: ${error}`))
-    .finally(() => (instance.loaded = true));
+  fetch(href).then((response) => response.json()).then(json => {
+    instance.setContent(generateItems(json.links, json.favorites));
+  })
+  .catch((error) => console.log(`AppNav request failed: ${error}`))
+  .finally(() => (instance.loaded = true));
 }
 
 function init() {
@@ -82,7 +88,8 @@ function init() {
         offset: [0, 0],
         animation: "dropdown",
         onCreate(instance) {
-          instance.reference.addEventListener("mouseenter", () => {
+          instance.reference.addEventListener("click", () => {
+            callback(element, instance);
             if (instance.loaded) {
               return;
             }
@@ -90,8 +97,6 @@ function init() {
             instance.popper.addEventListener("click", () => {
               instance.hide();
             });
-
-            callback(element, instance);
           });
         },
         onShown(instance) {
@@ -103,4 +108,3 @@ function init() {
 }
 
 export default { init };
-

@@ -103,6 +103,10 @@
     color: var(--text-color);
 }
 
+.custom-header__link-image {
+    width: unset!important;
+}
+
 .custom-header__logo {
     <j:if test="${it.thinHeader}">
         height: 2.5rem;
