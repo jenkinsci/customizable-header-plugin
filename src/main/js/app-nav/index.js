@@ -64,9 +64,9 @@ function generateItems(links, favorites) {
 }
 
 function callback(element, instance) {
-  const hrefLinks = element.dataset.hrefLinks;
+  const href = element.dataset.href;
 
-  fetch(hrefLinks).then((response) => response.json()).then(json => {
+  fetch(href).then((response) => response.json()).then(json => {
     instance.setContent(generateItems(json.links, json.favorites));
   })
   .catch((error) => console.log(`AppNav request failed: ${error}`))

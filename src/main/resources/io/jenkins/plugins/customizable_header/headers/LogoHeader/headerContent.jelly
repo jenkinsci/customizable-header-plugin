@@ -3,9 +3,7 @@
     <header id="header" class="page-header custom-header__page">
         <j:if test="${it.hasLinks()}">
             <div class="custom-header__app-nav">
-                <button class="custom-header__app-nav-button"
-                        data-href-links="${rootURL}/customizable-header/getLinks"
-                        data-href-favorites="${rootURL}/customizable-header/getFavorites">
+                <button class="custom-header__app-nav-button" data-href="${rootURL}/customizable-header/getLinks">
                     <l:icon src="symbol-apps-sharp plugin-ionicons-api" class="icon-md"/>
                 </button>
             </div>
