@@ -60,7 +60,6 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private final static transient Symbol star = new Symbol("symbol-star plugin-ionicons-api");
 
-
   @DataBoundConstructor
   public CustomHeaderConfiguration() {
     load();

@@ -97,7 +97,6 @@ function init() {
             instance.popper.addEventListener("click", () => {
               instance.hide();
             });
-
           });
         },
         onShown(instance) {
@@ -109,4 +108,3 @@ function init() {
 }
 
 export default { init };
-
