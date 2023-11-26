@@ -11,6 +11,7 @@ import io.jenkins.plugins.customizable_header.logo.NoLogo;
 import io.jenkins.plugins.customizable_header.logo.SvgLogo;
 import io.jenkins.plugins.customizable_header.logo.Symbol;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.jenkins.ui.symbol.SymbolRequest;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -18,7 +19,7 @@ import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
 @ExportedBean
-public class AppNavLink extends AbstractDescribableImpl<AppNavLink> {
+public class AppNavLink extends AbstractDescribableImpl<AppNavLink> implements Comparable<AppNavLink> {
 
   private String url;
   private String label;
@@ -26,7 +27,7 @@ public class AppNavLink extends AbstractDescribableImpl<AppNavLink> {
 
   private transient String color = "";
 
-  @DataBoundConstructor
+    @DataBoundConstructor
   public AppNavLink(String url, String label, Logo logo) {
     this.url = url;
     this.label = label;
@@ -114,6 +115,29 @@ public class AppNavLink extends AbstractDescribableImpl<AppNavLink> {
 
     return "";
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    AppNavLink that = (AppNavLink) o;
+    return Objects.equals(url, that.url) && Objects.equals(label, that.label);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(url, label);
+  }
+
+  @Override
+  public int compareTo(AppNavLink other) {
+    int labelCompare = label.compareToIgnoreCase(other.label);
+    if (labelCompare != 0) {
+      return labelCompare;
+    }
+    return url.compareTo(other.url);
+  }
+
   @Extension
   public static class DescriptorImpl extends Descriptor<AppNavLink> {
     @Override

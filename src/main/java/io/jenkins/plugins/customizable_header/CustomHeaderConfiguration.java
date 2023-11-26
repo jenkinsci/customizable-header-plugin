@@ -93,6 +93,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
       fav.setColor("jenkins-!-color-yellow");
       favorites.add(fav);
     });
+    Collections.sort(favorites);
     return favorites;
   }
 
