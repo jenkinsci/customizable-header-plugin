@@ -5,7 +5,7 @@
 .jenkins-breadcrumbs {
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;
-    overflow-x: initial;
+    overflow-y: hidden;
 }
 
 #searchform {
@@ -20,7 +20,12 @@
     height: 2rem;
     width: 2rem;
 }
+
+.page-header>* {
+    margin-right: 0.5rem;
+}
     </j:if>
+
 .custom-header__page {
     background: ${it.backgroundColor};
     <j:if test="${it.thinHeader}">
@@ -75,7 +80,6 @@
     display: flex;
 }
 
-
 .custom-header {
     <j:if test="${it.thinHeader}">
         height: 2.5rem;
@@ -99,7 +103,7 @@
 
 .custom-header__text {
     flex: 1;
-    padding-left: 10px;
+    padding-left: 5px;
     color: var(--text-color);
 }
 
@@ -125,12 +129,17 @@ a.custom-header__link {
     align-items: center;
     height: 100%;
     <j:if test="${it.hasLinks()}">
-        padding:  16px 16px 16px 8px;
+        padding:  16px 16px 16px 0;
     </j:if>
     <j:if test="${!it.hasLinks()}">
         padding:  16px 16px 16px 16px;
     </j:if>
-    clip-path: polygon(0 0, 95% 0, 100% 50%, 95% 100%, 0 100%);
+    <j:if test="${it.thinHeader}">
+        clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
+    </j:if>
+    <j:if test="${!it.thinHeader}">
+        clip-path: polygon(0 0, calc(100% - 11px) 0, 100% 50%, calc(100% - 11px) 100%, 0 100%);
+    </j:if>
     background-color: var(--background);
     color: var(--text-color);
     font-size: 150%;

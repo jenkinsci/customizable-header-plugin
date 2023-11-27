@@ -3,7 +3,7 @@
     <f:section title="${%Customizable Header}">
         <f:property field="systemMessage"/>
         <f:optionalBlock field="enabled" title="Enable" inline="true">
-            <f:entry field="thinHeader" title="Thin Header">
+            <f:entry field="thinHeader" title="${%Compact Header}">
                 <f:checkbox/>
             </f:entry>
             <f:dropdownDescriptorSelector field="header" title="${%The header to use}"/>
