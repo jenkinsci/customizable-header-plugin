@@ -37,7 +37,7 @@ public class SvgLogo extends Logo {
     private boolean forceFile;
 
     private static final transient Cache<String, String> cache = Caffeine.newBuilder()
-            .expireAfterWrite(5, TimeUnit.SECONDS)
+            .expireAfterWrite(1, TimeUnit.HOURS)
             .build();
 
     @DataBoundConstructor
@@ -76,12 +76,14 @@ public class SvgLogo extends Logo {
             file = new File(Jenkins.get().getRootDir(), logoPath);
         }
         if (!file.isFile()) {
+            File finalFile = file;
+            LOGGER.log(Level.FINE, () -> "No svg found at " + finalFile);
             return null;
         }
         try {
             return FileUtils.readFileToString(file, StandardCharsets.UTF_8);
         } catch (IOException ioe) {
-            LOGGER.log(Level.WARNING, "Failed to read logo file", ioe);
+            LOGGER.log(Level.WARNING, ioe, () -> "Failed to read logo file");
         }
         return null;
     }
@@ -102,18 +104,24 @@ public class SvgLogo extends Logo {
             uri = URI.create(Jenkins.get().getRootUrl() + logoPath);
         }
         HttpClient client = HttpClient.newBuilder()
-                .version(HttpClient.Version.HTTP_1_1)
+                .version(HttpClient.Version.HTTP_2)
+                .followRedirects(HttpClient.Redirect.NORMAL)
                 .connectTimeout(Duration.ofSeconds(5))
                 .build();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(uri)
                 .GET()
+                .timeout(Duration.ofSeconds(5))
                 .build();
         try {
-            HttpResponse<String> response = client.send(request,  HttpResponse.BodyHandlers.ofString());
-            return response.body();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() == 200) {
+                return response.body();
+            }
+            LOGGER.log(Level.FINE, "Failed to load logo from url " + uri);
+            return null;
         } catch (IOException | InterruptedException e){
-            LOGGER.log(Level.WARNING, "Failed to read url with logo", e);
+            LOGGER.log(Level.WARNING, "Failed to read url with logo: " + uri);
         }
         return null;
     }
@@ -129,6 +137,7 @@ public class SvgLogo extends Logo {
             return null;
         }
         if (!validate(content)) {
+            LOGGER.log(Level.FINE, () -> "Failed to validate logo from " + logoFilePath);
             return null;
         }
         content = content.replaceAll("(<title>)[^&]*(</title>)", "")
@@ -144,8 +153,9 @@ public class SvgLogo extends Logo {
     }
 
     /*
-    Perform some simple check that the given string is a valid xml and has "svg" as it's root element name
-    This check is required to avoid that an attacker that has access to the file system can inject arbitrary html
+     * Perform some simple check that the given string is a valid xml and has "svg" as it's root element name
+     * This check is required to avoid that an attacker that has access to the file system or can manipulate
+     * can inject arbitrary html.
      */
     private static boolean validate(String src) {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -159,7 +169,7 @@ public class SvgLogo extends Logo {
             }
             return true;
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            LOGGER.log(Level.WARNING, "The given src for the svg is not a valid xml document");
+            LOGGER.log(Level.WARNING, e, () -> "The given src for the svg is not a valid xml document");
         }
         return false;
     }
