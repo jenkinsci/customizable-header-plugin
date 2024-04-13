@@ -76,10 +76,8 @@
         </div>
     </header>
     <j:if test="${it.systemMessage != ''}">
-        <header class="custom-header__system-message-header custom-header__system-message-header-${it.systemMessageColor}">
-            <div class="custom-header__system-message">
-                <j:out value="${it.systemMessage}"/>
-            </div>
-        </header>
+        <div class="alert alert-${it.systemMessageColor} custom-header__system-message-header">
+            <j:out value="${it.systemMessage}"/>
+        </div>
     </j:if>
 </j:jelly>

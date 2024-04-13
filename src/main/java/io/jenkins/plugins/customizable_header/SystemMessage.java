@@ -8,20 +8,37 @@ import org.kohsuke.stapler.DataBoundConstructor;
 
 public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
   private final String message;
-  private final SystemMessageColor color;
+  private transient String color;
+
+  private SystemMessageColor level;
 
   @DataBoundConstructor
-  public SystemMessage(String message, SystemMessageColor color) {
+  public SystemMessage(String message, SystemMessageColor level) {
     this.message = message;
-    this.color = color;
+    this.level = level;
+  }
+
+  public Object readResolve() {
+    if (color != null) {
+      if (color.equals("lightyellow")) {
+        level = SystemMessageColor.info;
+      }
+      if (color.equals("red")) {
+        level = SystemMessageColor.info;
+      }
+      if (color.equals("orange")) {
+        level = SystemMessageColor.info;
+      }
+    }
+    return this;
   }
 
   public String getMessage() {
     return message;
   }
 
-  public SystemMessageColor getColor() {
-    return color;
+  public SystemMessageColor getLevel() {
+    return level;
   }
 
   @Extension
@@ -34,8 +51,8 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
 
   }
 
-  public static enum SystemMessageColor {
-    red, orange, lightyellow;
+  public enum SystemMessageColor {
+    danger, warning, info, success;
   }
 
 }

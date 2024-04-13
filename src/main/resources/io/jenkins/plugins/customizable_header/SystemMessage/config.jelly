@@ -3,7 +3,7 @@
   <f:entry field="message" title="System Message">
     <f:textarea/>
   </f:entry>
-  <f:entry field="color" title="Background of System Message">
+  <f:entry field="level" title="Background of System Message">
     <f:enum>${it.toString()}</f:enum>
   </f:entry>
 </j:jelly>
