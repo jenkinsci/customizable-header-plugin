@@ -5,22 +5,50 @@ import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 
 public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
   private final String message;
-  private final SystemMessageColor color;
+  private transient String color;
+
+  private SystemMessageColor level;
 
   @DataBoundConstructor
-  public SystemMessage(String message, SystemMessageColor color) {
+  public SystemMessage(String message, SystemMessageColor level) {
     this.message = message;
-    this.color = color;
+    this.level = level;
+  }
+
+  @DataBoundSetter
+  @Deprecated
+  public void setColor(String color) {
+    if (color != null) {
+      if (color.equals("lightyellow")) {
+        level = SystemMessageColor.info;
+      }
+      if (color.equals("red")) {
+        level = SystemMessageColor.info;
+      }
+      if (color.equals("orange")) {
+        level = SystemMessageColor.info;
+      }
+    }
+  }
+
+  public Object readResolve() {
+    setColor(color);
+    return this;
   }
 
   public String getMessage() {
     return message;
   }
 
-  public SystemMessageColor getColor() {
+  public SystemMessageColor getLevel() {
+    return level;
+  }
+
+  public String getColor() {
     return color;
   }
 
@@ -34,8 +62,8 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
 
   }
 
-  public static enum SystemMessageColor {
-    red, orange, lightyellow;
+  public enum SystemMessageColor {
+    danger, warning, info, success;
   }
 
 }

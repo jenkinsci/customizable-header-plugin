@@ -53,9 +53,9 @@ public class LogoHeader extends PartialHeader {
   public String getSystemMessageColor() {
     SystemMessage systemMessage = CustomHeaderConfiguration.get().getSystemMessage();
     if (systemMessage == null) {
-      return "";
+      return "info";
     }
-    return systemMessage.getColor().name();
+    return systemMessage.getLevel().name();
   }
 
   public Logo getLogo() {

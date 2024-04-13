@@ -79,7 +79,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   public Object readResolve() {
     if (systemMessage == null) {
-      systemMessage = new SystemMessage("", SystemMessage.SystemMessageColor.lightyellow);
+      systemMessage = new SystemMessage("", SystemMessage.SystemMessageColor.info);
     }
     return this;
   }

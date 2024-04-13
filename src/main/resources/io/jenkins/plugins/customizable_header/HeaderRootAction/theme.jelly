@@ -71,26 +71,9 @@
   cursor: pointer;
 }
 
-.custom-header__system-message-header-red {
-  background-color: red;
-  color: white;
-}
-
-.custom-header__system-message-header-orange {
-  background-color: darkorange;
-  color: white;
-}
-
-.custom-header__system-message-header-lightyellow {
-  background-color: lightyellow;
-  color: coral;
-}
-
 .custom-header__system-message-header {
-  min-height: 1.5rem;
-  justify-content: center;
-  align-items: center;
-  display: flex;
+  padding: 5px 1.15rem;
+  margin: 0;
 }
 
 .custom-header {
