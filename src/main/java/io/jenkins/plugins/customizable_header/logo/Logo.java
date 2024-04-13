@@ -7,12 +7,12 @@ import jenkins.model.Jenkins;
 
 public abstract class Logo extends AbstractDescribableImpl<Logo> implements ExtensionPoint {
 
-    public static ExtensionList<Logo> all() {
-        return Jenkins.get().getExtensionList(Logo.class);
-    }
+  public static ExtensionList<Logo> all() {
+    return Jenkins.get().getExtensionList(Logo.class);
+  }
 
-    @Override
-    public LogoDescriptor getDescriptor() {
-        return (LogoDescriptor) super.getDescriptor();
-    }
+  @Override
+  public LogoDescriptor getDescriptor() {
+    return (LogoDescriptor) super.getDescriptor();
+  }
 }

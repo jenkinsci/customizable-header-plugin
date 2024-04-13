@@ -8,44 +8,42 @@ import org.kohsuke.stapler.DataBoundConstructor;
 
 public class HeaderColor extends AbstractDescribableImpl<HeaderColor> {
 
-    private final String backgroundColor;
-    private final String hoverColor;
-    private final String color;
+  private final String backgroundColor;
+  private final String hoverColor;
+  private final String color;
 
-    @DataBoundConstructor
-    public HeaderColor(String backgroundColor, String hoverColor, String color) {
-        this.backgroundColor = backgroundColor;
-        this.hoverColor = hoverColor;
-        this.color = color;
+  @DataBoundConstructor
+  public HeaderColor(String backgroundColor, String hoverColor, String color) {
+    this.backgroundColor = backgroundColor;
+    this.hoverColor = hoverColor;
+    this.color = color;
+  }
+
+  public HeaderColor(HeaderColor headerColor) {
+    this.backgroundColor = headerColor.getBackgroundColor();
+    this.color = headerColor.getColor();
+    this.hoverColor = headerColor.getHoverColor();
+  }
+
+  public String getBackgroundColor() {
+    return backgroundColor;
+  }
+
+  public String getHoverColor() {
+    return hoverColor;
+  }
+
+  public String getColor() {
+    return color;
+  }
+
+  @Extension
+  public static class DescriptorImpl extends Descriptor<HeaderColor> {
+
+    @NonNull
+    @Override
+    public String getDisplayName() {
+      return "Color";
     }
-
-    public HeaderColor(HeaderColor headerColor) {
-        this.backgroundColor = headerColor.getBackgroundColor();
-        this.color = headerColor.getColor();
-        this.hoverColor = headerColor.getHoverColor();
-    }
-
-
-    public String getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public String getHoverColor() {
-        return hoverColor;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    @Extension
-    public static class DescriptorImpl extends Descriptor<HeaderColor> {
-
-        @NonNull
-        @Override
-        public String getDisplayName() {
-            return "Color";
-        }
-    }
-
+  }
 }

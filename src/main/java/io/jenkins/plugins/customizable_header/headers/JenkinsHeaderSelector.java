@@ -11,17 +11,17 @@ import org.kohsuke.stapler.DataBoundConstructor;
  */
 public class JenkinsHeaderSelector extends HeaderSelector {
 
-    @DataBoundConstructor
-    public JenkinsHeaderSelector() {
-    }
+  @DataBoundConstructor
+  public JenkinsHeaderSelector() {
+  }
 
-    @Extension
-    @org.jenkinsci.Symbol("jenkins")
-    public static class DescriptorImpl extends HeaderDescriptor {
-        @NonNull
-        @Override
-        public String getDisplayName() {
-            return "Jenkins Header";
-        }
+  @Extension
+  @org.jenkinsci.Symbol("jenkins")
+  public static class DescriptorImpl extends HeaderDescriptor {
+    @NonNull
+    @Override
+    public String getDisplayName() {
+      return "Jenkins Header";
     }
+  }
 }

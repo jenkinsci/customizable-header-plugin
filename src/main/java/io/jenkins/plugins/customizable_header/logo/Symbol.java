@@ -7,32 +7,32 @@ import org.kohsuke.stapler.DataBoundConstructor;
 
 public class Symbol extends Logo {
 
-    private String symbol = "symbol-jenkins";
+  private String symbol = "symbol-jenkins";
 
-    @DataBoundConstructor
-    public Symbol(String symbol) {
-        this.symbol = symbol;
+  @DataBoundConstructor
+  public Symbol(String symbol) {
+    this.symbol = symbol;
+  }
+
+  public String getSymbol() {
+    return symbol;
+  }
+
+  public String getSize() {
+    if (CustomHeaderConfiguration.get().isThinHeader()) {
+      return "icon-lg";
     }
+    return "icon-xlg";
+  }
 
-    public String getSymbol() {
-        return symbol;
+  @Extension
+  @org.jenkinsci.Symbol("symbol")
+  public static class DescriptorImpl extends LogoDescriptor {
+
+    @NonNull
+    @Override
+    public String getDisplayName() {
+      return "Symbol";
     }
-
-    public String getSize() {
-        if (CustomHeaderConfiguration.get().isThinHeader()) {
-            return "icon-lg";
-        }
-        return "icon-xlg";
-    }
-
-    @Extension
-    @org.jenkinsci.Symbol("symbol")
-    public static class DescriptorImpl extends LogoDescriptor {
-
-        @NonNull
-        @Override
-        public String getDisplayName() {
-            return "Symbol";
-        }
-    }
+  }
 }

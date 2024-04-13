@@ -22,6 +22,7 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
   /**
    * Sets the color for the system message.
    * Only for backwards compatibility with CasC
+   *
    * @param color
    * @deprecated instead set the level in the constructor
    */
@@ -57,6 +58,7 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
 
   /**
    * The color for the system message.
+   *
    * @return color
    * @deprecated use {@link #getLevel()}
    */

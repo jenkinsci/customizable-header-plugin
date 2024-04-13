@@ -7,18 +7,18 @@ import org.kohsuke.stapler.DataBoundConstructor;
 
 public class NoLogo extends Logo {
 
-    @DataBoundConstructor
-    public NoLogo() {
-    }
+  @DataBoundConstructor
+  public NoLogo() {
+  }
 
-    @Extension
-    @Symbol("nologo")
-    public static class DescriptorImpl extends LogoDescriptor {
-        @NonNull
-        @Override
-        public String getDisplayName() {
-            return "No Logo";
-        }
+  @Extension
+  @Symbol("nologo")
+  public static class DescriptorImpl extends LogoDescriptor {
+    @NonNull
+    @Override
+    public String getDisplayName() {
+      return "No Logo";
     }
+  }
 
 }

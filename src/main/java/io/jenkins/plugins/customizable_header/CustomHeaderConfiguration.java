@@ -10,7 +10,6 @@ import hudson.plugins.favorite.Favorites;
 import io.jenkins.plugins.customizable_header.color.HeaderColor;
 import io.jenkins.plugins.customizable_header.headers.HeaderSelector;
 import io.jenkins.plugins.customizable_header.headers.JenkinsHeaderSelector;
-import io.jenkins.plugins.customizable_header.headers.LogoSelector;
 import io.jenkins.plugins.customizable_header.logo.Icon;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import io.jenkins.plugins.customizable_header.logo.LogoDescriptor;
@@ -58,7 +57,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private List<AppNavLink> links = new ArrayList<>();
 
-  private final static transient Symbol star = new Symbol("symbol-star plugin-ionicons-api");
+  private static final transient Symbol star = new Symbol("symbol-star plugin-ionicons-api");
 
   @DataBoundConstructor
   public CustomHeaderConfiguration() {
@@ -89,11 +88,12 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     String rootUrl = Jenkins.get().getRootUrl();
     Iterable<Item> items = Favorites.getFavorites(user);
     List<AppNavLink> favorites = new ArrayList<>();
-    items.forEach(item -> {
-      AppNavLink fav = new AppNavLink(rootUrl + item.getUrl(), item.getFullDisplayName(), star);
-      fav.setColor("jenkins-!-color-yellow");
-      favorites.add(fav);
-    });
+    items.forEach(
+        item -> {
+          AppNavLink fav = new AppNavLink(rootUrl + item.getUrl(), item.getFullDisplayName(), star);
+          fav.setColor("jenkins-!-color-yellow");
+          favorites.add(fav);
+        });
     Collections.sort(favorites);
     return favorites;
   }
@@ -205,8 +205,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   }
 
   /**
-   * The active header color.
-   * If the user has overwritten the colors those colors are used.
+   * The active header color. If the user has overwritten the colors those colors are used.
    *
    * @return
    */
@@ -300,8 +299,8 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   }
 
   public List<Descriptor<Logo>> getLogoDescriptors() {
-    return LogoDescriptor.all().stream().filter(
-            d -> !(d instanceof Icon.DescriptorImpl)
-    ).collect(Collectors.toList());
+    return LogoDescriptor.all().stream()
+        .filter(d -> !(d instanceof Icon.DescriptorImpl))
+        .collect(Collectors.toList());
   }
 }

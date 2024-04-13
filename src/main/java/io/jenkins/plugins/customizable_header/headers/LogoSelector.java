@@ -6,18 +6,18 @@ import org.kohsuke.stapler.DataBoundConstructor;
 
 public class LogoSelector extends HeaderSelector {
 
-    @DataBoundConstructor
-    public LogoSelector() {
-    }
+  @DataBoundConstructor
+  public LogoSelector() {
+  }
 
-    @Extension
-    @org.jenkinsci.Symbol("logo")
-    public static class DescriptorImpl extends HeaderDescriptor {
+  @Extension
+  @org.jenkinsci.Symbol("logo")
+  public static class DescriptorImpl extends HeaderDescriptor {
 
-        @NonNull
-        @Override
-        public String getDisplayName() {
-            return "Logo";
-        }
+    @NonNull
+    @Override
+    public String getDisplayName() {
+      return "Logo";
     }
+  }
 }
