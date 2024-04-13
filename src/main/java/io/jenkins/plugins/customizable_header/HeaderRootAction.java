@@ -2,6 +2,7 @@ package io.jenkins.plugins.customizable_header;
 
 import hudson.Extension;
 import hudson.model.UnprotectedRootAction;
+import io.jenkins.plugins.customizable_header.headers.JenkinsHeaderSelector;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -55,7 +56,7 @@ public class HeaderRootAction implements UnprotectedRootAction {
         return CustomHeaderConfiguration.get().hasLinks();
     }
 
-    @ExportedBean
+  @ExportedBean
     static class Links implements HttpResponse {
         @Exported(inline = true)
         public List<AppNavLink> getLinks() {

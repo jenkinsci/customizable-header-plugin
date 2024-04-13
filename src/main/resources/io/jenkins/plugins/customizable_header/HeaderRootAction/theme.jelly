@@ -71,11 +71,6 @@
   cursor: pointer;
 }
 
-.custom-header__system-message-header {
-  padding: 5px 1.15rem;
-  margin: 0;
-}
-
 .custom-header {
   <j:if test="${it.thinHeader}">
     height: 2.5rem;
