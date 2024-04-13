@@ -73,7 +73,7 @@
 
 .custom-header__system-message-header {
   padding: 5px 1.15rem;
-  margin-bottom: 0;
+  margin: 0;
 }
 
 .custom-header {

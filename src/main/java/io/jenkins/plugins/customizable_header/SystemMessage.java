@@ -5,6 +5,7 @@ import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 
 public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
   private final String message;
@@ -18,7 +19,9 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
     this.level = level;
   }
 
-  public Object readResolve() {
+  @DataBoundSetter
+  @Deprecated
+  public void setColor(String color) {
     if (color != null) {
       if (color.equals("lightyellow")) {
         level = SystemMessageColor.info;
@@ -30,6 +33,10 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
         level = SystemMessageColor.info;
       }
     }
+  }
+
+  public Object readResolve() {
+    setColor(color);
     return this;
   }
 
@@ -39,6 +46,10 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
 
   public SystemMessageColor getLevel() {
     return level;
+  }
+
+  public String getColor() {
+    return color;
   }
 
   @Extension
