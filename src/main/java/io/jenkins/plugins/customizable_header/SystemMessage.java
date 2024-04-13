@@ -19,6 +19,12 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
     this.level = level;
   }
 
+  /**
+   * Sets the color for the system message.
+   * Only for backwards compatibility with CasC
+   * @param color
+   * @deprecated instead set the level in the constructor
+   */
   @DataBoundSetter
   @Deprecated
   public void setColor(String color) {
@@ -37,6 +43,7 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
 
   public Object readResolve() {
     setColor(color);
+    color = null;
     return this;
   }
 
@@ -48,6 +55,12 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
     return level;
   }
 
+  /**
+   * The color for the system message.
+   * @return color
+   * @deprecated use {@link #getLevel()}
+   */
+  @Deprecated
   public String getColor() {
     return color;
   }
@@ -63,7 +76,7 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
   }
 
   public enum SystemMessageColor {
-    danger, warning, info, success;
+    info, warning, danger, success;
   }
 
 }

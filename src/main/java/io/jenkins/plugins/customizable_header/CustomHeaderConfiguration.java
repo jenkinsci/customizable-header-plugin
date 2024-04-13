@@ -44,7 +44,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private Logo logo = new Symbol("symbol-jenkins");
 
-  private HeaderSelector header = new LogoSelector();
+  private HeaderSelector header = new JenkinsHeaderSelector();
 
   private boolean enabled = true;
 
@@ -73,6 +73,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   @Override
   public boolean configure(StaplerRequest req, JSONObject json) throws FormException {
+    systemMessage = null;
     links.clear();
     return super.configure(req, json);
   }
