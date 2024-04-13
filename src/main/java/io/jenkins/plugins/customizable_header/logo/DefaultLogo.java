@@ -7,17 +7,17 @@ import org.kohsuke.stapler.DataBoundConstructor;
 
 public class DefaultLogo extends Logo {
 
-    @DataBoundConstructor
-    public DefaultLogo() {
-    }
+  @DataBoundConstructor
+  public DefaultLogo() {
+  }
 
-    @Extension
-    @Symbol("default")
-    public static class DescriptorImpl extends LogoDescriptor {
-        @NonNull
-        @Override
-        public String getDisplayName() {
-            return "Default";
-        }
+  @Extension
+  @Symbol("default")
+  public static class DescriptorImpl extends LogoDescriptor {
+    @NonNull
+    @Override
+    public String getDisplayName() {
+      return "Default";
     }
+  }
 }

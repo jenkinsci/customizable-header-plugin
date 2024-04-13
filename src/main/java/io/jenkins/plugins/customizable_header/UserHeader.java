@@ -13,66 +13,66 @@ import org.kohsuke.stapler.DataBoundSetter;
 
 public class UserHeader extends UserProperty {
 
-    private final boolean overwriteHeader;
+  private final boolean overwriteHeader;
 
-    private final boolean overwriteColors;
-    private HeaderColor headerColor;
+  private final boolean overwriteColors;
+  private HeaderColor headerColor;
 
-    private HeaderSelector headerSelector;
+  private HeaderSelector headerSelector;
 
-    @DataBoundConstructor
-    public UserHeader(boolean overwriteHeader, boolean overwriteColors) {
-        this.overwriteHeader = overwriteHeader;
-        this.overwriteColors = overwriteColors;
+  @DataBoundConstructor
+  public UserHeader(boolean overwriteHeader, boolean overwriteColors) {
+    this.overwriteHeader = overwriteHeader;
+    this.overwriteColors = overwriteColors;
+  }
+
+  public boolean isOverwriteColors() {
+    return overwriteColors;
+  }
+
+  @DataBoundSetter
+  public void setHeaderColor(HeaderColor headerColor) {
+    this.headerColor = headerColor;
+  }
+
+  @DataBoundSetter
+  public void setHeaderSelector(HeaderSelector headerSelector) {
+    this.headerSelector = headerSelector;
+  }
+
+  public HeaderColor getHeaderColor() {
+    return headerColor;
+  }
+
+  public HeaderSelector getHeaderSelector() {
+    return headerSelector;
+  }
+
+  public boolean isOverwriteHeader() {
+    return overwriteHeader;
+  }
+
+  @Extension
+  @Symbol("customHeader")
+  public static class DescriptorImpl extends UserPropertyDescriptor {
+
+    @Override
+    public UserProperty newInstance(User user) {
+      UserHeader userHeader = new UserHeader(false, false);
+      HeaderColor globalHeaderColor = CustomHeaderConfiguration.get().getHeaderColor();
+      userHeader.setHeaderColor(new HeaderColor(globalHeaderColor));
+      return userHeader;
     }
 
-    public boolean isOverwriteColors() {
-        return overwriteColors;
+    @Override
+    public boolean isEnabled() {
+      return CustomHeaderConfiguration.get().isEnabled();
     }
 
-    @DataBoundSetter
-    public void setHeaderColor(HeaderColor headerColor) {
-        this.headerColor = headerColor;
+    @NonNull
+    @Override
+    public String getDisplayName() {
+      return "Customizable Header";
     }
-
-    @DataBoundSetter
-    public void setHeaderSelector(HeaderSelector headerSelector) {
-        this.headerSelector = headerSelector;
-    }
-
-    public HeaderColor getHeaderColor() {
-        return headerColor;
-    }
-
-    public HeaderSelector getHeaderSelector() {
-        return headerSelector;
-    }
-
-    public boolean isOverwriteHeader() {
-        return overwriteHeader;
-    }
-
-    @Extension
-    @Symbol("customHeader")
-    public static class DescriptorImpl extends UserPropertyDescriptor {
-
-        @Override
-        public UserProperty newInstance(User user) {
-            UserHeader userHeader = new UserHeader(false, false);
-            HeaderColor globalHeaderColor = CustomHeaderConfiguration.get().getHeaderColor();
-            userHeader.setHeaderColor(new HeaderColor(globalHeaderColor));
-            return userHeader;
-        }
-
-        @Override
-        public boolean isEnabled() {
-            return CustomHeaderConfiguration.get().isEnabled();
-        }
-
-        @NonNull
-        @Override
-        public String getDisplayName() {
-            return "Customizable Header";
-        }
-    }
+  }
 }

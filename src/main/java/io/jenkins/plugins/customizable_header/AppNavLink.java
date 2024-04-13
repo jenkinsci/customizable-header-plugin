@@ -27,7 +27,7 @@ public class AppNavLink extends AbstractDescribableImpl<AppNavLink> implements C
 
   private transient String color = "";
 
-    @DataBoundConstructor
+  @DataBoundConstructor
   public AppNavLink(String url, String label, Logo logo) {
     this.url = url;
     this.label = label;
@@ -77,10 +77,10 @@ public class AppNavLink extends AbstractDescribableImpl<AppNavLink> implements C
     if (logo instanceof Symbol) {
       String symbol = ((Symbol) logo).getSymbol();
       return org.jenkins.ui.symbol.Symbol.get(new SymbolRequest.Builder()
-        .withName(symbol.split(" ")[0].substring(7))
-        .withPluginName(extractPluginNameFromIconSrc(symbol))
-        .withClasses("icon-md")
-        .build()
+          .withName(symbol.split(" ")[0].substring(7))
+          .withPluginName(extractPluginNameFromIconSrc(symbol))
+          .withClasses("icon-md")
+          .build()
       );
     }
     return null;
@@ -142,17 +142,16 @@ public class AppNavLink extends AbstractDescribableImpl<AppNavLink> implements C
   public static class DescriptorImpl extends Descriptor<AppNavLink> {
     @Override
     @NonNull
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
       return "";
     }
 
     public List<Descriptor<Logo>> getLogoDescriptors() {
       return LogoDescriptor.all().stream().filter(
-              d -> d instanceof Symbol.DescriptorImpl ||
-                      d instanceof SvgLogo.DescriptorImpl ||
-                      d instanceof ImageLogo.DescriptorImpl ||
-                      d instanceof NoLogo.DescriptorImpl
+          d -> d instanceof Symbol.DescriptorImpl ||
+              d instanceof SvgLogo.DescriptorImpl ||
+              d instanceof ImageLogo.DescriptorImpl ||
+              d instanceof NoLogo.DescriptorImpl
       ).collect(Collectors.toList());
     }
   }

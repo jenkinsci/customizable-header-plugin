@@ -4,10 +4,9 @@ import hudson.Extension;
 import hudson.markup.RawHtmlMarkupFormatter;
 import io.jenkins.plugins.customizable_header.CustomHeaderConfiguration;
 import io.jenkins.plugins.customizable_header.logo.Logo;
-import jenkins.views.PartialHeader;
-
 import java.io.IOException;
 import java.io.StringWriter;
+import jenkins.views.PartialHeader;
 
 @Extension(ordinal = 99999)
 public class LogoHeader extends PartialHeader implements SystemMessageProvider {

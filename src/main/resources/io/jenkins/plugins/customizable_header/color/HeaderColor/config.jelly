@@ -1,12 +1,12 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
-    <f:entry field="backgroundColor" title="${%Header background}">
-        <f:textbox/>
-    </f:entry>
-    <f:entry field="color" title="${%Header text color}">
-        <f:textbox/>
-    </f:entry>
-    <f:entry field="hoverColor" title="${%Header hover color}">
-        <f:textbox/>
-    </f:entry>
+  <f:entry field="backgroundColor" title="${%Header background}">
+    <f:textbox/>
+  </f:entry>
+  <f:entry field="color" title="${%Header text color}">
+    <f:textbox/>
+  </f:entry>
+  <f:entry field="hoverColor" title="${%Header hover color}">
+    <f:textbox/>
+  </f:entry>
 </j:jelly>
