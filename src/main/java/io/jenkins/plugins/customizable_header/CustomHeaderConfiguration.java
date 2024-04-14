@@ -145,8 +145,30 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     return links.size() != 0;
   }
 
+  private boolean hasUserLinks() {
+    User user = User.current();
+    if (user != null) {
+      UserHeader userHeader = user.getProperty(UserHeader.class);
+      return userHeader.getLinks() != null && userHeader.getLinks().size() != 0;
+    }
+    return false;
+  }
+
   public boolean hasLinks() {
-    return hasFavorites() || hasAppLinks();
+    return hasFavorites() || hasAppLinks() || hasUserLinks();
+  }
+
+  public List<AppNavLink> getUserLinks() {
+    User user = User.current();
+    List<AppNavLink> links = null;
+    if (user != null) {
+      UserHeader userHeader = user.getProperty(UserHeader.class);
+      links = userHeader.getLinks();
+    }
+    if (links != null) {
+      return links;
+    }
+    return Collections.emptyList();
   }
 
   public boolean isThinHeader() {

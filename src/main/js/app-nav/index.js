@@ -39,7 +39,7 @@ function menuItem(options) {
     color = options.color;
   }
   const item = createElementFromHtml(`
-    <a class="jenkins-dropdown__item" href="${options.url}" ${options.external? `target="_blank"` : ``}>
+    <a class="jenkins-dropdown__item" href="${options.linkUrl}" ${options.external? `target="_blank"` : ``}>
       ${
         options.iconUrl
           ? `<div class="jenkins-dropdown__item__icon ${color}">${

@@ -7,6 +7,8 @@ import hudson.model.UserProperty;
 import hudson.model.UserPropertyDescriptor;
 import io.jenkins.plugins.customizable_header.color.HeaderColor;
 import io.jenkins.plugins.customizable_header.headers.HeaderSelector;
+import java.util.ArrayList;
+import java.util.List;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
@@ -19,6 +21,8 @@ public class UserHeader extends UserProperty {
   private HeaderColor headerColor;
 
   private HeaderSelector headerSelector;
+
+  private List<AppNavLink> links = new ArrayList<>();
 
   @DataBoundConstructor
   public UserHeader(boolean overwriteHeader, boolean overwriteColors) {
@@ -51,6 +55,16 @@ public class UserHeader extends UserProperty {
   public boolean isOverwriteHeader() {
     return overwriteHeader;
   }
+
+  public List<AppNavLink> getLinks() {
+    return links;
+  }
+
+  @DataBoundSetter
+  public void setLinks(List<AppNavLink> links) {
+    this.links = links;
+  }
+
 
   @Extension
   @Symbol("customHeader")
