@@ -15,6 +15,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import org.jenkins.ui.symbol.SymbolRequest;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
@@ -25,6 +26,8 @@ public class AppNavLink extends AbstractDescribableImpl<AppNavLink> implements C
   private String label;
   private Logo logo;
 
+  private boolean external;
+
   private transient String color = "";
 
   @DataBoundConstructor
@@ -32,6 +35,16 @@ public class AppNavLink extends AbstractDescribableImpl<AppNavLink> implements C
     this.url = url;
     this.label = label;
     this.logo = logo;
+  }
+
+  @Exported
+  public boolean getExternal() {
+    return external;
+  }
+
+  @DataBoundSetter
+  public void setExternal(boolean external) {
+    this.external = external;
   }
 
   @Exported
