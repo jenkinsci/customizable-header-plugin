@@ -6,5 +6,8 @@
   <f:entry field="label" title="${%Link Text}">
     <f:textbox/>
   </f:entry>
+  <f:entry field="external" title="${%External}">
+    <f:checkbox/>
+  </f:entry>
   <f:dropdownDescriptorSelector field="logo" title="${%The logo to show}" descriptors="${descriptor.logoDescriptors}"/>
 </j:jelly>

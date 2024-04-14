@@ -46,6 +46,15 @@
   </j:if>
 }
 
+.custom-header__app-nav .icon-xs {
+  width: 12px;
+  height: 12px;
+}
+
+.custom-header__app-nav .jenkins-dropdown__item {
+  padding-right: 1rem;
+}
+
 .custom-header__app-nav-button {
   <j:if test="${it.thinHeader}">
     height: 2.5rem;

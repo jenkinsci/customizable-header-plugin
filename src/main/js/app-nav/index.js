@@ -17,6 +17,11 @@ function xmlEscape(str) {
   });
 }
 
+function generateSVGIcon(name) {
+    const icons = document.getElementById("custom-header-icons");
+    return icons.content.querySelector(`#${name}`).cloneNode(true);
+}
+
 function createElementFromHtml(html) {
   const template = document.createElement("template");
   template.innerHTML = html.trim();
@@ -25,18 +30,26 @@ function createElementFromHtml(html) {
 
 function menuItem(options) {
   const label = xmlEscape(options.label);
+  let linkIcon = "";
+  if (options.external) {
+    linkIcon = generateSVGIcon("external-link").outerHTML;
+  }
+  let color = "";
+  if (options.color) {
+    color = options.color;
+  }
   const item = createElementFromHtml(`
-    <a class="jenkins-dropdown__item" href="${options.url}">
+    <a class="jenkins-dropdown__item" href="${options.url}" ${options.external? `target="_blank"` : ``}>
       ${
         options.iconUrl
-          ? `<div class="jenkins-dropdown__item__icon ${options.color}">${
+          ? `<div class="jenkins-dropdown__item__icon ${color}">${
               options.iconXml
                 ? options.iconXml
                 : `<img src="${options.iconUrl}" class="custom-header__link-image"/>`
             }</div>`
           : ``
       }
-      ${label}
+      ${label} ${linkIcon}
     </a>
   `)
   return item;

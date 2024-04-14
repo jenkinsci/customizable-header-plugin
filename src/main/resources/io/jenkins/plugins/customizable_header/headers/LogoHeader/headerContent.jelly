@@ -1,5 +1,8 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
+  <template id="custom-header-icons">
+    <l:icon id="external-link" src="symbol-open-outline plugin-ionicons-api" class="icon-xs"/>
+  </template>
   <header id="header" class="page-header custom-header__page">
     <j:if test="${it.hasLinks()}">
       <div class="custom-header__app-nav">
