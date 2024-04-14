@@ -10,12 +10,16 @@ import io.jenkins.plugins.customizable_header.logo.LogoDescriptor;
 import io.jenkins.plugins.customizable_header.logo.NoLogo;
 import io.jenkins.plugins.customizable_header.logo.SvgLogo;
 import io.jenkins.plugins.customizable_header.logo.Symbol;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.jenkins.ui.symbol.SymbolRequest;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
+import org.kohsuke.stapler.Stapler;
+import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
@@ -56,7 +60,6 @@ public class AppNavLink extends AbstractDescribableImpl<AppNavLink> implements C
     this.color = color;
   }
 
-  @Exported
   public String getUrl() {
     return url;
   }
@@ -80,6 +83,25 @@ public class AppNavLink extends AbstractDescribableImpl<AppNavLink> implements C
 
   public void setLogo(Logo logo) {
     this.logo = logo;
+  }
+
+
+  @Exported
+  public String getLinkUrl() {
+    try {
+      URI uri = new URI(url);
+      if (!uri.isAbsolute()) {
+        if (url.startsWith("/")) {
+          return url;
+        }
+        StaplerRequest currentRequest = Stapler.getCurrentRequest();
+        String rootURL = currentRequest.getContextPath();
+        return rootURL + "/" + url;
+      }
+    } catch (URISyntaxException e) {
+      return url;
+    }
+    return url;
   }
 
   @Exported

@@ -3,6 +3,7 @@ package io.jenkins.plugins.customizable_header;
 import hudson.Extension;
 import hudson.model.UnprotectedRootAction;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import org.kohsuke.stapler.HttpResponse;
@@ -58,7 +59,10 @@ public class HeaderRootAction implements UnprotectedRootAction {
   static class Links implements HttpResponse {
     @Exported(inline = true)
     public List<AppNavLink> getLinks() {
-      return CustomHeaderConfiguration.get().getLinks();
+      List<AppNavLink> links = new ArrayList<>();
+      links.addAll(CustomHeaderConfiguration.get().getLinks());
+      links.addAll(CustomHeaderConfiguration.get().getUserLinks());
+      return links;
     }
 
     @Exported(inline = true)

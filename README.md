@@ -23,18 +23,6 @@ Currently, there are 2 headers available:
 Users can choose to use a different header than what is globally defined.
 This includes showing the original header. They can also just overwrite the coloring
 
-## The weather symbols
-To demonstrate the custom weather symbols download the svgs from `docs/svgs` to `userContent/svgs` in your 
-`JENKINS_HOME`, put the following into a properties file in your `JENKINS_HOME` and configure the additional mappings 
-to it. 
-```
-icon-health-00to19=file-userContent/svgs/mood-sick.svg
-icon-health-20to39=file-userContent/svgs/mood-sad.svg
-icon-health-40to59=file-userContent/svgs/mood-empty.svg
-icon-health-60to79=file-userContent/svgs/mood-smile.svg
-icon-health-80plus=file-userContent/svgs/mood-happy.svg
-```
-
 ## The logo
 The logo can be turned off, you can use the default Jenkins logo, use a png or jpeg image, an SVG icon.
 Ideally you use an SVG as they can be made working nicely with the dark theme.
@@ -50,7 +38,9 @@ Optionally an additional title can be shown after a separator. This can contain 
 include a link to some other site. Css already takes care to make the link properly styled.
 
 ## Application links and favorites
-The plugin allows to configure additional links that are accessible via a button to the left of the logo.
+The plugin allows to configure additional links that are accessible via a button to the left of the logo. Users can define their personal
+links in their settings.
+
 When the [Favorite Plugin](https://plugins.jenkins.io/favorite) is installed, your personal favorites will
 be added as well to this menu.
 
@@ -63,6 +53,18 @@ incident. You can include html (sanitized with owasp) in the message to apply so
 with more details.
 
 ![System Message](/docs/pics/system-message.png)<br/>
+
+## The weather symbols
+To demonstrate the custom weather symbols download the svgs from `docs/svgs` to `userContent/svgs` in your
+`JENKINS_HOME`, put the following into a properties file in your `JENKINS_HOME` and configure the additional mappings
+to it.
+```
+icon-health-00to19=file-userContent/svgs/mood-sick.svg
+icon-health-20to39=file-userContent/svgs/mood-sad.svg
+icon-health-40to59=file-userContent/svgs/mood-empty.svg
+icon-health-60to79=file-userContent/svgs/mood-smile.svg
+icon-health-80plus=file-userContent/svgs/mood-happy.svg
+```
 
 ## CSS classes assigned to the different elements
 To style the header beyond changing colors you can specify your own css file.
