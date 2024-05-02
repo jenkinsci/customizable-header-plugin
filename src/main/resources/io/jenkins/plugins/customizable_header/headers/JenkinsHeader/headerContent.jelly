@@ -1,6 +1,12 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
-    <st:include page="headerContent" class="jenkins.views.JenkinsHeader"/>
+<j:jelly xmlns:j="jelly:core" xmlns:h="/lib/layout/header">
+
+  <header>
+    <h:logo/>
+    <h:searchbox/>
+    <h:login/>
+  </header>
+
     <j:if test="${it.systemMessage != ''}">
         <div class="alert alert-${it.systemMessageColor} custom-header__system-message-header">
             <j:out value="${it.systemMessage}"/>
