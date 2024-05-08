@@ -80,7 +80,7 @@
     </div>
   </header>
   <j:if test="${it.systemMessage != ''}">
-    <div class="alert alert-${it.systemMessageColor} custom-header__system-message-header">
+    <div class="custom-header__alert-${it.systemMessageColor} custom-header__system-message-header">
       <j:out value="${it.systemMessage}"/>
     </div>
   </j:if>
