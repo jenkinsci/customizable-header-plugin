@@ -3,7 +3,7 @@
   <template id="custom-header-icons">
     <l:icon id="external-link" src="symbol-open-outline plugin-ionicons-api" class="icon-xs"/>
   </template>
-  <header id="header" class="page-header custom-header__page">
+  <header id="page-header" class="page-header custom-header__page">
     <j:if test="${it.hasLinks()}">
       <div class="custom-header__app-nav">
         <button class="custom-header__app-nav-button" data-href="${rootURL}/customizable-header/getLinks">
