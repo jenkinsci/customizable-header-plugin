@@ -10,6 +10,7 @@ import hudson.model.User;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -147,6 +148,11 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
     @Override
     public String getDisplayName() {
       return "System Message";
+    }
+
+    public String getMinDate() {
+      ZonedDateTime now = ZonedDateTime.now();
+      return now.format(DATE_OUTPUT_FORMATTER);
     }
 
   }

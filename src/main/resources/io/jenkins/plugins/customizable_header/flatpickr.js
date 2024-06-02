@@ -7,5 +7,6 @@ Behaviour.specify(".custom-header__system-message--expireDate", "ch-flatpickr", 
     dateFormat: "Y-m-d H:i",
     time_24hr: true,
     static: true,
+    minDate: fp.dataset.now,
   });
 });

@@ -7,7 +7,7 @@
     <f:enum>${it.toString()}</f:enum>
   </f:entry>
   <f:entry field="expireDate" title="${%Expiration Time}">
-    <div class="custom-header__system-message--expireDate">
+    <div class="custom-header__system-message--expireDate" data-now="${descriptor.minDate}">
       <f:textbox checkDependsOn="" data-input=""/>
       <button class="jenkins-button" type="button" data-toggle="" tooltip="Open datetime picker">
         <l:icon src="symbol-calendar-outline plugin-ionicons-api"/>
