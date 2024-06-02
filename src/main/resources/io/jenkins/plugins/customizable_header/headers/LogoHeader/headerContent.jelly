@@ -79,9 +79,7 @@
       </j:if>
     </div>
   </header>
-  <j:if test="${it.systemMessage != ''}">
-    <div class="custom-header__alert-${it.systemMessageColor} custom-header__system-message-header">
-      <j:out value="${it.systemMessage}"/>
-    </div>
-  </j:if>
+  <j:forEach var="systemMessage" items="${it.systemMessages}">
+    <st:include page="index.jelly" it="${systemMessage}" class="io.jenkins.plugins.customizable_header.SystemMessage"/>
+  </j:forEach>
 </j:jelly>

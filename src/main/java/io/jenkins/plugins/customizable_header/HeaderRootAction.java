@@ -2,11 +2,13 @@ package io.jenkins.plugins.customizable_header;
 
 import hudson.Extension;
 import hudson.model.UnprotectedRootAction;
+import hudson.model.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import org.kohsuke.stapler.HttpResponse;
+import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
 import org.kohsuke.stapler.export.ExportConfig;
@@ -14,6 +16,7 @@ import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 import org.kohsuke.stapler.export.Flavor;
 import org.kohsuke.stapler.verb.GET;
+import org.kohsuke.stapler.verb.POST;
 
 /**
  * Allows to access the css for anonymous users.
@@ -53,6 +56,20 @@ public class HeaderRootAction implements UnprotectedRootAction {
 
   public boolean hasLinks() {
     return CustomHeaderConfiguration.get().hasLinks();
+  }
+
+  @POST
+  public void doDismissMessage(@QueryParameter String uid) throws IOException {
+    User user = User.current();
+    if (user != null) {
+      UserHeader userHeader = user.getProperty(UserHeader.class);
+      if (userHeader == null) {
+        userHeader = new UserHeader(false, false);
+        user.addProperty(userHeader);
+      }
+      userHeader.getDismissedMessages().add(uid);
+      user.save();
+    }
   }
 
   @ExportedBean

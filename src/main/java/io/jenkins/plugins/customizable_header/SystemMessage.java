@@ -2,21 +2,76 @@ package io.jenkins.plugins.customizable_header;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
+import hudson.Util;
+import hudson.markup.RawHtmlMarkupFormatter;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
+import hudson.model.User;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
 public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
+
+  public static final DateTimeFormatter DATE_OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+  public static final DateTimeFormatter DATE_INPUT_FORMATTER = DateTimeFormatter.ofPattern("yyyy-M-d H:m");
+
   private final String message;
   private transient String color;
 
   private SystemMessageColor level;
+  private LocalDateTime expireDate;
+  private String uid;
 
   @DataBoundConstructor
-  public SystemMessage(String message, SystemMessageColor level) {
-    this.message = message;
+  public SystemMessage(String message, SystemMessageColor level, String uid) {
+    this.message = Util.fixEmptyAndTrim(message);
     this.level = level;
+    if (Util.fixEmptyAndTrim(uid) == null) {
+      uid = UUID.randomUUID().toString();
+    }
+    this.uid = uid;
+  }
+
+  @DataBoundSetter
+  public void setExpireDate(String expireDate) {
+    if (Util.fixEmptyAndTrim(expireDate) != null) {
+      this.expireDate = LocalDateTime.parse(expireDate, DATE_INPUT_FORMATTER);
+    }
+  }
+
+  public String getUid() {
+    return uid;
+  }
+
+  public String getExpireDate() {
+    if (expireDate != null) {
+      return expireDate.format(DATE_OUTPUT_FORMATTER);
+    }
+    return null;
+  }
+
+  public boolean isDismissed() {
+    User user = User.current();
+    if (user != null) {
+      UserHeader userHeader = user.getProperty(UserHeader.class);
+      if (userHeader != null) {
+        return userHeader.getDismissedMessages().contains(uid);
+      }
+    }
+    return false;
+  }
+
+  public boolean isExpired() {
+    if (expireDate != null) {
+      LocalDateTime now = LocalDateTime.now();
+      return expireDate.isBefore(now);
+    }
+    return false;
   }
 
   /**
@@ -34,10 +89,10 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
         level = SystemMessageColor.info;
       }
       if (color.equals("red")) {
-        level = SystemMessageColor.info;
+        level = SystemMessageColor.danger;
       }
       if (color.equals("orange")) {
-        level = SystemMessageColor.info;
+        level = SystemMessageColor.warning;
       }
     }
   }
@@ -54,6 +109,25 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
 
   public SystemMessageColor getLevel() {
     return level;
+  }
+
+  public String getEscapedMessage() {
+    if (message == null) {
+      return "";
+    }
+
+    if (isExpired()) {
+      return "";
+    }
+
+    StringWriter writer = new StringWriter();
+    try {
+      RawHtmlMarkupFormatter.INSTANCE.translate(message, writer);
+      return writer.toString();
+    } catch (IOException e) {
+      return "";
+    }
+
   }
 
   /**

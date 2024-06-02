@@ -1,9 +1,22 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
+<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
   <f:entry>
     <f:textarea field="message"/>
   </f:entry>
   <f:entry field="level" title="${%Background of System Message}">
     <f:enum>${it.toString()}</f:enum>
   </f:entry>
+  <f:entry field="expireDate" title="${%Expiration Time}">
+    <div class="custom-header__system-message--expireDate">
+      <f:textbox checkDependsOn="" data-input=""/>
+      <button class="jenkins-button" type="button" data-toggle="" tooltip="Open datetime picker">
+        <l:icon src="symbol-calendar-outline plugin-ionicons-api"/>
+      </button>
+    </div>
+  </f:entry>
+  <f:invisibleEntry>
+    <f:textbox field="uid"/>
+  </f:invisibleEntry>
+  <st:adjunct includes="io.jenkins.plugins.flatpickr"/>
+  <st:adjunct includes="io.jenkins.plugins.customizable_header.flatpickr"/>
 </j:jelly>
