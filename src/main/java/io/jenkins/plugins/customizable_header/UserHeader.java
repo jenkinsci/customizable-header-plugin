@@ -72,6 +72,13 @@ public class UserHeader extends UserProperty {
     this.links = links;
   }
 
+  public Object readResolve() {
+    if (dismissedMessages == null) {
+      dismissedMessages = new HashSet<>();
+    }
+    return this;
+  }
+
   public Set<String> getDismissedMessages() {
     return dismissedMessages;
   }
