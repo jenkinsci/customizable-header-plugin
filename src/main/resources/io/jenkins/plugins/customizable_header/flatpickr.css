@@ -1,0 +1,8 @@
+.custom-header__system-message--expireDate {
+  display: flex;
+  gap: 5px;
+}
+
+.custom-header__system-message--expireDate > input {
+  width: 150px;
+}

@@ -2,8 +2,20 @@
   padding: 5px 1.15rem;
   margin: 0;
   font-size: var(--font-size-sm);
-  border: 1px solid transparent;
   border-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.ch-dismiss-link {
+  margin-left: auto;
+  display: inline-flex;
+  border-radius: 0.25rem;
+  background: color-mix(in sRGB, var(--red) 15%, transparent);
+}
+
+.ch-dismiss-link svg {
+  color: var(--red);
 }
 
 .custom-header__system-message-header a {

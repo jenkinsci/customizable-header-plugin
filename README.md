@@ -46,11 +46,12 @@ be added as well to this menu.
 
 ![App Links](/docs/pics/app-links.png)<br/>
 
-## System Message
-A system message can be shown between the header and the breadcrumb bar. This allows to notify users about important
+## System Messages
+One or more system messages can be shown between the header and the breadcrumb bar. This allows to notify users about important
 things related to the instance, e.g. a planned update of Jenkins, a downtime due to hardware replacement or an ongoing 
 incident. You can include html (sanitized with owasp) in the message to apply some simple styling or include a link
-with more details.
+with more details.<br/>
+System messages can have an expiration time to automatically remove them. They can be dismissed on a per-user basis.
 
 ![System Message](/docs/pics/system-message.png)<br/>
 
