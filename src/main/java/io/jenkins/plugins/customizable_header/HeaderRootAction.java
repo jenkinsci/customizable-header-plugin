@@ -64,14 +64,14 @@ public class HeaderRootAction implements UnprotectedRootAction {
 
   @POST
   public HttpResponse doAddSystemMessage(@QueryParameter(fixEmpty = true) String message, @QueryParameter(fixEmpty = true) String level,
-                                @QueryParameter String expireDate) throws IOException {
+                                @QueryParameter String expireDate, @QueryParameter(fixEmpty = true) String id) throws IOException {
     Jenkins.get().checkPermission(Jenkins.ADMINISTER);
     if (message == null || level == null) {
       throw HttpResponses.error(HttpServletResponse.SC_BAD_REQUEST, "Missing parameters: message and level are mandatory");
     }
     try {
       SystemMessage.SystemMessageColor lvl = SystemMessage.SystemMessageColor.valueOf(level);
-      SystemMessage msg = new SystemMessage(message, lvl, null);
+      SystemMessage msg = new SystemMessage(message, lvl, id);
       msg.setExpireDate(expireDate);
       CustomHeaderConfiguration config = CustomHeaderConfiguration.get();
       config.addSystemMessage(msg);
@@ -82,6 +82,17 @@ public class HeaderRootAction implements UnprotectedRootAction {
       throw HttpResponses.error(HttpServletResponse.SC_BAD_REQUEST, "Unknown level: " + level);
     }
   }
+
+  @POST
+  public void doDeleteSystemMessage(@QueryParameter(fixEmpty = true) String id) throws IOException {
+    Jenkins.get().checkPermission(Jenkins.ADMINISTER);
+    if (id == null) {
+      throw HttpResponses.error(HttpServletResponse.SC_BAD_REQUEST, "Missing parameters: id is mandatory");
+    }
+    CustomHeaderConfiguration config = CustomHeaderConfiguration.get();
+    config.deleteSystemMessage(id);
+  }
+
 
   @POST
   public void doDismissMessage(@QueryParameter String uid) throws IOException {
