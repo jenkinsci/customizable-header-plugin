@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
+import jenkins.model.Jenkins;
 import org.kohsuke.stapler.HttpResponse;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
@@ -56,6 +57,17 @@ public class HeaderRootAction implements UnprotectedRootAction {
 
   public boolean hasLinks() {
     return CustomHeaderConfiguration.get().hasLinks();
+  }
+
+  @POST
+  public String doAddSystemMessage(@QueryParameter(required = true) String message, @QueryParameter(required = true) String level, @QueryParameter String expireDate) {
+    Jenkins.get().checkPermission(Jenkins.ADMINISTER);
+    SystemMessage.SystemMessageColor lvl = SystemMessage.SystemMessageColor.valueOf(level);
+    SystemMessage msg = new SystemMessage(message, lvl, null);
+    msg.setExpireDate(expireDate);
+    CustomHeaderConfiguration config = CustomHeaderConfiguration.get();
+    config.addSystemMessage(msg);
+    return msg.getUid();
   }
 
   @POST

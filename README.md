@@ -53,6 +53,16 @@ incident. You can include html (sanitized with owasp) in the message to apply so
 with more details.<br/>
 System messages can have an expiration time to automatically remove them. They can be dismissed on a per-user basis.
 
+### Create System Message via REST api
+You can create system messages by doing a post request to `<jenkins_url>/customizable-header/addSystemMessage`.
+Parameters:
+
+|Parameter|required| description                                                  |
+|---------|--------|--------------------------------------------------------------|
+| message | true   | The message, can contain html                                |
+| level | true   | Message level, one of `info`, `success`, `warning`, `danger` |
+| expireDate | false | Expiration date for the message, format: `yyyy-M-d H:m`  |
+
 ![System Message](/docs/pics/system-message.png)<br/>
 
 ## The weather symbols

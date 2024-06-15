@@ -165,6 +165,13 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     save();
   }
 
+  public void addSystemMessage(SystemMessage message) {
+    synchronized (systemMessages) {
+      systemMessages.add(message);
+    }
+    save();
+  }
+
   public List<AppNavLink> getLinks() {
     return links;
   }
