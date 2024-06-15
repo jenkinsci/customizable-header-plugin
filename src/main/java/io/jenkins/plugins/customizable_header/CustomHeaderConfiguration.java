@@ -172,6 +172,13 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     save();
   }
 
+  public void deleteSystemMessage(String id) {
+    synchronized (systemMessages) {
+      systemMessages.removeIf(sm -> sm.getUid().equals(id));
+    }
+    save();
+  }
+
   public List<AppNavLink> getLinks() {
     return links;
   }
