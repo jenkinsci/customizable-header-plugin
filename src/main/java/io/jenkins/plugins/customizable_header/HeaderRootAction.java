@@ -4,10 +4,14 @@ import hudson.Extension;
 import hudson.model.UnprotectedRootAction;
 import hudson.model.User;
 import java.io.IOException;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletResponse;
+import jenkins.model.Jenkins;
 import org.kohsuke.stapler.HttpResponse;
+import org.kohsuke.stapler.HttpResponses;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
@@ -56,6 +60,27 @@ public class HeaderRootAction implements UnprotectedRootAction {
 
   public boolean hasLinks() {
     return CustomHeaderConfiguration.get().hasLinks();
+  }
+
+  @POST
+  public HttpResponse doAddSystemMessage(@QueryParameter(fixEmpty = true) String message, @QueryParameter(fixEmpty = true) String level,
+                                @QueryParameter String expireDate) throws IOException {
+    Jenkins.get().checkPermission(Jenkins.ADMINISTER);
+    if (message == null || level == null) {
+      throw HttpResponses.error(HttpServletResponse.SC_BAD_REQUEST, "Missing parameters: message and level are mandatory");
+    }
+    try {
+      SystemMessage.SystemMessageColor lvl = SystemMessage.SystemMessageColor.valueOf(level);
+      SystemMessage msg = new SystemMessage(message, lvl, null);
+      msg.setExpireDate(expireDate);
+      CustomHeaderConfiguration config = CustomHeaderConfiguration.get();
+      config.addSystemMessage(msg);
+      return HttpResponses.text(msg.getUid());
+    } catch (DateTimeParseException e) {
+      throw HttpResponses.error(HttpServletResponse.SC_BAD_REQUEST, "expireDate is not properly formatted: " + expireDate);
+    } catch (IllegalArgumentException e) {
+      throw HttpResponses.error(HttpServletResponse.SC_BAD_REQUEST, "Unknown level: " + level);
+    }
   }
 
   @POST
