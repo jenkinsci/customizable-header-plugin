@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>4.80</version>
+    <version>4.83</version>
     <relativePath />
   </parent>
 
@@ -47,7 +47,7 @@
       <dependency>
         <groupId>io.jenkins.tools.bom</groupId>
         <artifactId>bom-2.440.x</artifactId>
-        <version>2961.v1f472390972e</version>
+        <version>3120.v4d898e1e9fc4</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -58,6 +58,11 @@
     <dependency>
       <groupId>io.jenkins.plugins</groupId>
       <artifactId>caffeine-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.jenkins.plugins</groupId>
+      <artifactId>flatpickr-api</artifactId>
+      <version>4.6.13-5.v534d8025a_a_59</version>
     </dependency>
     <dependency>
       <groupId>io.jenkins.plugins</groupId>

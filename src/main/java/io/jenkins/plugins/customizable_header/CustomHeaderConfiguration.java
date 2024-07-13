@@ -1,6 +1,7 @@
 package io.jenkins.plugins.customizable_header;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import hudson.BulkChange;
 import hudson.Extension;
 import hudson.Util;
 import hudson.model.Descriptor;
@@ -14,10 +15,12 @@ import io.jenkins.plugins.customizable_header.logo.Icon;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import io.jenkins.plugins.customizable_header.logo.LogoDescriptor;
 import io.jenkins.plugins.customizable_header.logo.Symbol;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -53,7 +56,9 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private boolean thinHeader;
 
-  private SystemMessage systemMessage;
+  private transient SystemMessage systemMessage;
+
+  private final List<SystemMessage> systemMessages = new ArrayList<>();
 
   private List<AppNavLink> links = new ArrayList<>();
 
@@ -72,14 +77,23 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   @Override
   public boolean configure(StaplerRequest req, JSONObject json) throws FormException {
-    systemMessage = null;
-    links.clear();
-    return super.configure(req, json);
+    boolean result = false;
+    try (BulkChange bc = new BulkChange(this)) {
+      links.clear();
+      synchronized (systemMessages) {
+        systemMessages.clear();
+        result = super.configure(req, json);
+      }
+      bc.commit();
+    } catch (IOException e) {
+      LOGGER.log(Level.WARNING, "Failed to save " + getConfigFile(), e);
+    }
+    return result;
   }
 
   public Object readResolve() {
-    if (systemMessage == null) {
-      systemMessage = new SystemMessage("", SystemMessage.SystemMessageColor.info);
+    if (systemMessage != null) {
+      systemMessages.add(systemMessage);
     }
     return this;
   }
@@ -108,13 +122,61 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     return Collections.emptyList();
   }
 
+  @Deprecated
   public SystemMessage getSystemMessage() {
     return systemMessage;
   }
 
+  @Deprecated
   @DataBoundSetter
   public void setSystemMessage(SystemMessage systemMessage) {
     this.systemMessage = systemMessage;
+  }
+
+  public List<SystemMessage> getSystemMessages() {
+    synchronized (systemMessages) {
+      Set<String> currentUids = systemMessages.stream().map(SystemMessage::getUid).collect(Collectors.toSet());
+      User user = User.current();
+      if (user != null) {
+        UserHeader userHeader = user.getProperty(UserHeader.class);
+        if (userHeader != null) {
+          if (userHeader.getDismissedMessages().removeIf(dismissedUid -> !currentUids.contains(dismissedUid))) {
+            try {
+              user.save();
+            } catch (IOException e) {
+              LOGGER.log(Level.WARNING, "Failed to save user properties", e);
+            }
+          };
+        }
+      }
+      if (systemMessages.removeIf(sm -> sm.isExpired() || sm.getMessage() == null)) {
+        save();
+      }
+    }
+    return Collections.unmodifiableList(systemMessages);
+  }
+
+  @DataBoundSetter
+  public void setSystemMessages(List<SystemMessage> systemMessages) {
+    synchronized (this.systemMessages) {
+      this.systemMessages.clear();
+      this.systemMessages.addAll(systemMessages);
+    }
+    save();
+  }
+
+  public void addSystemMessage(SystemMessage message) {
+    synchronized (systemMessages) {
+      systemMessages.add(message);
+    }
+    save();
+  }
+
+  public void deleteSystemMessage(String id) {
+    synchronized (systemMessages) {
+      systemMessages.removeIf(sm -> sm.getUid().equals(id));
+    }
+    save();
   }
 
   public List<AppNavLink> getLinks() {

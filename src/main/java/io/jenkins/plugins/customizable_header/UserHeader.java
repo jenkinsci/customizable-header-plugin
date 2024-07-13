@@ -1,5 +1,6 @@
 package io.jenkins.plugins.customizable_header;
 
+import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.model.User;
@@ -8,10 +9,14 @@ import hudson.model.UserPropertyDescriptor;
 import io.jenkins.plugins.customizable_header.color.HeaderColor;
 import io.jenkins.plugins.customizable_header.headers.HeaderSelector;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import net.sf.json.JSONObject;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
+import org.kohsuke.stapler.StaplerRequest;
 
 public class UserHeader extends UserProperty {
 
@@ -23,6 +28,8 @@ public class UserHeader extends UserProperty {
   private HeaderSelector headerSelector;
 
   private List<AppNavLink> links = new ArrayList<>();
+
+  private Set<String> dismissedMessages = new HashSet<>();
 
   @DataBoundConstructor
   public UserHeader(boolean overwriteHeader, boolean overwriteColors) {
@@ -65,6 +72,23 @@ public class UserHeader extends UserProperty {
     this.links = links;
   }
 
+  public Object readResolve() {
+    if (dismissedMessages == null) {
+      dismissedMessages = new HashSet<>();
+    }
+    return this;
+  }
+
+  public Set<String> getDismissedMessages() {
+    return dismissedMessages;
+  }
+
+  @Override
+  public UserProperty reconfigure(StaplerRequest req, @CheckForNull JSONObject form) {
+    links.clear();
+    req.bindJSON(this, form);
+    return this;
+  }
 
   @Extension
   @Symbol("customHeader")
@@ -87,6 +111,17 @@ public class UserHeader extends UserProperty {
     @Override
     public String getDisplayName() {
       return "Customizable Header";
+    }
+
+    //        @Override
+    //        public @NonNull UserPropertyCategory getUserPropertyCategory() {
+    //            return UserPropertyCategory.get(UserPropertyCategory.Appearance.class);
+    //        }
+
+    // replace with above method when bumping core to version including:
+    // https://github.com/jenkinsci/jenkins/pull/7268
+    public @CheckForNull String getUserPropertyCategoryAsString() {
+        return "appearance";
     }
   }
 }
