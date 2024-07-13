@@ -6,10 +6,10 @@ import io.jenkins.plugins.customizable_header.CustomHeaderConfiguration;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import java.io.IOException;
 import java.io.StringWriter;
-import jenkins.views.FullHeader;
+import jenkins.views.PartialHeader;
 
 @Extension(ordinal = 99999)
-public class LogoHeader extends FullHeader implements SystemMessageProvider {
+public class LogoHeader extends PartialHeader implements SystemMessageProvider {
 
   @Override
   public boolean isEnabled() {
@@ -36,5 +36,10 @@ public class LogoHeader extends FullHeader implements SystemMessageProvider {
 
   public Logo getLogo() {
     return CustomHeaderConfiguration.get().getLogo();
+  }
+
+  @Override
+  public int getSupportedHeaderVersion() {
+    return 1;
   }
 }
