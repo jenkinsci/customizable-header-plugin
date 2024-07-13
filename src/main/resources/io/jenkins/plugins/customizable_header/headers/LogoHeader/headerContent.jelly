@@ -1,9 +1,9 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout" xmlns:h="/lib/layout/header">
   <template id="custom-header-icons">
     <l:icon id="external-link" src="symbol-open-outline plugin-ionicons-api" class="icon-xs"/>
   </template>
-  <header id="header" class="page-header custom-header__page">
+  <header id="page-header" class="page-header custom-header__page">
     <j:if test="${it.hasLinks()}">
       <div class="custom-header__app-nav">
         <button class="custom-header__app-nav-button" data-href="${rootURL}/customizable-header/getLinks">
@@ -21,63 +21,8 @@
       <j:out value="${it.title}"/>
     </div>
 
-    <div class="searchbox hidden-xs">
-      <!-- search box -->
-      <j:set var="searchURL" value="${h.searchURL}"/>
-      <form action="${searchURL}" method="get" style="position:relative;" class="no-json" name="search" role="search">
-        <!-- this div is used to calculate the width of the text box -->
-        <div id="search-box-sizer"/>
-        <div id="searchform">
-          <input name="q" placeholder="${searchPlaceholder}" id="search-box" class="main-search__input" value="${request.getParameter('q')}"
-                 role="searchbox"/>
-
-          <span class="main-search__icon-leading">
-            <l:icon src="symbol-search"/>
-          </span>
-          <a href="${searchHelpUrl}" class="main-search__icon-trailing">
-            <l:icon src="symbol-help-circle"/>
-          </a>
-
-          <div id="search-box-completion" data-search-url="${searchURL}"/>
-          <st:adjunct includes="jenkins.views.JenkinsHeader.search-box"/>
-        </div>
-      </form>
-    </div>
-
-    <div class="login page-header__hyperlinks">
-      <div id="visible-am-insertion" class="page-header__am-wrapper"/>
-      <div id="visible-sec-am-insertion" class="page-header__am-wrapper"/>
-
-      <!-- login field -->
-      <j:if test="${app.useSecurity}">
-        <j:choose>
-          <j:when test="${!h.isAnonymous()}">
-            <j:invokeStatic var="user" className="hudson.model.User" method="current"/>
-            <j:choose>
-              <j:when test="${user.fullName == null || user.fullName.trim().isEmpty()}">
-                <j:set var="userName" value="${user.id}"/>
-              </j:when>
-              <j:otherwise>
-                <j:set var="userName" value="${user.fullName}"/>
-              </j:otherwise>
-            </j:choose>
-            <a href="${rootURL}/${user.url}" class="model-link">
-              <l:icon src="symbol-person-circle" class="icon-md"/>
-              <span class="hidden-xs hidden-sm">${userName}</span>
-            </a>
-            <j:if test="${app.securityRealm.canLogOut()}">
-              <a href="${rootURL}/logout">
-                <l:icon src="symbol-log-out" class="icon-md"/>
-                <span class="hidden-xs hidden-sm">${logout}</span>
-              </a>
-            </j:if>
-          </j:when>
-          <j:otherwise>
-            <st:include it="${app.securityRealm}" page="loginLink.jelly"/>
-          </j:otherwise>
-        </j:choose>
-      </j:if>
-    </div>
+    <h:searchbox/>
+    <h:login/>
   </header>
   <j:forEach var="systemMessage" items="${it.systemMessages}">
     <st:include page="index.jelly" it="${systemMessage}" class="io.jenkins.plugins.customizable_header.SystemMessage"/>
