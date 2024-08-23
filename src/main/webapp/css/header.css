@@ -1,8 +1,6 @@
 .custom-header__system-message-header {
   padding: 5px 1.15rem;
   margin: 0;
-  font-size: var(--font-size-sm);
-  border-radius: 10px;
   display: flex;
   align-items: center;
 }
@@ -27,36 +25,4 @@
 .custom-header__system-message-header a:focus,
 .custom-header__system-message-header a:active {
   text-decoration: underline;
-}
-
-.custom-header__alert-success {
-  color: var(--alert-success-text-color);
-  background-color: var(--alert-success-bg-color);
-  border-color: var(--alert-success-border-color);
-}
-
-.custom-header__alert-info {
-  color: var(--alert-info-text-color);
-  background-color: var(--alert-info-bg-color);
-  border-color: var(--alert-info-border-color);
-}
-
-.custom-header__alert-warning {
-  color: var(--alert-warning-text-color);
-  background-color: var(--alert-warning-bg-color);
-  border-color: var(--alert-warning-border-color);
-}
-
-.custom-header__alert-warning p {
-  color: var(--alert-warning-text-color);
-}
-
-.custom-header__alert-danger {
-  color: var(--alert-danger-text-color);
-  background-color: var(--alert-danger-bg-color);
-  border-color: var(--alert-danger-border-color);
-}
-
-.custom-header__alert-danger p {
-  color: var(--alert-danger-text-color);
 }

@@ -1,7 +1,7 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout" >
   <j:if test="${!it.dismissed}">
-    <div class="custom-header__alert-${it.level.name()} custom-header__system-message-header">
+    <div class="jenkins-alert jenkins-alert-${it.level.name()} custom-header__system-message-header">
       <div><j:out value="${it.escapedMessage}"/></div>
       <j:if test="${!h.isAnonymous()}">
         <a href="#" class="ch-dismiss-link" tooltip="${%Dismiss message}" data-uid="${it.uid}">

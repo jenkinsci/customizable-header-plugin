@@ -2,7 +2,6 @@ package io.jenkins.plugins.customizable_header;
 
 import hudson.Extension;
 import hudson.model.PageDecorator;
-import io.jenkins.plugins.customizable_header.headers.JenkinsHeaderSelector;
 import io.jenkins.plugins.customizable_header.logo.ImageLogo;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import org.jenkinsci.Symbol;
@@ -10,9 +9,6 @@ import org.jenkinsci.Symbol;
 @Extension
 @Symbol("customHeader")
 public class CustomHeaderDecorator extends PageDecorator {
-  public boolean hasLinks() {
-    return CustomHeaderConfiguration.get().hasLinks();
-  }
 
   public String getCssResourceUrl() {
     return CustomHeaderConfiguration.get().getCssResourceUrl();
@@ -31,6 +27,6 @@ public class CustomHeaderDecorator extends PageDecorator {
   }
 
   public boolean isEnabled() {
-    return !(CustomHeaderConfiguration.get().getActiveHeader() instanceof JenkinsHeaderSelector);
+    return CustomHeaderConfiguration.get().isEnabled();
   }
 }
