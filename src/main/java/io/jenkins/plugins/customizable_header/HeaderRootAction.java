@@ -100,7 +100,7 @@ public class HeaderRootAction implements UnprotectedRootAction {
     if (user != null) {
       UserHeader userHeader = user.getProperty(UserHeader.class);
       if (userHeader == null) {
-        userHeader = new UserHeader(false, false);
+        userHeader = new UserHeader();
         user.addProperty(userHeader);
       }
       userHeader.getDismissedMessages().add(uid);
