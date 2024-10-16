@@ -9,7 +9,7 @@ import java.io.StringWriter;
 import jenkins.views.PartialHeader;
 
 @Extension(ordinal = 99999)
-public class LogoHeader extends PartialHeader implements SystemMessageProvider {
+public class LogoHeader extends PartialHeader implements SystemMessageProvider, LinkProvider {
 
   @Override
   public boolean isEnabled() {
@@ -28,10 +28,6 @@ public class LogoHeader extends PartialHeader implements SystemMessageProvider {
 
   public String getLogoText() {
     return CustomHeaderConfiguration.get().getLogoText();
-  }
-
-  public boolean hasLinks() {
-    return CustomHeaderConfiguration.get().hasLinks();
   }
 
   public Logo getLogo() {

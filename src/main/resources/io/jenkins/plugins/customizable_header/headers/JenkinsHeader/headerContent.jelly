@@ -1,11 +1,10 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:h="/lib/layout/header" xmlns:st="jelly:stapler">
+<j:jelly xmlns:j="jelly:core" xmlns:h="/lib/layout/header" xmlns:l="/lib/layout" xmlns:ch="/lib/customizable-header">
   <header id="page-header" class="page-header">
+    <ch:links/>
     <h:logo/>
     <h:searchbox/>
     <h:login/>
   </header>
-  <j:forEach var="systemMessage" items="${it.systemMessages}">
-    <st:include page="index.jelly" it="${systemMessage}" class="io.jenkins.plugins.customizable_header.SystemMessage"/>
-  </j:forEach>
+  <ch:systemMessages/>
 </j:jelly>
