@@ -20,9 +20,9 @@ import org.kohsuke.stapler.StaplerRequest;
 
 public class UserHeader extends UserProperty {
 
-  private final boolean overwriteHeader;
+  private boolean overwriteHeader;
 
-  private final boolean overwriteColors;
+  private boolean overwriteColors;
   private HeaderColor headerColor;
 
   private HeaderSelector headerSelector;
@@ -32,13 +32,16 @@ public class UserHeader extends UserProperty {
   private Set<String> dismissedMessages = new HashSet<>();
 
   @DataBoundConstructor
-  public UserHeader(boolean overwriteHeader, boolean overwriteColors) {
-    this.overwriteHeader = overwriteHeader;
-    this.overwriteColors = overwriteColors;
+  public UserHeader() {
   }
 
   public boolean isOverwriteColors() {
     return overwriteColors;
+  }
+
+  @DataBoundSetter
+  public void setOverwriteColors(boolean overwriteColors) {
+    this.overwriteColors = overwriteColors;
   }
 
   @DataBoundSetter
@@ -57,6 +60,11 @@ public class UserHeader extends UserProperty {
 
   public HeaderSelector getHeaderSelector() {
     return headerSelector;
+  }
+
+  @DataBoundSetter
+  public void setOverwriteHeader(boolean overwriteHeader) {
+    this.overwriteHeader = overwriteHeader;
   }
 
   public boolean isOverwriteHeader() {
@@ -85,7 +93,9 @@ public class UserHeader extends UserProperty {
 
   @Override
   public UserProperty reconfigure(StaplerRequest req, @CheckForNull JSONObject form) {
-    links.clear();
+    if (links != null) {
+      links.clear();
+    }
     req.bindJSON(this, form);
     return this;
   }
@@ -96,7 +106,7 @@ public class UserHeader extends UserProperty {
 
     @Override
     public UserProperty newInstance(User user) {
-      UserHeader userHeader = new UserHeader(false, false);
+      UserHeader userHeader = new UserHeader();
       HeaderColor globalHeaderColor = CustomHeaderConfiguration.get().getHeaderColor();
       userHeader.setHeaderColor(new HeaderColor(globalHeaderColor));
       return userHeader;
