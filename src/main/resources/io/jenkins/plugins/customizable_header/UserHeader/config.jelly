@@ -9,9 +9,7 @@
   <f:advanced title="${%Links}">
     <f:entry title="${%Application Links}" field="links">
       <f:helpArea/>
-      <f:repeatableProperty field="links" add="${%Add Link}" header="Link">
-        <f:repeatableDeleteButton/>
-      </f:repeatableProperty>
+      <f:repeatableHeteroProperty field="links" addCaption="${%Add Link}" hasHeader="true"/>
     </f:entry>
   </f:advanced>
 

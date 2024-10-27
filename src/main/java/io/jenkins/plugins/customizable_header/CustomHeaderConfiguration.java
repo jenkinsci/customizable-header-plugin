@@ -60,7 +60,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private final List<SystemMessage> systemMessages = new ArrayList<>();
 
-  private List<AppNavLink> links = new ArrayList<>();
+  private List<AbstractLink> links = new ArrayList<>();
 
   private static final transient Symbol star = new Symbol("symbol-star plugin-ionicons-api");
 
@@ -98,10 +98,10 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     return this;
   }
 
-  private static List<AppNavLink> getFavorites(User user) {
+  private static List<AbstractLink> getFavorites(User user) {
     String rootUrl = Jenkins.get().getRootUrl();
     Iterable<Item> items = Favorites.getFavorites(user);
-    List<AppNavLink> favorites = new ArrayList<>();
+    List<AbstractLink> favorites = new ArrayList<>();
     items.forEach(
         item -> {
           AppNavLink fav = new AppNavLink(rootUrl + item.getUrl(), item.getFullDisplayName(), star);
@@ -112,7 +112,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     return favorites;
   }
 
-  public List<AppNavLink> getFavorites() {
+  public List<AbstractLink> getFavorites() {
     if (Jenkins.get().getPlugin("favorite") != null) {
       User user = User.current();
       if (user != null) {
@@ -179,12 +179,12 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     save();
   }
 
-  public List<AppNavLink> getLinks() {
+  public List<AbstractLink> getLinks() {
     return links;
   }
 
   @DataBoundSetter
-  public void setLinks(List<AppNavLink> links) {
+  public void setLinks(List<AbstractLink> links) {
     this.links = links;
     save();
   }
@@ -220,9 +220,9 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     return hasFavorites() || hasAppLinks() || hasUserLinks();
   }
 
-  public List<AppNavLink> getUserLinks() {
+  public List<AbstractLink> getUserLinks() {
     User user = User.current();
-    List<AppNavLink> links = null;
+    List<AbstractLink> links = null;
     if (user != null) {
       UserHeader userHeader = user.getProperty(UserHeader.class);
       links = userHeader.getLinks();

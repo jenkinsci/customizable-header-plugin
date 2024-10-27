@@ -29,46 +29,53 @@ function createElementFromHtml(html) {
 };
 
 function menuItem(options) {
-  const label = xmlEscape(options.label);
-  let linkIcon = "";
-  if (options.external) {
-    linkIcon = generateSVGIcon("external-link").outerHTML;
+  let item = null;
+  if (options.type === "separator") {
+    if (options.title) {
+      item = createElementFromHtml(`
+        <div class="jenkins-dropdown__heading">${xmlEscape(options.title)}</div>
+      `);
+    } else {
+      item = separator();
+    }
+  } else {
+    const label = xmlEscape(options.label);
+    let linkIcon = "";
+    if (options.external) {
+      linkIcon = generateSVGIcon("external-link").outerHTML;
+    }
+    let color = "";
+    if (options.color) {
+      color = options.color;
+    }
+    item = createElementFromHtml(`
+      <a class="jenkins-dropdown__item" href="${options.linkUrl}" ${options.external? `target="_blank"` : ``}>
+        ${
+          options.iconUrl
+            ? `<div class="jenkins-dropdown__item__icon ${color}">${
+                options.iconXml
+                  ? options.iconXml
+                  : `<img src="${options.iconUrl}" class="custom-header__link-image"/>`
+              }</div>`
+            : ``
+        }
+        ${label} ${linkIcon}
+      </a>
+    `)
   }
-  let color = "";
-  if (options.color) {
-    color = options.color;
-  }
-  const item = createElementFromHtml(`
-    <a class="jenkins-dropdown__item" href="${options.linkUrl}" ${options.external? `target="_blank"` : ``}>
-      ${
-        options.iconUrl
-          ? `<div class="jenkins-dropdown__item__icon ${color}">${
-              options.iconXml
-                ? options.iconXml
-                : `<img src="${options.iconUrl}" class="custom-header__link-image"/>`
-            }</div>`
-          : ``
-      }
-      ${label} ${linkIcon}
-    </a>
-  `)
   return item;
 };
 
-function generateItems(links, favorites) {
+function separator() {
+  return createElementFromHtml(
+    `<div class="jenkins-dropdown__separator"></div>`,
+  );
+}
+
+function generateItems(links) {
   const menuItems = document.createElement("div");
   menuItems.classList.add("jenkins-dropdown");
   links.map((item) => {
-    return menuItem(item);
-  })
-  .forEach((item) => menuItems.appendChild(item));
-  if (favorites.length != 0 && links.length != 0) {
-    const separator = createElementFromHtml(
-      `<div class="jenkins-dropdown__separator"></div>`,
-    );
-    menuItems.appendChild(separator);
-  }
-  favorites.map((item) => {
     return menuItem(item);
   })
   .forEach((item) => menuItems.appendChild(item));
@@ -80,7 +87,7 @@ function callback(element, instance) {
   const href = element.dataset.href;
 
   fetch(href).then((response) => response.json()).then(json => {
-    instance.setContent(generateItems(json.links, json.favorites));
+    instance.setContent(generateItems(json.links));
   })
   .catch((error) => console.log(`AppNav request failed: ${error}`))
   .finally(() => (instance.loaded = true));

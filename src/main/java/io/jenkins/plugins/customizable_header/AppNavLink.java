@@ -2,7 +2,6 @@ package io.jenkins.plugins.customizable_header;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
-import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import io.jenkins.plugins.customizable_header.logo.ImageLogo;
 import io.jenkins.plugins.customizable_header.logo.Logo;
@@ -24,7 +23,7 @@ import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
 @ExportedBean
-public class AppNavLink extends AbstractDescribableImpl<AppNavLink> implements Comparable<AppNavLink> {
+public class AppNavLink extends AbstractLink {
 
   private String url;
   private String label;
@@ -85,6 +84,11 @@ public class AppNavLink extends AbstractDescribableImpl<AppNavLink> implements C
     this.logo = logo;
   }
 
+
+  @Exported
+  public String getType() {
+    return "link";
+  }
 
   @Exported
   public String getLinkUrl() {
@@ -165,20 +169,24 @@ public class AppNavLink extends AbstractDescribableImpl<AppNavLink> implements C
   }
 
   @Override
-  public int compareTo(AppNavLink other) {
-    int labelCompare = label.compareToIgnoreCase(other.label);
+  public int compareTo(AbstractLink other) {
+    if (!(other instanceof AppNavLink)) {
+      return -1;
+    }
+    AppNavLink link = (AppNavLink) other;
+    int labelCompare = label.compareToIgnoreCase(link.label);
     if (labelCompare != 0) {
       return labelCompare;
     }
-    return url.compareTo(other.url);
+    return url.compareTo(link.url);
   }
 
   @Extension
-  public static class DescriptorImpl extends Descriptor<AppNavLink> {
+  public static class DescriptorImpl extends LinkDescriptor {
     @Override
     @NonNull
     public String getDisplayName() {
-      return "";
+      return "Link";
     }
 
     public List<Descriptor<Logo>> getLogoDescriptors() {

@@ -27,7 +27,7 @@ public class UserHeader extends UserProperty {
 
   private HeaderSelector headerSelector;
 
-  private List<AppNavLink> links = new ArrayList<>();
+  private List<AbstractLink> links = new ArrayList<>();
 
   private Set<String> dismissedMessages = new HashSet<>();
 
@@ -71,12 +71,12 @@ public class UserHeader extends UserProperty {
     return overwriteHeader;
   }
 
-  public List<AppNavLink> getLinks() {
+  public List<AbstractLink> getLinks() {
     return links;
   }
 
   @DataBoundSetter
-  public void setLinks(List<AppNavLink> links) {
+  public void setLinks(List<AbstractLink> links) {
     this.links = links;
   }
 
