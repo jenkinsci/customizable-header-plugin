@@ -112,16 +112,21 @@ public class HeaderRootAction implements UnprotectedRootAction {
   @ExportedBean
   static class Links implements HttpResponse {
     @Exported(inline = true)
-    public List<AppNavLink> getLinks() {
-      List<AppNavLink> links = new ArrayList<>();
-      links.addAll(CustomHeaderConfiguration.get().getLinks());
-      links.addAll(CustomHeaderConfiguration.get().getUserLinks());
+    public List<AbstractLink> getLinks() {
+      List<AbstractLink> links = new ArrayList<>(CustomHeaderConfiguration.get().getLinks());
+      List<AbstractLink> userLinks = CustomHeaderConfiguration.get().getUserLinks();
+      if (!userLinks.isEmpty()) {
+        if (!(userLinks.get(0) instanceof LinkSeparator)) {
+          links.add(new LinkSeparator());
+        }
+        links.addAll(userLinks);
+      }
+      List<AppNavLink> favorites = CustomHeaderConfiguration.get().getFavorites();
+      if (!favorites.isEmpty()) {
+        links.add(new LinkSeparator());
+        links.addAll(favorites);
+      }
       return links;
-    }
-
-    @Exported(inline = true)
-    public List<AppNavLink> getFavorites() {
-      return CustomHeaderConfiguration.get().getFavorites();
     }
 
     @Override

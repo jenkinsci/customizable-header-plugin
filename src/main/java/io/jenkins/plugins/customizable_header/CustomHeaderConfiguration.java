@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -60,7 +61,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private final List<SystemMessage> systemMessages = new ArrayList<>();
 
-  private List<AppNavLink> links = new ArrayList<>();
+  private List<AbstractLink> links = new ArrayList<>();
 
   private static final transient Symbol star = new Symbol("symbol-star plugin-ionicons-api");
 
@@ -108,7 +109,16 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
           fav.setColor("jenkins-!-color-yellow");
           favorites.add(fav);
         });
-    Collections.sort(favorites);
+    favorites.sort(new Comparator<AppNavLink>() {
+      @Override
+      public int compare(AppNavLink o1, AppNavLink o2) {
+        int labelCompare = o1.getLabel().compareToIgnoreCase(o2.getLabel());
+        if (labelCompare != 0) {
+          return labelCompare;
+        }
+        return o1.getUrl().compareTo(o2.getUrl());
+      }
+    });
     return favorites;
   }
 
@@ -179,12 +189,12 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     save();
   }
 
-  public List<AppNavLink> getLinks() {
+  public List<AbstractLink> getLinks() {
     return links;
   }
 
   @DataBoundSetter
-  public void setLinks(List<AppNavLink> links) {
+  public void setLinks(List<AbstractLink> links) {
     this.links = links;
     save();
   }
@@ -220,9 +230,9 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     return hasFavorites() || hasAppLinks() || hasUserLinks();
   }
 
-  public List<AppNavLink> getUserLinks() {
+  public List<AbstractLink> getUserLinks() {
     User user = User.current();
-    List<AppNavLink> links = null;
+    List<AbstractLink> links = null;
     if (user != null) {
       UserHeader userHeader = user.getProperty(UserHeader.class);
       links = userHeader.getLinks();

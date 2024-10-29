@@ -2,7 +2,6 @@ package io.jenkins.plugins.customizable_header;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
-import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import io.jenkins.plugins.customizable_header.logo.ImageLogo;
 import io.jenkins.plugins.customizable_header.logo.Logo;
@@ -13,7 +12,6 @@ import io.jenkins.plugins.customizable_header.logo.Symbol;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import org.jenkins.ui.symbol.SymbolRequest;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -24,7 +22,7 @@ import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
 @ExportedBean
-public class AppNavLink extends AbstractDescribableImpl<AppNavLink> implements Comparable<AppNavLink> {
+public class AppNavLink extends AbstractLink {
 
   private String url;
   private String label;
@@ -85,6 +83,12 @@ public class AppNavLink extends AbstractDescribableImpl<AppNavLink> implements C
     this.logo = logo;
   }
 
+
+  @Exported
+  @Override
+  public String getType() {
+    return "link";
+  }
 
   @Exported
   public String getLinkUrl() {
@@ -151,34 +155,12 @@ public class AppNavLink extends AbstractDescribableImpl<AppNavLink> implements C
     return "";
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    AppNavLink that = (AppNavLink) o;
-    return Objects.equals(url, that.url) && Objects.equals(label, that.label);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(url, label);
-  }
-
-  @Override
-  public int compareTo(AppNavLink other) {
-    int labelCompare = label.compareToIgnoreCase(other.label);
-    if (labelCompare != 0) {
-      return labelCompare;
-    }
-    return url.compareTo(other.url);
-  }
-
   @Extension
-  public static class DescriptorImpl extends Descriptor<AppNavLink> {
+  public static class DescriptorImpl extends LinkDescriptor {
     @Override
     @NonNull
     public String getDisplayName() {
-      return "";
+      return "Link";
     }
 
     public List<Descriptor<Logo>> getLogoDescriptors() {
