@@ -27,6 +27,7 @@ public class LinkSeparator extends AbstractLink {
   }
 
   @Exported
+  @Override
   public String getType() {
     return "separator";
   }

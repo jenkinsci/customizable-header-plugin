@@ -61,7 +61,7 @@ function menuItem(options) {
         }
         ${label} ${linkIcon}
       </a>
-    `)
+    `);
   }
   return item;
 };

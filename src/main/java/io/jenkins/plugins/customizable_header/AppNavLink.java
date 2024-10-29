@@ -86,6 +86,7 @@ public class AppNavLink extends AbstractLink {
 
 
   @Exported
+  @Override
   public String getType() {
     return "link";
   }
