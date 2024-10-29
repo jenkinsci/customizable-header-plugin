@@ -5,7 +5,7 @@ import hudson.ExtensionPoint;
 import hudson.model.AbstractDescribableImpl;
 import jenkins.model.Jenkins;
 
-public abstract class AbstractLink extends AbstractDescribableImpl<AbstractLink> implements ExtensionPoint, Comparable<AbstractLink> {
+public abstract class AbstractLink extends AbstractDescribableImpl<AbstractLink> implements ExtensionPoint {
 
   public static ExtensionList<AbstractLink> all() {
     return Jenkins.get().getExtensionList(AbstractLink.class);

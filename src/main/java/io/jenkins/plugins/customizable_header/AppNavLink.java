@@ -12,7 +12,6 @@ import io.jenkins.plugins.customizable_header.logo.Symbol;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import org.jenkins.ui.symbol.SymbolRequest;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -154,32 +153,6 @@ public class AppNavLink extends AbstractLink {
     }
 
     return "";
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    AppNavLink that = (AppNavLink) o;
-    return Objects.equals(url, that.url) && Objects.equals(label, that.label);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(url, label);
-  }
-
-  @Override
-  public int compareTo(AbstractLink other) {
-    if (!(other instanceof AppNavLink)) {
-      return -1;
-    }
-    AppNavLink link = (AppNavLink) other;
-    int labelCompare = label.compareToIgnoreCase(link.label);
-    if (labelCompare != 0) {
-      return labelCompare;
-    }
-    return url.compareTo(link.url);
   }
 
   @Extension

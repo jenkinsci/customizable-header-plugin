@@ -121,7 +121,7 @@ public class HeaderRootAction implements UnprotectedRootAction {
         }
         links.addAll(userLinks);
       }
-      List<AbstractLink> favorites = CustomHeaderConfiguration.get().getFavorites();
+      List<AppNavLink> favorites = CustomHeaderConfiguration.get().getFavorites();
       if (!favorites.isEmpty()) {
         links.add(new LinkSeparator());
         links.addAll(favorites);

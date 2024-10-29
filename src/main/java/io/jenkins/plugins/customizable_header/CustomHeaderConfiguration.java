@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -98,21 +99,30 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     return this;
   }
 
-  private static List<AbstractLink> getFavorites(User user) {
+  private static List<AppNavLink> getFavorites(User user) {
     String rootUrl = Jenkins.get().getRootUrl();
     Iterable<Item> items = Favorites.getFavorites(user);
-    List<AbstractLink> favorites = new ArrayList<>();
+    List<AppNavLink> favorites = new ArrayList<>();
     items.forEach(
         item -> {
           AppNavLink fav = new AppNavLink(rootUrl + item.getUrl(), item.getFullDisplayName(), star);
           fav.setColor("jenkins-!-color-yellow");
           favorites.add(fav);
         });
-    Collections.sort(favorites);
+    favorites.sort(new Comparator<AppNavLink>() {
+      @Override
+      public int compare(AppNavLink o1, AppNavLink o2) {
+        int labelCompare = o1.getLabel().compareToIgnoreCase(o2.getLabel());
+        if (labelCompare != 0) {
+          return labelCompare;
+        }
+        return o1.getUrl().compareTo(o2.getUrl());
+      }
+    });
     return favorites;
   }
 
-  public List<AbstractLink> getFavorites() {
+  public List<AppNavLink> getFavorites() {
     if (Jenkins.get().getPlugin("favorite") != null) {
       User user = User.current();
       if (user != null) {

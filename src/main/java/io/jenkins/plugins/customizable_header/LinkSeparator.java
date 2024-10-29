@@ -32,14 +32,6 @@ public class LinkSeparator extends AbstractLink {
     return "separator";
   }
 
-  @Override
-  public int compareTo(AbstractLink other) {
-    if (!(other instanceof LinkSeparator)) {
-      return 1;
-    }
-    return title.compareTo(((LinkSeparator) other).title);
-  }
-
   @Extension
   public static class DescriptorImpl extends LinkDescriptor {
     @Override
