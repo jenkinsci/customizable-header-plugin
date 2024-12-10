@@ -37,6 +37,7 @@
     <jenkins.version>2.462.3</jenkins.version>
     <gitHubRepo>jenkinsci/customizable-header-plugin</gitHubRepo>
     <node.version>20.18.0</node.version>
+    <npm.version>10.9.1</npm.version>
     <yarn.version>1.22.19</yarn.version>
     <hpi.compatibleSinceVersion>54</hpi.compatibleSinceVersion>
     <spotless.check.skip>false</spotless.check.skip>
