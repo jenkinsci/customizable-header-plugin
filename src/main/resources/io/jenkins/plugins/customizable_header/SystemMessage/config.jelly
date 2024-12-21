@@ -3,6 +3,9 @@
   <f:entry>
     <f:textarea field="message"/>
   </f:entry>
+  <f:entry field="dismissible" title="${%Dismissible}">
+    <f:checkbox default="true"/>
+  </f:entry>
   <f:entry field="level" title="${%Background of System Message}">
     <f:enum>${it.toString()}</f:enum>
   </f:entry>
