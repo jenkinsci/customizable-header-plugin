@@ -28,6 +28,8 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
   private LocalDateTime expireDate;
   private String uid;
 
+  private Boolean dismissible = true;
+
   @DataBoundConstructor
   public SystemMessage(String message, SystemMessageColor level, String uid) {
     this.message = Util.fixEmptyAndTrim(message);
@@ -36,6 +38,17 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
       uid = UUID.randomUUID().toString();
     }
     this.uid = uid;
+  }
+
+  public Boolean getDismissible() {
+    return dismissible;
+  }
+
+  @DataBoundSetter
+  public void setDismissible(Boolean dismissible) {
+    if (dismissible != null) {
+      this.dismissible = dismissible;
+    }
   }
 
   @DataBoundSetter
@@ -58,7 +71,7 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
 
   public boolean isDismissed() {
     User user = User.current();
-    if (user != null) {
+    if (user != null && dismissible) {
       UserHeader userHeader = user.getProperty(UserHeader.class);
       if (userHeader != null) {
         return userHeader.getDismissedMessages().contains(uid);
@@ -101,6 +114,9 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
   public Object readResolve() {
     setColor(color);
     color = null;
+    if (dismissible == null) {
+      dismissible = true;
+    }
     return this;
   }
 

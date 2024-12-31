@@ -51,7 +51,7 @@ One or more system messages can be shown between the header and the breadcrumb b
 things related to the instance, e.g. a planned update of Jenkins, a downtime due to hardware replacement or an ongoing 
 incident. You can include html (sanitized with owasp) in the message to apply some simple styling or include a link
 with more details.<br/>
-System messages can have an expiration time to automatically remove them. They can be dismissed on a per-user basis. 
+System messages can have an expiration time to automatically remove them. They can be dismissed on a per-user basis (can be disabled). 
 
 ![System Message](/docs/pics/system-message.png)<br/>
 
@@ -61,12 +61,13 @@ To be able to later delete a system message, pass an id parameter in the call. I
 
 Parameters:
 
-| Parameter  |required| description                                                  |
-|------------|--------|--------------------------------------------------------------|
-| message    | true   | The message, can contain html                                |
-| level      | true   | Message level, one of `info`, `success`, `warning`, `danger` |
-| expireDate | false | Expiration date for the message, format: `yyyy-M-d H:m`      |
-| uid        | false | An optional unique id                                        |
+| Parameter    | required | description                                                  |
+|--------------|----------|--------------------------------------------------------------|
+| message      | true     | The message, can contain html                                |
+| level        | true     | Message level, one of `info`, `success`, `warning`, `danger` |
+| expireDate   | false    | Expiration date for the message, format: `yyyy-M-d H:m`      |
+| uid          | false    | An optional unique id                                        |
+| dismissible  | false    | Message can be dismissed by users, defaults to `true`        |
 
 To delete a system message do a post request to `<jenkins_url>/customizable-header/deleteSystemMessage?id=<id>`
 
