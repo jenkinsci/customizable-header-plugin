@@ -20,6 +20,7 @@ import org.kohsuke.stapler.Stapler;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
+import hudson.security.Permission;
 
 @ExportedBean
 public class AppNavLink extends AbstractLink {
@@ -27,16 +28,16 @@ public class AppNavLink extends AbstractLink {
   private String url;
   private String label;
   private Logo logo;
-
   private boolean external;
-
   private transient String color = "";
+  private Permission permission;
 
   @DataBoundConstructor
-  public AppNavLink(String url, String label, Logo logo) {
+  public AppNavLink(String url, String label, Logo logo, Permission permission) {
     this.url = url;
     this.label = label;
     this.logo = logo;
+    this.permission = permission;
   }
 
   @Exported
@@ -83,6 +84,13 @@ public class AppNavLink extends AbstractLink {
     this.logo = logo;
   }
 
+  public Permission getPermission() {
+    return permission;
+  }
+
+  public void setPermission(Permission permission) {
+    this.permission = permission;
+  }
 
   @Exported
   @Override
@@ -92,6 +100,9 @@ public class AppNavLink extends AbstractLink {
 
   @Exported
   public String getLinkUrl() {
+    if (permission != null && !Jenkins.get().hasPermission(permission)) {
+      return null;
+    }
     try {
       URI uri = new URI(url);
       if (!uri.isAbsolute()) {

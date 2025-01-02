@@ -33,6 +33,9 @@ import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.StaplerRequest;
+import hudson.security.Permission;
+import hudson.security.PermissionGroup;
+import hudson.security.PermissionScope;
 
 @Extension
 @org.jenkinsci.Symbol("customHeader")
@@ -64,6 +67,9 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   private List<AbstractLink> links = new ArrayList<>();
 
   private static final transient Symbol star = new Symbol("symbol-star plugin-ionicons-api");
+
+  public static final PermissionGroup PERMISSIONS = new PermissionGroup(CustomHeaderConfiguration.class, Messages._CustomHeaderConfiguration_PermissionsTitle());
+  public static final Permission VIEW_LINK = new Permission(PERMISSIONS, "ViewLink", Messages._CustomHeaderConfiguration_ViewLinkPermissionDescription(), null, PermissionScope.JENKINS);
 
   @DataBoundConstructor
   public CustomHeaderConfiguration() {
@@ -190,7 +196,13 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   }
 
   public List<AbstractLink> getLinks() {
-    return links;
+    User user = User.current();
+    if (user != null) {
+      return links.stream()
+          .filter(link -> link.getPermission() == null || user.hasPermission(link.getPermission()))
+          .collect(Collectors.toList());
+    }
+    return Collections.emptyList();
   }
 
   @DataBoundSetter

@@ -9,5 +9,8 @@
   <f:entry field="external" title="${%External}">
     <f:checkbox/>
   </f:entry>
+  <f:entry field="permission" title="${%Permission}">
+    <f:dropdownDescriptorSelector field="permission"/>
+  </f:entry>
   <f:dropdownDescriptorSelector field="logo" title="${%The logo to show}" descriptors="${descriptor.logoDescriptors}"/>
 </j:jelly>
