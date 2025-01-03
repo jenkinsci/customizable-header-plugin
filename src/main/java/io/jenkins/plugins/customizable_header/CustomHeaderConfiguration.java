@@ -221,7 +221,9 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     User user = User.current();
     if (user != null) {
       UserHeader userHeader = user.getProperty(UserHeader.class);
-      return userHeader.getLinks() != null && userHeader.getLinks().size() != 0;
+      if (userHeader != null) {
+        return userHeader.getLinks() != null && userHeader.getLinks().size() != 0;
+      }
     }
     return false;
   }
@@ -235,7 +237,9 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     List<AbstractLink> links = null;
     if (user != null) {
       UserHeader userHeader = user.getProperty(UserHeader.class);
-      links = userHeader.getLinks();
+      if (userHeader != null) {
+        links = userHeader.getLinks();
+      }
     }
     if (links != null) {
       return links;
