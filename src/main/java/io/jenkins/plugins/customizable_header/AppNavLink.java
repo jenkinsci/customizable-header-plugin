@@ -142,7 +142,7 @@ public class AppNavLink extends AbstractLink {
     }
 
     if (!iconSrc.contains("plugin-")) {
-      return "";
+      return "ionicons-api";
     }
 
     String[] arr = iconSrc.split(" ");
