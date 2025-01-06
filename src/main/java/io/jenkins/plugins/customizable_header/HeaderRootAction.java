@@ -116,14 +116,16 @@ public class HeaderRootAction implements UnprotectedRootAction {
       List<AbstractLink> links = new ArrayList<>(CustomHeaderConfiguration.get().getLinks());
       List<AbstractLink> userLinks = CustomHeaderConfiguration.get().getUserLinks();
       if (!userLinks.isEmpty()) {
-        if (!(userLinks.get(0) instanceof LinkSeparator)) {
+        if (!links.isEmpty() && !(links.get(links.size() - 1) instanceof LinkSeparator) && !(userLinks.get(0) instanceof LinkSeparator)) {
           links.add(new LinkSeparator());
         }
         links.addAll(userLinks);
       }
       List<AppNavLink> favorites = CustomHeaderConfiguration.get().getFavorites();
       if (!favorites.isEmpty()) {
-        links.add(new LinkSeparator());
+        if (!links.isEmpty() && !(links.get(links.size() - 1) instanceof LinkSeparator)) {
+          links.add(new LinkSeparator());
+        }
         links.addAll(favorites);
       }
       return links;
