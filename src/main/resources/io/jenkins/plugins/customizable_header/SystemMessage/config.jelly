@@ -3,6 +3,9 @@
   <f:entry>
     <f:textarea field="message"/>
   </f:entry>
+  <f:entry field="dismissible" title="${%Dismissible}">
+    <f:checkbox default="true"/>
+  </f:entry>
   <f:entry title="${%Background of System Message}">
     <div class="jenkins-radio">
       <j:forEach var="it" items="${descriptor.getPropertyType(instance,'level').getEnumConstants()}">
