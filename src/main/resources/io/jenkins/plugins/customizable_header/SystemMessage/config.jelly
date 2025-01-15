@@ -6,13 +6,19 @@
   <f:entry field="dismissible" title="${%Dismissible}">
     <f:checkbox default="true"/>
   </f:entry>
-  <f:entry field="level" title="${%Background of System Message}">
-    <f:enum>${it.toString()}</f:enum>
+  <f:entry title="${%Background of System Message}">
+    <div class="jenkins-radio">
+      <j:forEach var="it" items="${descriptor.getPropertyType(instance,'level').getEnumConstants()}">
+        <input type="radio" name="level" value="${it}" class="jenkins-radio__input"
+               checked="${(instance == null and it == 'info') || instance.level == it ? 'true' : null}" id="ch-sm-${it}"/>
+        <label for="ch-sm-${it}" class="jenkins-radio__label"><span class="jenkins-alert jenkins-alert-${it} ch-sm-label">${it.text}</span></label>
+      </j:forEach>
+    </div>
   </f:entry>
   <f:entry field="expireDate" title="${%Expiration Time}">
     <div class="custom-header__system-message--expireDate" data-now="${descriptor.minDate}">
       <f:textbox checkDependsOn="" data-input=""/>
-      <button class="jenkins-button" type="button" data-toggle="" tooltip="Open datetime picker">
+      <button class="jenkins-button" type="button" data-toggle="" tooltip="Open calendar">
         <l:icon src="symbol-calendar-outline plugin-ionicons-api"/>
       </button>
     </div>
