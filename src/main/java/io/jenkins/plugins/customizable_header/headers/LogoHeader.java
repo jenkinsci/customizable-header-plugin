@@ -1,11 +1,11 @@
 package io.jenkins.plugins.customizable_header.headers;
 
 import hudson.Extension;
-import hudson.markup.RawHtmlMarkupFormatter;
 import io.jenkins.plugins.customizable_header.CustomHeaderConfiguration;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import java.io.IOException;
 import java.io.StringWriter;
+import jenkins.model.Jenkins;
 import jenkins.views.PartialHeader;
 
 @Extension(ordinal = 99999)
@@ -19,7 +19,7 @@ public class LogoHeader extends PartialHeader implements SystemMessageProvider, 
   public String getTitle() {
     StringWriter writer = new StringWriter();
     try {
-      RawHtmlMarkupFormatter.INSTANCE.translate(CustomHeaderConfiguration.get().getTitle(), writer);
+      Jenkins.get().getMarkupFormatter().translate(CustomHeaderConfiguration.get().getTitle(), writer);
       return writer.toString();
     } catch (IOException e) {
       return "";
