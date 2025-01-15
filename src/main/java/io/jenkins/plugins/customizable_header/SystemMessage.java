@@ -158,7 +158,17 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
   }
 
   public enum SystemMessageColor {
-    info, warning, danger, success;
+    info("Informational"), warning("Warning"), danger("Error"), success("Success");
+    private String text;
+
+    SystemMessageColor(String text) {
+      this.text = text;
+    }
+
+    public String getText() {
+      return text;
+    }
+
   }
 
 }

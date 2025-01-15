@@ -3,13 +3,27 @@
   <f:entry>
     <f:textarea field="message"/>
   </f:entry>
-  <f:entry field="level" title="${%Background of System Message}">
-    <f:enum>${it.toString()}</f:enum>
+  <f:entry title="${%Background of System Message}">
+    <!-- <f:enum>${it.getText()}</f:enum> -->
+    <div class="jenkins-radio">
+      <input type="radio" name="level" value="info" class="jenkins-radio__input"
+             checked="${instance.level == 'info' || instance == null ? 'true' : null}" id="ch-sm-info"/>
+      <label for="ch-sm-info" class="jenkins-radio__label"><span class="jenkins-alert jenkins-alert-info ch-sm-label">Informational</span></label>
+      <input type="radio" name="level" value="warning" class="jenkins-radio__input"
+             checked="${instance.level == 'warning' ? 'true' : null}" id="ch-sm-warning"/>
+      <label for="ch-sm-info" class="jenkins-radio__label"><span class="jenkins-alert jenkins-alert-warning ch-sm-label">Warning</span></label>
+      <input type="radio" name="level" value="danger" class="jenkins-radio__input"
+             checked="${instance.level == 'danger' ? 'true' : null}" id="ch-sm-danger"/>
+      <label for="ch-sm-info" class="jenkins-radio__label"><span class="jenkins-alert jenkins-alert-danger ch-sm-label">Error</span></label>
+      <input type="radio" name="level" value="success" class="jenkins-radio__input"
+             checked="${instance.level == 'success' ? 'true' : null}" id="ch-sm-success"/>
+      <label for="ch-sm-info" class="jenkins-radio__label"><span class="jenkins-alert jenkins-alert-success ch-sm-label">Success</span></label>
+    </div>
   </f:entry>
   <f:entry field="expireDate" title="${%Expiration Time}">
     <div class="custom-header__system-message--expireDate" data-now="${descriptor.minDate}">
       <f:textbox checkDependsOn="" data-input=""/>
-      <button class="jenkins-button" type="button" data-toggle="" tooltip="Open datetime picker">
+      <button class="jenkins-button" type="button" data-toggle="" tooltip="Open calendar">
         <l:icon src="symbol-calendar-outline plugin-ionicons-api"/>
       </button>
     </div>
