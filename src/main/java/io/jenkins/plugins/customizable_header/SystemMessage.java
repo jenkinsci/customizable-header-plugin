@@ -3,7 +3,6 @@ package io.jenkins.plugins.customizable_header;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Util;
-import hudson.markup.RawHtmlMarkupFormatter;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import hudson.model.User;
@@ -13,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
+import jenkins.model.Jenkins;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
@@ -139,7 +139,7 @@ public class SystemMessage extends AbstractDescribableImpl<SystemMessage> {
 
     StringWriter writer = new StringWriter();
     try {
-      RawHtmlMarkupFormatter.INSTANCE.translate(message, writer);
+      Jenkins.get().getMarkupFormatter().translate(message, writer);
       return writer.toString();
     } catch (IOException e) {
       return "";
