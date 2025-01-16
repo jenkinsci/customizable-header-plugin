@@ -35,8 +35,8 @@ Logo and logo text form a hyperlink that gets you back to the Jenkins root page 
 
 ## The title
 Optionally an additional title can be shown after a separator. The title is formatted using the global markup
-formatter (see <code>Manage Jenkins > Security > Markup Formatter</code>) and may contain html, e.g. to include a link
-to some other site. Css already takes care to make the link properly styled.
+formatter (see <code>Manage Jenkins > Security > Markup Formatter</code>). Depending on the configured formatter it may
+contain html, e.g. to include a link to some other site. Css already takes care to make the link properly styled.
 
 ## Application links and favorites
 The plugin allows to configure additional links that are accessible via a button to the left of the logo. Users can define their personal
@@ -51,7 +51,8 @@ be added as well to this menu.
 One or more system messages can be shown between the header and the breadcrumb bar. This allows to notify users about important
 things related to the instance, e.g. a planned update of Jenkins, a downtime due to hardware replacement or an ongoing
 incident. The message is formatted using the global markup formatter (see <code>Manage Jenkins > Security > Markup
-Formatter</code>) and may contain html, e.g. to apply some simple styling or include a link with more details.<br/>
+Formatter</code>). Depending on the configured formatter it may contain html, e.g. to apply some simple styling or
+include a link with more details.<br/>
 System messages can have an expiration time to automatically remove them. They can be dismissed on a per-user basis (can be disabled). 
 
 ![System Message](/docs/pics/system-message.png)<br/>
