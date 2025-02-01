@@ -60,6 +60,10 @@
   min-width: 2.375rem;
 }
 
+.jenkins-header {
+  --header-background: red;
+}
+
 .custom-header__app-nav {
   background-color: var(--background);
   margin-right: 0;
