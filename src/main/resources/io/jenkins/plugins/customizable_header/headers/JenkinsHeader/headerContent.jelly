@@ -1,10 +1,5 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:h="/lib/layout/header" xmlns:l="/lib/layout" xmlns:ch="/lib/customizable-header">
-  <header id="page-header" class="page-header">
-    <ch:links/>
-    <h:logo/>
-    <h:searchbox/>
-    <h:login/>
-  </header>
+<j:jelly xmlns:j="jelly:core" xmlns:ch="/lib/customizable-header" xmlns:st="jelly:stapler">
+  <st:include page="headerContent" class="jenkins.views.JenkinsHeader" />
   <ch:systemMessages/>
 </j:jelly>
