@@ -14,7 +14,7 @@
 
 .jenkins-header {
   --header-color: ${it.color};
-  --text-color-secondary: color-mix(in srgb, var(--header-color), transparent);
+  --text-color-secondary: var(--header-color);
   --item-background: color-mix(in srgb, var(--header-color) 20%, transparent);
   --button-background--hover: color-mix(in srgb, var(--header-color) 10%, transparent);
   --button-background--active: color-mix(in srgb, var(--header-color) 20%, transparent);
