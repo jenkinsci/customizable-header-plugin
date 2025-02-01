@@ -56,28 +56,13 @@
 }
 
 .custom-header__app-nav-button {
-  <j:if test="${it.thinHeader}">
-    height: 2.5rem;
-  </j:if>
-  <j:if test="${!it.thinHeader}">
-    height: 3.5rem;
-  </j:if>
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  display: inline-flex;
-  align-items: center;
-  background-color: var(--background);
-  border: none;
+  padding: 0.5rem;
+  min-width: 2.375rem;
 }
 
 .custom-header__app-nav {
   background-color: var(--background);
   margin-right: 0;
-}
-
-.custom-header__app-nav-button:hover {
-  background-color: var(--item-background--hover) !important;
-  cursor: pointer;
 }
 
 .custom-header {
