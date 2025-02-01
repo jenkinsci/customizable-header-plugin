@@ -405,10 +405,9 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   public List<Thingy> getSamples() {
     return List.of(
             new Thingy("Classic", "color-mix(in srgb, var(--black) 85%, transparent)", "var(--white)"),
-            new Thingy("Hudson", "linear-gradient(#3465A4, #89A3DC calc(100% - 4px), #FCAF3E calc(100% - 4px), #FCAF3E) no-repeat",  "white"),
+            new Thingy("Hudson", "linear-gradient(#3465A4, #89A3DC calc(100% - 4px), #FCAF3E calc(100% - 4px), #FCAF3E) no-repeat",  "var(--white)"),
             new Thingy("Accent", "var(--accent-color)", "var(--white)"),
-            new Thingy("Classic", "green", "yellow"),
-            new Thingy("Classic", "pink",  "black")
+            new Thingy("Rainbow", "linear-gradient(45deg, var(--red), var(--orange), var(--yellow), var(--green), var(--blue), var(--indigo), var(--purple))", "var(--white)")
     );
   }
 }
