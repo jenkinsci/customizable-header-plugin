@@ -2,13 +2,29 @@ package io.jenkins.plugins.customizable_header.headers;
 
 import hudson.Extension;
 import io.jenkins.plugins.customizable_header.CustomHeaderConfiguration;
-import jenkins.views.FullHeader;
+import io.jenkins.plugins.customizable_header.logo.Logo;
 
 @Extension
-public class JenkinsHeader extends FullHeader implements SystemMessageProvider, LinkProvider {
+public class JenkinsHeader extends jenkins.views.JenkinsHeader implements SystemMessageProvider, LinkProvider {
 
   @Override
   public boolean isEnabled() {
     return CustomHeaderConfiguration.get().getActiveHeader() instanceof JenkinsHeaderSelector;
+  }
+
+  public String getBackgroundColor() {
+    return CustomHeaderConfiguration.get().getActiveHeaderColor().getBackgroundColor();
+  }
+
+  public Logo getLogo() {
+    return CustomHeaderConfiguration.get().getLogo();
+  }
+
+  public String getLogoText() {
+    return CustomHeaderConfiguration.get().getLogoText();
+  }
+
+  public String getTitle() {
+    return CustomHeaderConfiguration.get().getTitle();
   }
 }

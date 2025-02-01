@@ -6,7 +6,4 @@
   <f:entry field="color" title="${%Header text color}">
     <f:textbox/>
   </f:entry>
-  <f:entry field="hoverColor" title="${%Header hover color}">
-    <f:textbox/>
-  </f:entry>
 </j:jelly>

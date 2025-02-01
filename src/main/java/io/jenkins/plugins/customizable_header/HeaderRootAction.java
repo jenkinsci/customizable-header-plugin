@@ -56,7 +56,7 @@ public class HeaderRootAction implements UnprotectedRootAction {
   }
 
   public boolean isThinHeader() {
-    return CustomHeaderConfiguration.get().isThinHeader() && CustomHeaderConfiguration.get().getHeader() instanceof LogoSelector;
+    return CustomHeaderConfiguration.get().isThinHeader();
   }
 
   public boolean hasLinks() {

@@ -26,3 +26,13 @@
 .custom-header__system-message-header a:active {
   text-decoration: underline;
 }
+
+.ch-samples {
+  display: flex;
+  gap: 1rem;
+}
+
+.ch-sample {
+  padding: 0.5rem;
+  min-width: 0;
+}

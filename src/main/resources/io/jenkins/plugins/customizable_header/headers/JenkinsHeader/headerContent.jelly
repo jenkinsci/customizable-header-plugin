@@ -1,5 +1,7 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:ch="/lib/customizable-header" xmlns:st="jelly:stapler">
-  <st:include page="headerContent" class="jenkins.views.JenkinsHeader" />
-  <ch:systemMessages/>
+  <div class="${it.backgroundColor != null ? 'biiig' : ''}">
+    <st:include page="headerContent" class="jenkins.views.JenkinsHeader" />
+    <ch:systemMessages/>
+  </div>
 </j:jelly>
