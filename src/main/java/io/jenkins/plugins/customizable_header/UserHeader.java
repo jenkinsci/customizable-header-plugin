@@ -16,7 +16,7 @@ import net.sf.json.JSONObject;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
-import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerRequest2;
 
 public class UserHeader extends UserProperty {
 
@@ -92,7 +92,7 @@ public class UserHeader extends UserProperty {
   }
 
   @Override
-  public UserProperty reconfigure(StaplerRequest req, @CheckForNull JSONObject form) {
+  public UserProperty reconfigure(StaplerRequest2 req, @CheckForNull JSONObject form) {
     if (links != null) {
       links.clear();
     }

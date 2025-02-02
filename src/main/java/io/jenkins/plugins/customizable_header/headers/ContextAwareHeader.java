@@ -42,7 +42,7 @@ public class ContextAwareHeader extends LogoHeader {
 
   @Override
   public Logo getLogo() {
-    List<Ancestor> ancestors = new ArrayList<>(Stapler.getCurrentRequest().getAncestors());
+    List<Ancestor> ancestors = new ArrayList<>(Stapler.getCurrentRequest2().getAncestors());
     Collections.reverse(ancestors);
     HeaderSelector header = CustomHeaderConfiguration.get().getActiveHeader();
     ContextSelector contextSelector = null;
@@ -53,16 +53,14 @@ public class ContextAwareHeader extends LogoHeader {
     for (Ancestor ancestor : ancestors) {
       Object obj = ancestor.getObject();
       LOGGER.log(Level.FINE, "Context: {0}", obj.getClass().getName());
-      if (obj instanceof Run) {
-        Run<?, ?> run = (Run<?, ?>) obj;
+      if (obj instanceof Run<?, ?> run) {
         String symbol = translateSymbol(run.getBuildStatusIconClassName());
         if (symbol != null) {
           return new Symbol(symbol);
         }
         return new Icon(run.getBuildStatusIconClassName());
       }
-      if (obj instanceof Job) {
-        Job<?, ?> job = (Job<?, ?>) obj;
+      if (obj instanceof Job<?, ?> job) {
         if (contextSelector != null && contextSelector.isShowJobWeather()) {
           HealthReport health = job.getBuildHealth();
           return getLogoOrDefault(health.getIconClassName());
@@ -73,8 +71,7 @@ public class ContextAwareHeader extends LogoHeader {
         }
         return new Icon(job.getBuildStatusIconClassName());
       }
-      if (obj instanceof AbstractFolder) {
-        AbstractFolder<?> folder = (AbstractFolder<?>) obj;
+      if (obj instanceof AbstractFolder<?> folder) {
         if (contextSelector != null && contextSelector.isShowFolderWeather()) {
           HealthReport health = folder.getBuildHealth();
           return getLogoOrDefault(health.getIconClassName());
@@ -82,8 +79,7 @@ public class ContextAwareHeader extends LogoHeader {
         FolderIcon folderIcon = folder.getIcon();
         return new Icon(folderIcon.getIconClassName());
       }
-      if (obj instanceof Computer) {
-        Computer computer = (Computer) obj;
+      if (obj instanceof Computer computer) {
         Logo logo = handleComputerUrl("hudson.model.Computer");
         return Objects.requireNonNullElseGet(logo, () -> new Icon(computer.getIconClassName()));
       }
@@ -105,7 +101,7 @@ public class ContextAwareHeader extends LogoHeader {
   }
 
   private Logo handleComputerUrl(String context) {
-    String path = Stapler.getCurrentRequest().getPathInfo();
+    String path = Stapler.getCurrentRequest2().getPathInfo();
     path = path.substring(path.lastIndexOf('/'));
     if (knownPathes.contains(path)) {
       return getLogoOrDefault(context + path);
