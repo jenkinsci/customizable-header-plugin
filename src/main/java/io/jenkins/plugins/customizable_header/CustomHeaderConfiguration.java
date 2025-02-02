@@ -32,7 +32,7 @@ import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
-import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerRequest2;
 
 @Extension
 @org.jenkinsci.Symbol("customHeader")
@@ -77,7 +77,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   }
 
   @Override
-  public boolean configure(StaplerRequest req, JSONObject json) throws FormException {
+  public boolean configure(StaplerRequest2 req, JSONObject json) throws FormException {
     boolean result = false;
     try (BulkChange bc = new BulkChange(this)) {
       links.clear();
