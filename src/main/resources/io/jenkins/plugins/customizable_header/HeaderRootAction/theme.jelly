@@ -3,7 +3,7 @@
   <st:contentType value="text/css" />
   <j:if test="${it.thinHeader}">
     .jenkins-header {
-      min-height: 3.125rem;
+      --header-height: 3.125rem;
     }
   </j:if>
 
@@ -16,6 +16,7 @@
   --header-color: ${it.color};
   --text-color-secondary: var(--header-color);
   --item-background: color-mix(in srgb, var(--header-color) 20%, transparent);
+  --button-background: color-mix(in srgb, var(--header-color) 5%, transparent);
   --button-background--hover: color-mix(in srgb, var(--header-color) 10%, transparent);
   --button-background--active: color-mix(in srgb, var(--header-color) 20%, transparent);
   --button-background--focus: color-mix(in srgb, var(--header-color) 10%, transparent);
