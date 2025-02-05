@@ -1,11 +1,14 @@
 package io.jenkins.plugins.customizable_header;
 
-public final class Thingy {
+public final class ColorExample {
+
     private final String displayName;
+
     private final String backgroundColor;
+
     private final String color;
 
-    public Thingy(String displayName, String backgroundColor, String color) {
+    public ColorExample(String displayName, String backgroundColor, String color) {
         this.displayName = displayName;
         this.backgroundColor = backgroundColor;
         this.color = color;

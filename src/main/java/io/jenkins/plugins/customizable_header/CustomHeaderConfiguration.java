@@ -402,12 +402,12 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
         .collect(Collectors.toList());
   }
 
-  public List<Thingy> getSamples() {
+  public List<ColorExample> getSamples() {
     return List.of(
-            new Thingy("Classic", "color-mix(in srgb, var(--black) 85%, transparent)", "var(--white)"),
-            new Thingy("Hudson", "linear-gradient(#3465A4, #89A3DC calc(100% - 4px), #FCAF3E calc(100% - 4px), #FCAF3E) no-repeat",  "var(--white)"),
-            new Thingy("Accent", "var(--accent-color)", "var(--white)"),
-            new Thingy("Rainbow", "linear-gradient(45deg in oklch, var(--red), var(--orange), var(--yellow), var(--green), var(--blue), var(--indigo), var(--purple))", "var(--white)")
+            new ColorExample("Classic", "color-mix(in srgb, var(--black) 85%, transparent)", "var(--white)"),
+            new ColorExample("Hudson", "linear-gradient(#3465A4, #89A3DC calc(100% - 4px), #FCAF3E calc(100% - 4px), #FCAF3E) no-repeat",  "var(--white)"),
+            new ColorExample("Accent", "var(--accent-color)", "var(--white)"),
+            new ColorExample("Rainbow", "linear-gradient(45deg in oklch, var(--red), var(--orange), var(--yellow), var(--green), var(--blue), var(--indigo), var(--purple))", "var(--white)")
     );
   }
 }

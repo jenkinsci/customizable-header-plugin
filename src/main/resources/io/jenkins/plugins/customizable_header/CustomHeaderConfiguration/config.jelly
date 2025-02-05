@@ -8,7 +8,7 @@
         </f:repeatableProperty>
       </f:entry>
 
-      <f:optionalBlock field="enabled" title="Customzie heaader" inline="true">
+      <f:optionalBlock field="enabled" title="Customize header" inline="true">
           <f:dropdownDescriptorSelector field="logo" title="${%The logo to show}" descriptors="${descriptor.logoDescriptors}"/>
 
           <f:entry field="thinHeader" title="${%Compact Header}">

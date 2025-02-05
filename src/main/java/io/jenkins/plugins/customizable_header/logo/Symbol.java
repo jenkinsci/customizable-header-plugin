@@ -20,9 +20,9 @@ public class Symbol extends Logo {
 
   public String getSize() {
     if (CustomHeaderConfiguration.get().isThinHeader()) {
-      return "icon-lg";
+      return "icon-md";
     }
-    return "icon-xlg";
+    return "icon-lg";
   }
 
   @Extension
