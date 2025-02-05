@@ -12,9 +12,7 @@
         </j:choose>
     </span>
 
-    <j:if test="${it.logoText != null and !(it.logoText eq '')}">
-    </j:if>
-    <j:if test="${it.title != null and !(it.logoText eq '')}">
+    <j:if test="${it.title != null and !(it.title eq '')}">
         <div class="custom-header__text">${it.title}</div>
     </j:if>
 </j:jelly>
