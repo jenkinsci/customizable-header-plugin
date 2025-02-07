@@ -13,7 +13,8 @@ public class LogoHeader extends PartialHeader implements SystemMessageProvider, 
 
   @Override
   public boolean isEnabled() {
-    return CustomHeaderConfiguration.get().getActiveHeader() instanceof LogoSelector;
+    return CustomHeaderConfiguration.get().isEnabled() &&
+        CustomHeaderConfiguration.get().getActiveHeader() instanceof LogoSelector;
   }
 
   public String getTitle() {

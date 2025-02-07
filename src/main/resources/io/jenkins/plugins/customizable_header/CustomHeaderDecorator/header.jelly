@@ -1,7 +1,7 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
+  <link rel="stylesheet" href="${resURL}/plugin/customizable-header/css/header.css" type="text/css"/>
   <j:if test="${it.enabled}">
-    <link rel="stylesheet" href="${resURL}/plugin/customizable-header/css/header.css" type="text/css"/>
     <link rel="preload" href="${rootURL}/customizable-header/theme" as="style"/>
     <link rel="stylesheet" href="${rootURL}/customizable-header/theme" type="text/css"/>
     <j:if test="${it.cssResourceUrl != ''}">

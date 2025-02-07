@@ -26,3 +26,9 @@
 .custom-header__system-message-header a:active {
   text-decoration: underline;
 }
+
+.ch-sm-label {
+  padding: 5px 10px;
+  margin-right: 20px;
+}
+

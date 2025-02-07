@@ -37,7 +37,8 @@ public class ContextAwareHeader extends LogoHeader {
 
   @Override
   public boolean isEnabled() {
-    return CustomHeaderConfiguration.get().getActiveHeader() instanceof ContextSelector;
+    return CustomHeaderConfiguration.get().isEnabled() &&
+        CustomHeaderConfiguration.get().getActiveHeader() instanceof ContextSelector;
   }
 
   @Override
