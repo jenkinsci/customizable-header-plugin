@@ -30,7 +30,7 @@
               </j:forEach>
           </div>
 
-          <script src="${resURL}/plugin/customizable-header/js/thingy.js" type="text/javascript"></script>
+          <script src="${resURL}/plugin/customizable-header/js/theme-picker.js" type="text/javascript"></script>
 
           <f:property field="headerColor"/>
 
