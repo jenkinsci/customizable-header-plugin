@@ -22,6 +22,10 @@
   color: var(--red);
 }
 
+.custom-header__title {
+  opacity: 0.9;
+}
+
 .custom-header__system-message-header a {
   color: inherit;
   text-decoration: underline;
