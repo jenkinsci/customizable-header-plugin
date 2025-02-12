@@ -1,8 +1,14 @@
 .custom-header__system-message-header {
-  padding: 5px 1.15rem;
+  padding: 0.5rem var(--section-padding);
   margin: 0;
   display: flex;
   align-items: center;
+  margin-bottom: var(--section-padding);
+  border-radius: 0;
+
+  & + .custom-header__system-message-header {
+    margin-top: calc(var(--section-padding) * -1);
+  }
 }
 
 .ch-dismiss-link {

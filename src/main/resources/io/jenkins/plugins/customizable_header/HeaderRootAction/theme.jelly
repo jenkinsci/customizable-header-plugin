@@ -32,6 +32,10 @@
 <j:if test="${it.backgroundColor != null and !it.backgroundColor.equals('')}">
   .jenkins-header {
     margin-bottom: var(--section-padding);
+
+    &amp; + script + .custom-header__system-message-header {
+      margin-top: calc(var(--section-padding) * -1);
+    }
   }
 </j:if>
 </j:jelly>
