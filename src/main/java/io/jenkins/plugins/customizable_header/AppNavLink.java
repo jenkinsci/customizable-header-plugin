@@ -17,7 +17,7 @@ import org.jenkins.ui.symbol.SymbolRequest;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.Stapler;
-import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerRequest2;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
@@ -98,7 +98,7 @@ public class AppNavLink extends AbstractLink {
         if (url.startsWith("/")) {
           return url;
         }
-        StaplerRequest currentRequest = Stapler.getCurrentRequest();
+        StaplerRequest2 currentRequest = Stapler.getCurrentRequest2();
         String rootURL = currentRequest.getContextPath();
         return rootURL + "/" + url;
       }
