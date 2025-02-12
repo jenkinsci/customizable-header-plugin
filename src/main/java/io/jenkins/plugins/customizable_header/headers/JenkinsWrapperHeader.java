@@ -5,7 +5,7 @@ import io.jenkins.plugins.customizable_header.CustomHeaderConfiguration;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 
 @Extension
-public class JenkinsHeader extends jenkins.views.JenkinsHeader implements SystemMessageProvider, LinkProvider {
+public class JenkinsWrapperHeader extends jenkins.views.JenkinsHeader implements SystemMessageProvider, LinkProvider {
 
   @Override
   public boolean isEnabled() {

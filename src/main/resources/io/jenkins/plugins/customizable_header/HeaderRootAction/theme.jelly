@@ -8,28 +8,30 @@
   </j:if>
 
 .custom-header__app-nav-button {
-  padding: 0.5rem;
-  min-width: 2.375rem;
+  z-index: 1;
 }
 
 .jenkins-header {
-  --header-color: ${it.color};
-  --text-color-secondary: var(--header-color);
-  --item-background: color-mix(in srgb, var(--header-color) 20%, transparent);
-  --button-background: color-mix(in srgb, var(--header-color) 5%, transparent);
-  --button-background--hover: color-mix(in srgb, var(--header-color) 10%, transparent);
-  --button-background--active: color-mix(in srgb, var(--header-color) 20%, transparent);
-  --button-background--focus: color-mix(in srgb, var(--header-color) 10%, transparent);
+  <j:if test="${it.color != null and !it.color.equals('')}">
+    --header-color: ${it.color};
+    --text-color-secondary: var(--header-color);
+    --item-background: color-mix(in srgb, var(--header-color) 20%, transparent);
+    --button-background: color-mix(in srgb, var(--header-color) 5%, transparent);
+    --button-background--hover: color-mix(in srgb, var(--header-color) 10%, transparent);
+    --button-background--active: color-mix(in srgb, var(--header-color) 20%, transparent);
+    --button-background--focus: color-mix(in srgb, var(--header-color) 10%, transparent);
+  </j:if>
 
-  &amp;::before {
-    background: ${it.backgroundColor};
+  <j:if test="${it.backgroundColor != null and !it.backgroundColor.equals('')}">
+    &amp;::before {
+      background: ${it.backgroundColor};
+    }
+  </j:if>
+}
+
+<j:if test="${it.backgroundColor != null and !it.backgroundColor.equals('')}">
+  .jenkins-header {
+    margin-bottom: var(--section-padding);
   }
-}
-
-.biiig {
-  position: sticky;
-  top: 0;
-  margin-bottom: var(--section-padding);
-  z-index: 10;
-}
+</j:if>
 </j:jelly>

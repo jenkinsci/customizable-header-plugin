@@ -3,7 +3,6 @@ package io.jenkins.plugins.customizable_header;
 import hudson.Extension;
 import hudson.model.UnprotectedRootAction;
 import hudson.model.User;
-import io.jenkins.plugins.customizable_header.headers.LogoSelector;
 import java.io.IOException;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;

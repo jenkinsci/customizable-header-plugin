@@ -2,7 +2,6 @@ package io.jenkins.plugins.customizable_header.headers;
 
 import io.jenkins.plugins.customizable_header.AbstractLink;
 import io.jenkins.plugins.customizable_header.CustomHeaderConfiguration;
-
 import java.util.List;
 
 public interface LinkProvider {
