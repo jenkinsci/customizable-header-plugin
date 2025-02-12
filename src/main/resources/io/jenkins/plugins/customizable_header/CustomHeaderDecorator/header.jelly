@@ -11,6 +11,6 @@
     <j:if test="${it.imageLogo}">
       <link rel="preload" href="${it.imageUrl}" as="image"/>
     </j:if>
-    <script src="${resURL}/plugin/customizable-header/js/messages.js" type="text/javascript"></script>
   </j:if>
+  <script src="${resURL}/plugin/customizable-header/js/messages.js" type="text/javascript"></script>
 </j:jelly>

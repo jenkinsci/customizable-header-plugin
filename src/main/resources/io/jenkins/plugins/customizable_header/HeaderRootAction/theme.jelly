@@ -23,19 +23,40 @@
   </j:if>
 
   <j:if test="${it.backgroundColor != null and !it.backgroundColor.equals('')}">
-    &amp;::before {
-      background: ${it.backgroundColor};
-    }
-  </j:if>
-}
-
-<j:if test="${it.backgroundColor != null and !it.backgroundColor.equals('')}">
-  .jenkins-header {
     margin-bottom: var(--section-padding);
 
     &amp; + script + .custom-header__system-message-header {
       margin-top: calc(var(--section-padding) * -1);
     }
+
+    &amp;::before {
+      background: ${it.backgroundColor};
+      bottom: 0 !important;
+      mask-image: none !important;
+    }
+  </j:if>
+}
+
+<j:if test="${it.backgroundColor != null and !it.backgroundColor.equals('')}">
+  .app-page-body__sidebar--sticky, .jenkins-app-bar--sticky {
+    top: calc(var(--header-height) + var(--section-padding));
+  }
+
+  .jenkins-app-bar--sticky::before {
+    content: "";
+    position: absolute;
+    inset: calc(var(--section-padding) * -1);
+    background: linear-gradient(var(--background) 10%, transparent);
+    z-index: -1;
+  }
+
+  .jenkins-app-bar--sticky::after {
+    content: "";
+    position: absolute;
+    inset: calc(var(--section-padding) * -1);
+    mask-image: linear-gradient(var(--background) 25%, transparent);
+    backdrop-filter: blur(30px);
+    z-index: -1;
   }
 </j:if>
 </j:jelly>

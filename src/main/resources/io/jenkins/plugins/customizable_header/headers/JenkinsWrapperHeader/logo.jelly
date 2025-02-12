@@ -13,6 +13,6 @@
     </span>
 
     <j:if test="${it.title != null and !(it.title eq '')}">
-        <div class="custom-header__text">${it.title}</div>
+        <div class="custom-header__title">${it.title}</div>
     </j:if>
 </j:jelly>
