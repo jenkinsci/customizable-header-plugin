@@ -27,4 +27,9 @@ public class JenkinsWrapperHeader extends jenkins.views.JenkinsHeader implements
   public String getTitle() {
     return CustomHeaderConfiguration.get().getTitle();
   }
+
+  // TODO - rename this
+  public boolean getCustomizeAllowed() {
+    return CustomHeaderConfiguration.get().isEnabled();
+  }
 }

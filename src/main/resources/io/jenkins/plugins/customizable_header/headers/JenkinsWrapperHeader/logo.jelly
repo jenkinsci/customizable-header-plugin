@@ -3,7 +3,7 @@
     <span class="app-jenkins-logo">
         <st:include page="logo" it="${it.logo}" />
         <j:choose>
-            <j:when test="${it.logoText != null and !(it.logoText eq '')}">
+            <j:when test="${it.customizeAllowed and it.logoText != null and !(it.logoText eq '')}">
                 <div class="custom-header__text">${it.logoText}</div>
             </j:when>
             <j:otherwise>
@@ -12,7 +12,7 @@
         </j:choose>
     </span>
 
-    <j:if test="${it.title != null and !(it.title eq '')}">
+    <j:if test="${it.customizeAllowed and it.title != null and !(it.title eq '')}">
         <div class="custom-header__title">${it.title}</div>
     </j:if>
 </j:jelly>
