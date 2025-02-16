@@ -11,6 +11,7 @@ import hudson.plugins.favorite.Favorites;
 import io.jenkins.plugins.customizable_header.color.HeaderColor;
 import io.jenkins.plugins.customizable_header.headers.HeaderSelector;
 import io.jenkins.plugins.customizable_header.headers.JenkinsHeaderSelector;
+import io.jenkins.plugins.customizable_header.headers.JenkinsWrapperHeader;
 import io.jenkins.plugins.customizable_header.logo.Icon;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import io.jenkins.plugins.customizable_header.logo.LogoDescriptor;
@@ -319,16 +320,17 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   }
 
   public HeaderSelector getActiveHeader() {
-    if (enabled) {
-      User user = User.current();
-      if (user != null) {
-        UserHeader userHeader = user.getProperty(UserHeader.class);
-        if (userHeader != null && userHeader.isOverwriteHeader()) {
-          return userHeader.getHeaderSelector();
-        }
-      }
-      return header;
-    }
+    // TODO - come back to this
+//    if (enabled) {
+//      User user = User.current();
+//      if (user != null) {
+////        UserHeader userHeader = user.getProperty(UserHeader.class);
+////        if (userHeader != null && userHeader.isOverwriteHeader()) {
+////          return userHeader.getHeaderSelector();
+////        }
+//      }
+//      return new JenkinsWrapperHeader();
+//    }
     return new JenkinsHeaderSelector();
   }
 
