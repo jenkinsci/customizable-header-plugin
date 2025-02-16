@@ -11,7 +11,7 @@ public class NoLogo extends Logo {
   public NoLogo() {
   }
 
-  @Extension
+  @Extension(ordinal = 100)
   @Symbol("nologo")
   public static class DescriptorImpl extends LogoDescriptor {
     @NonNull
