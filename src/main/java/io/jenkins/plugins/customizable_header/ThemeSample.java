@@ -1,6 +1,6 @@
 package io.jenkins.plugins.customizable_header;
 
-public final class ColorExample {
+public final class ThemeSample {
 
     private final String displayName;
 
@@ -8,7 +8,7 @@ public final class ColorExample {
 
     private final String color;
 
-    public ColorExample(String displayName, String backgroundColor, String color) {
+    public ThemeSample(String displayName, String backgroundColor, String color) {
         this.displayName = displayName;
         this.backgroundColor = backgroundColor;
         this.color = color;

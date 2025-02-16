@@ -8,13 +8,14 @@
       </f:entry>
 
       <f:optionalBlock field="enabled" title="${%Customize header}" inline="true">
-          <f:dropdownDescriptorSelector field="logo" title="${%The logo to show}" descriptors="${descriptor.logoDescriptors}"/>
-
           <f:entry field="thinHeader" title="${%Compact Header}">
               <f:checkbox/>
           </f:entry>
+
+          <f:dropdownDescriptorSelector field="logo" title="${%The logo to show}" descriptors="${descriptor.logoDescriptors}"/>
+
           <f:entry field="logoText" title="${%Text}">
-              <f:textbox/>
+              <f:textbox placeholder="Jenkins" clazz="custom-header__text-input" />
           </f:entry>
           <f:entry field="title" title="${%Title}">
               <f:textbox/>
@@ -24,7 +25,9 @@
               <j:forEach var="sample" items="${instance.samples}">
                   <button class="jenkins-button ch-sample"
                           type="button"
-                          style="background: ${sample.backgroundColor}; color: ${sample.color} !important">
+                          style="background: ${sample.backgroundColor}; color: ${sample.color} !important;"
+                          data-background="${sample.backgroundColor}"
+                          data-color="${sample.color}">
                       ${sample.displayName}
                   </button>
               </j:forEach>

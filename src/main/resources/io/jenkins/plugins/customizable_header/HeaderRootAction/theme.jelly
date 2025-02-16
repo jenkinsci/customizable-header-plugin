@@ -7,9 +7,15 @@
     }
   </j:if>
 
-.custom-header__app-nav-button {
-  z-index: 1;
-}
+  .custom-header__text-input::placeholder {
+    color: color-mix(in srgb, var(--text-color-secondary), transparent);
+    font-family: "Georgia";
+    font-weight: bold;
+  }
+
+  .custom-header__app-nav-button {
+    z-index: 1;
+  }
 
 .jenkins-header {
   <j:if test="${it.color != null and !it.color.equals('')}">

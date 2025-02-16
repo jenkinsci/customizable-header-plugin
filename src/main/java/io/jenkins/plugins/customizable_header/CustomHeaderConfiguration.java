@@ -10,8 +10,7 @@ import hudson.model.User;
 import hudson.plugins.favorite.Favorites;
 import io.jenkins.plugins.customizable_header.color.HeaderColor;
 import io.jenkins.plugins.customizable_header.headers.HeaderSelector;
-import io.jenkins.plugins.customizable_header.headers.JenkinsHeaderSelector;
-import io.jenkins.plugins.customizable_header.headers.JenkinsWrapperHeader;
+import io.jenkins.plugins.customizable_header.headers.JenkinsWrapperHeaderSelector;
 import io.jenkins.plugins.customizable_header.logo.Icon;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import io.jenkins.plugins.customizable_header.logo.LogoDescriptor;
@@ -48,7 +47,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private Logo logo = new Symbol("symbol-jenkins");
 
-  private HeaderSelector header = new JenkinsHeaderSelector();
+  private HeaderSelector header = new JenkinsWrapperHeaderSelector();
 
   private boolean enabled = true;
 
@@ -322,16 +321,10 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   public HeaderSelector getActiveHeader() {
     // TODO - come back to this
 //    if (enabled) {
-//      User user = User.current();
-//      if (user != null) {
-////        UserHeader userHeader = user.getProperty(UserHeader.class);
-////        if (userHeader != null && userHeader.isOverwriteHeader()) {
-////          return userHeader.getHeaderSelector();
-////        }
-//      }
-//      return new JenkinsWrapperHeader();
+//      return new JenkinsWrapperHeaderSelector();
 //    }
-    return new JenkinsHeaderSelector();
+//    return null;
+    return null;
   }
 
   @DataBoundSetter
@@ -404,12 +397,13 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
         .collect(Collectors.toList());
   }
 
-  public List<ColorExample> getSamples() {
+  public List<ThemeSample> getSamples() {
     return List.of(
-            new ColorExample("Classic", "color-mix(in srgb, var(--black) 85%, transparent)", "var(--white)"),
-            new ColorExample("Hudson", "linear-gradient(#3465A4, #89A3DC calc(100% - 4px), #FCAF3E calc(100% - 4px), #FCAF3E) no-repeat",  "var(--white)"),
-            new ColorExample("Accent", "var(--accent-color)", "var(--white)"),
-            new ColorExample("Rainbow", "linear-gradient(45deg in oklch, var(--red), var(--orange), var(--yellow), var(--green), var(--blue), var(--indigo), var(--purple))", "var(--white)")
+            new ThemeSample("Default", null, null),
+            new ThemeSample("Classic", "color-mix(in srgb, var(--black) 85%, transparent)", "var(--white)"),
+            new ThemeSample("Hudson", "linear-gradient(#3465A4, #89A3DC calc(100% - 4px), #FCAF3E calc(100% - 4px), #FCAF3E) no-repeat",  "var(--white)"),
+            new ThemeSample("Accent", "var(--accent-color)", "var(--white)"),
+            new ThemeSample("Rainbow", "linear-gradient(45deg in oklch, var(--red), var(--orange), var(--yellow), var(--green), var(--blue), var(--indigo), var(--purple))", "var(--white)")
     );
   }
 }

@@ -2,21 +2,21 @@ package io.jenkins.plugins.customizable_header.headers;
 
 import hudson.Extension;
 import io.jenkins.plugins.customizable_header.CustomHeaderConfiguration;
+import io.jenkins.plugins.customizable_header.logo.DefaultLogo;
 import io.jenkins.plugins.customizable_header.logo.Logo;
+import org.jfree.base.log.DefaultLog;
 
 @Extension
 public class JenkinsWrapperHeader extends jenkins.views.JenkinsHeader implements SystemMessageProvider, LinkProvider {
-
-  @Override
-  public boolean isEnabled() {
-    return CustomHeaderConfiguration.get().getActiveHeader() instanceof JenkinsHeaderSelector;
-  }
 
   public String getBackgroundColor() {
     return CustomHeaderConfiguration.get().getActiveHeaderColor().getBackgroundColor();
   }
 
   public Logo getLogo() {
+    if (!getCustomizeAllowed()) {
+      return new DefaultLogo();
+    }
     return CustomHeaderConfiguration.get().getLogo();
   }
 
