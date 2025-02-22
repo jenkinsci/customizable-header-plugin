@@ -10,7 +10,8 @@ import hudson.model.User;
 import hudson.plugins.favorite.Favorites;
 import io.jenkins.plugins.customizable_header.color.HeaderColor;
 import io.jenkins.plugins.customizable_header.headers.HeaderSelector;
-import io.jenkins.plugins.customizable_header.headers.JenkinsHeaderSelector;
+import io.jenkins.plugins.customizable_header.headers.JenkinsWrapperHeaderSelector;
+import io.jenkins.plugins.customizable_header.logo.DefaultLogo;
 import io.jenkins.plugins.customizable_header.logo.Icon;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import io.jenkins.plugins.customizable_header.logo.LogoDescriptor;
@@ -47,13 +48,13 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private Logo logo = new Symbol("symbol-jenkins");
 
-  private HeaderSelector header = new JenkinsHeaderSelector();
+  private HeaderSelector header = new JenkinsWrapperHeaderSelector();
 
   private boolean enabled = true;
 
   private transient String cssResourceUrl;
 
-  private HeaderColor headerColor = new HeaderColor("black", "grey", "white");
+  private HeaderColor headerColor = new HeaderColor("black", "white");
 
   private boolean thinHeader;
 
@@ -248,6 +249,13 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   }
 
   public boolean isThinHeader() {
+    User user = User.current();
+    if (user != null) {
+      UserHeader userHeader = user.getProperty(UserHeader.class);
+      if (userHeader != null && userHeader.isEnabled()) {
+        return userHeader.isThinHeader();
+      }
+    }
     return thinHeader;
   }
 
@@ -284,6 +292,17 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   }
 
   public Logo getLogo() {
+    User user = User.current();
+    if (user != null) {
+      UserHeader userHeader = user.getProperty(UserHeader.class);
+      if (userHeader != null && userHeader.isEnabled() && userHeader.getLogo() != null) {
+        return userHeader.getLogo();
+      }
+    }
+
+    if (!isEnabled()) {
+      return new DefaultLogo();
+    }
     return logo;
   }
 
@@ -311,7 +330,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     User user = User.current();
     if (user != null) {
       UserHeader userHeader = user.getProperty(UserHeader.class);
-      if (userHeader != null && userHeader.isOverwriteColors()) {
+      if (userHeader != null && userHeader.isEnabled()) {
         return userHeader.getHeaderColor();
       }
     }
@@ -319,17 +338,12 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   }
 
   public HeaderSelector getActiveHeader() {
-    if (enabled) {
-      User user = User.current();
-      if (user != null) {
-        UserHeader userHeader = user.getProperty(UserHeader.class);
-        if (userHeader != null && userHeader.isOverwriteHeader()) {
-          return userHeader.getHeaderSelector();
-        }
-      }
-      return header;
-    }
-    return new JenkinsHeaderSelector();
+    // TODO - come back to this
+//    if (enabled) {
+//      return new JenkinsWrapperHeaderSelector();
+//    }
+//    return null;
+    return null;
   }
 
   @DataBoundSetter
@@ -392,13 +406,23 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     return cssResourceUrl;
   }
 
-  public Logo defaultLogo() {
-    return new Symbol("symbol-jenkins");
-  }
+//  public Logo defaultLogo() {
+//    return new Symbol("symbol-jenkins");
+//  }
 
   public List<Descriptor<Logo>> getLogoDescriptors() {
     return LogoDescriptor.all().stream()
         .filter(d -> !(d instanceof Icon.DescriptorImpl))
         .collect(Collectors.toList());
+  }
+
+  public List<ThemeSample> getSamples() {
+    return List.of(
+            new ThemeSample("Default", null, null),
+            new ThemeSample("Classic", "color-mix(in srgb, var(--black) 85%, transparent)", "var(--white)"),
+            new ThemeSample("Hudson", "linear-gradient(#3465A4, #89A3DC calc(100% - 4px), #FCAF3E calc(100% - 4px), #FCAF3E) no-repeat",  "var(--white)"),
+            new ThemeSample("Accent", "var(--accent-color)", "var(--white)"),
+            new ThemeSample("Rainbow", "linear-gradient(45deg in oklch, var(--red), var(--orange), var(--yellow), var(--green), var(--blue), var(--indigo), var(--purple))", "var(--white)")
+    );
   }
 }

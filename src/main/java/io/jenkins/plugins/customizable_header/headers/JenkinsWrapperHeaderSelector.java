@@ -9,10 +9,10 @@ import org.kohsuke.stapler.DataBoundConstructor;
  * This means that the Jenkins own header is used or a header from
  * another plugin.
  */
-public class JenkinsHeaderSelector extends HeaderSelector {
+public class JenkinsWrapperHeaderSelector extends HeaderSelector {
 
   @DataBoundConstructor
-  public JenkinsHeaderSelector() {
+  public JenkinsWrapperHeaderSelector() {
   }
 
   @Extension

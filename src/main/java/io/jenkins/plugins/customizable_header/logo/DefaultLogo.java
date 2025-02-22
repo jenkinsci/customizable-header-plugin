@@ -11,7 +11,7 @@ public class DefaultLogo extends Logo {
   public DefaultLogo() {
   }
 
-  @Extension
+  @Extension(ordinal = 99)
   @Symbol("default")
   public static class DescriptorImpl extends LogoDescriptor {
     @NonNull

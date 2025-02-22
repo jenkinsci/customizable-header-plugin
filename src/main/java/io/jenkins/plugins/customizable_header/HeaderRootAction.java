@@ -3,19 +3,18 @@ package io.jenkins.plugins.customizable_header;
 import hudson.Extension;
 import hudson.model.UnprotectedRootAction;
 import hudson.model.User;
-import io.jenkins.plugins.customizable_header.headers.LogoSelector;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletResponse;
 import jenkins.model.Jenkins;
 import org.kohsuke.stapler.HttpResponse;
 import org.kohsuke.stapler.HttpResponses;
 import org.kohsuke.stapler.QueryParameter;
-import org.kohsuke.stapler.StaplerRequest2;
-import org.kohsuke.stapler.StaplerResponse2;
+import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerResponse;
 import org.kohsuke.stapler.export.ExportConfig;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
@@ -47,16 +46,12 @@ public class HeaderRootAction implements UnprotectedRootAction {
     return CustomHeaderConfiguration.get().getActiveHeaderColor().getBackgroundColor();
   }
 
-  public String getHoverColor() {
-    return CustomHeaderConfiguration.get().getActiveHeaderColor().getHoverColor();
-  }
-
   public String getColor() {
     return CustomHeaderConfiguration.get().getActiveHeaderColor().getColor();
   }
 
   public boolean isThinHeader() {
-    return CustomHeaderConfiguration.get().isThinHeader() && CustomHeaderConfiguration.get().getHeader() instanceof LogoSelector;
+    return CustomHeaderConfiguration.get().isThinHeader();
   }
 
   public boolean hasLinks() {
@@ -133,7 +128,7 @@ public class HeaderRootAction implements UnprotectedRootAction {
     }
 
     @Override
-    public void generateResponse(StaplerRequest2 req, StaplerResponse2 rsp, Object o)
+    public void generateResponse(StaplerRequest req, StaplerResponse rsp, Object o)
         throws IOException, ServletException {
       rsp.serveExposedBean(req, this, new ExportConfig().withFlavor(Flavor.JSON));
     }
