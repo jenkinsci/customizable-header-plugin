@@ -46,10 +46,6 @@ public class HeaderRootAction implements UnprotectedRootAction {
     return CustomHeaderConfiguration.get().getActiveHeaderColor().getBackgroundColor();
   }
 
-  public String getHoverColor() {
-    return CustomHeaderConfiguration.get().getActiveHeaderColor().getHoverColor();
-  }
-
   public String getColor() {
     return CustomHeaderConfiguration.get().getActiveHeaderColor().getColor();
   }

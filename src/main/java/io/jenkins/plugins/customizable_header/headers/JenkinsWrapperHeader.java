@@ -2,9 +2,7 @@ package io.jenkins.plugins.customizable_header.headers;
 
 import hudson.Extension;
 import io.jenkins.plugins.customizable_header.CustomHeaderConfiguration;
-import io.jenkins.plugins.customizable_header.logo.DefaultLogo;
 import io.jenkins.plugins.customizable_header.logo.Logo;
-import org.jfree.base.log.DefaultLog;
 
 @Extension
 public class JenkinsWrapperHeader extends jenkins.views.JenkinsHeader implements SystemMessageProvider, LinkProvider {
@@ -14,9 +12,6 @@ public class JenkinsWrapperHeader extends jenkins.views.JenkinsHeader implements
   }
 
   public Logo getLogo() {
-    if (!getCustomizeAllowed()) {
-      return new DefaultLogo();
-    }
     return CustomHeaderConfiguration.get().getLogo();
   }
 

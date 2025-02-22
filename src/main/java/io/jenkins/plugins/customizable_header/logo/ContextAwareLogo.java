@@ -15,11 +15,6 @@ import hudson.model.labels.LabelExpression;
 import io.jenkins.plugins.customizable_header.CustomHeaderConfiguration;
 import io.jenkins.plugins.customizable_header.headers.ContextSelector;
 import io.jenkins.plugins.customizable_header.headers.HeaderSelector;
-import org.jenkinsci.Symbol;
-import org.kohsuke.stapler.Ancestor;
-import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.Stapler;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,6 +23,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jenkinsci.Symbol;
+import org.kohsuke.stapler.Ancestor;
+import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.Stapler;
 
 public class ContextAwareLogo extends Logo {
 
@@ -227,4 +226,3 @@ public class ContextAwareLogo extends Logo {
                 "icon-health-60to79", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-weather-icon-health-60to79 plugin-core"));
     }
 }
-
