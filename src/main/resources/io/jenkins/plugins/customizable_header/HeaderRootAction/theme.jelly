@@ -1,6 +1,7 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler">
   <st:contentType value="text/css" />
+  
   <j:if test="${it.thinHeader}">
     :root {
       --header-height: 3.125rem;
@@ -21,11 +22,13 @@
   <j:if test="${it.color != null and !it.color.equals('')}">
     --header-color: ${it.color};
     --text-color-secondary: var(--header-color);
-    --item-background: color-mix(in srgb, var(--header-color) 20%, transparent);
-    --button-background: color-mix(in srgb, var(--header-color) 5%, transparent);
-    --button-background--hover: color-mix(in srgb, var(--header-color) 10%, transparent);
-    --button-background--active: color-mix(in srgb, var(--header-color) 20%, transparent);
-    --button-background--focus: color-mix(in srgb, var(--header-color) 10%, transparent);
+
+    .jenkins-button {
+      --button-background: color-mix(in srgb, var(--header-color) 5%, transparent);
+      --button-background--hover: color-mix(in srgb, var(--header-color) 10%, transparent);
+      --button-background--active: color-mix(in srgb, var(--header-color) 20%, transparent);
+      --button-box-shadow--focus: color-mix(in srgb, var(--header-color) 10%, transparent);
+    }
   </j:if>
 
   <j:if test="${it.backgroundColor != null and !it.backgroundColor.equals('')}">
@@ -46,23 +49,6 @@
 <j:if test="${it.backgroundColor != null and !it.backgroundColor.equals('')}">
   .app-page-body__sidebar--sticky, .jenkins-app-bar--sticky {
     top: calc(var(--header-height) + var(--section-padding));
-  }
-
-  .jenkins-app-bar--sticky::before {
-    content: "";
-    position: absolute;
-    inset: calc(var(--section-padding) * -1);
-    background: linear-gradient(var(--background) 10%, transparent);
-    z-index: -1;
-  }
-
-  .jenkins-app-bar--sticky::after {
-    content: "";
-    position: absolute;
-    inset: calc(var(--section-padding) * -1);
-    mask-image: linear-gradient(var(--background) 25%, transparent);
-    backdrop-filter: blur(30px);
-    z-index: -1;
   }
 </j:if>
 </j:jelly>
