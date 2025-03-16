@@ -36,7 +36,7 @@
     <changelist>999999-SNAPSHOT</changelist>
     <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
     <jenkins.baseline>2.479</jenkins.baseline>
-    <jenkins.version>2.498-rc36129.ddc968a_82758</jenkins.version>
+    <jenkins.version>2.502-rc36474.36c7b_20b_33a_5</jenkins.version>
     <gitHubRepo>jenkinsci/customizable-header-plugin</gitHubRepo>
     <node.version>20.18.0</node.version>
     <npm.version>10.9.1</npm.version>

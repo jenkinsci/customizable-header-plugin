@@ -7,6 +7,8 @@
 
     <f:dropdownDescriptorSelector field="logo" title="${%The logo to show}" descriptors="${descriptor.logoDescriptors}"/>
 
+    <f:optionalProperty field="contextAwareLogo" title="Context Aware Logo"/>
+
     <div class="ch-samples">
       <j:forEach var="sample" items="${instance.samples}">
         <button class="jenkins-button ch-sample"
@@ -22,10 +24,6 @@
     <script src="${resURL}/plugin/customizable-header/js/theme-picker.js" type="text/javascript"></script>
 
     <f:property field="headerColor"/>
-
-    <f:entry field="cssResource" title="${%URL of theme CSS}">
-      <f:textbox/>
-    </f:entry>
   </f:optionalBlock>
 
   <f:advanced title="${%Links}">

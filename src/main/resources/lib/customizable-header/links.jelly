@@ -1,43 +1,12 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout">
   <j:if test="${it.hasLinks()}">
-    <j:set var="tooltip">
-      <div class="jenkins-dropdown">
-        <j:forEach var="link" items="${it.links}">
-            <j:if test="${link.type == 'separator'}">
-                <j:choose>
-                    <j:when test="${link.title == null or link.title eq ''}">
-                        <div class="jenkins-dropdown__separator" />
-                    </j:when>
-                    <j:otherwise>
-                        <div class="jenkins-dropdown__heading">
-                            ${link.title}
-                        </div>
-                    </j:otherwise>
-                </j:choose>
-            </j:if>
-            <j:if test="${link.type == 'link'}">
-                <a href="${link.url}" class="jenkins-dropdown__item">
-                    <div class="jenkins-dropdown__item__icon">
-                        <j:out value="${link.iconXml}" escapeText="false" />
-                    </div>
-                    ${link.label}
-                    <j:if test="${link.external}">
-                        <div class="jenkins-dropdown__item__icon">
-                            <l:icon src="symbol-external" />
-                        </div>
-                    </j:if>
-                </a>
-            </j:if>
-        </j:forEach>
-      </div>
-    </j:set>
-
-    <button class="jenkins-button jenkins-button--tertiary tertiary custom-header__app-nav-button"
-            data-html-tooltip="${tooltip}"
-            data-tooltip-interactive="true"
-            data-tippy-theme="dropdown">
-      <l:icon src="symbol-apps-outline plugin-ionicons-api" />
+    <template id="custom-header-icons">
+      <l:icon id="external-link" src="symbol-open-outline plugin-ionicons-api" class="icon-xs"/>
+    </template>
+    <button class="jenkins-button jenkins-button--tertiary custom-header__app-nav-button" data-href="${rootURL}/customizable-header/getLinks">
+      <l:icon src="symbol-apps-outline plugin-ionicons-api" class="icon-md"/>
     </button>
+    <script src="${resURL}/plugin/customizable-header/js/bundles/app-nav.js" type="text/javascript"></script>
   </j:if>
 </j:jelly>

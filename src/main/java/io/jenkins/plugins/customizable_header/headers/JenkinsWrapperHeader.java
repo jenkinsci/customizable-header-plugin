@@ -12,7 +12,7 @@ public class JenkinsWrapperHeader extends jenkins.views.JenkinsHeader implements
   }
 
   public Logo getLogo() {
-    return CustomHeaderConfiguration.get().getLogo();
+    return CustomHeaderConfiguration.get().getActiveLogo();
   }
 
   public String getLogoText() {

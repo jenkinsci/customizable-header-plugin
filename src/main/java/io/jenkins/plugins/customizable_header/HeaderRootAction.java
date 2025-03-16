@@ -42,6 +42,10 @@ public class HeaderRootAction implements UnprotectedRootAction {
     return "customizable-header";
   }
 
+  public boolean isEnabled() {
+    return CustomHeaderConfiguration.get().isEnabled();
+  }
+
   public String getBackgroundColor() {
     return CustomHeaderConfiguration.get().getActiveHeaderColor().getBackgroundColor();
   }
@@ -51,7 +55,7 @@ public class HeaderRootAction implements UnprotectedRootAction {
   }
 
   public boolean isThinHeader() {
-    return CustomHeaderConfiguration.get().isThinHeader();
+    return  CustomHeaderConfiguration.get().isEnabled() && CustomHeaderConfiguration.get().isThinHeader();
   }
 
   public boolean hasLinks() {

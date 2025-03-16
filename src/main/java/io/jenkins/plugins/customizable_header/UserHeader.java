@@ -37,8 +37,19 @@ public class UserHeader extends UserProperty {
 
   private Set<String> dismissedMessages = new HashSet<>();
 
+  private ContextAwareLogo contextAwareLogo;
+
   @DataBoundConstructor
   public UserHeader() {
+  }
+
+  @DataBoundSetter
+  public void setContextAwareLogo(ContextAwareLogo contextAwareLogo) {
+    this.contextAwareLogo = contextAwareLogo;
+  }
+
+  public ContextAwareLogo getContextAwareLogo() {
+    return contextAwareLogo;
   }
 
   public boolean isEnabled() {
@@ -77,6 +88,17 @@ public class UserHeader extends UserProperty {
     return logo;
   }
 
+  public Logo getActiveLogo() {
+    Logo logo = null;
+    if (contextAwareLogo != null) {
+      logo = contextAwareLogo.getLogo();
+    }
+    if (logo == null) {
+      logo = this.logo;
+    }
+    return logo;
+  }
+
   public List<AbstractLink> getLinks() {
     return links;
   }
@@ -102,6 +124,7 @@ public class UserHeader extends UserProperty {
     if (links != null) {
       links.clear();
     }
+    contextAwareLogo = null;
     req.bindJSON(this, form);
     return this;
   }
@@ -118,11 +141,6 @@ public class UserHeader extends UserProperty {
       return userHeader;
     }
 
-    @Override
-    public boolean isEnabled() {
-      return CustomHeaderConfiguration.get().isEnabled();
-    }
-
     @NonNull
     @Override
     public String getDisplayName() {
@@ -133,23 +151,17 @@ public class UserHeader extends UserProperty {
     public @NonNull UserPropertyCategory getUserPropertyCategory() {
         return UserPropertyCategory.get(UserPropertyCategory.Appearance.class);
     }
+
+    // TODO - this should be combined with CustomHeaderConfiguration#401
+    public List<Descriptor<Logo>> getLogoDescriptors() {
+      return LogoDescriptor.all().stream()
+          .filter(d -> !(d instanceof Icon.DescriptorImpl))
+          .collect(Collectors.toList());
+    }
   }
 
-  // TODO - this should be combined with CustomHeaderConfiguration#401
-  public List<Descriptor<Logo>> getLogoDescriptors() {
-    return LogoDescriptor.all().stream()
-            .filter(d -> !(d instanceof Icon.DescriptorImpl))
-            .collect(Collectors.toList());
-  }
 
-  // TODO - this should be combined with CustomHeaderConfiguration#407
   public List<ThemeSample> getSamples() {
-    return List.of(
-            new ThemeSample("Default", null, null),
-            new ThemeSample("Classic", "color-mix(in srgb, var(--black) 85%, transparent)", "var(--white)"),
-            new ThemeSample("Hudson", "linear-gradient(#3465A4, #89A3DC calc(100% - 4px), #FCAF3E calc(100% - 4px), #FCAF3E) no-repeat",  "var(--white)"),
-            new ThemeSample("Accent", "var(--accent-color)", "var(--white)"),
-            new ThemeSample("Rainbow", "linear-gradient(45deg in oklch, var(--red), var(--orange), var(--yellow), var(--green), var(--blue), var(--indigo), var(--purple))", "var(--white)")
-    );
+    return ThemeSample.getSamples();
   }
 }

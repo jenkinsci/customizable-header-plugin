@@ -1,12 +1,19 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler">
   <st:contentType value="text/css" />
-  
+  :root {
+    --logo-dim: 56px;
+  }
   <j:if test="${it.thinHeader}">
     :root {
       --header-height: 3.125rem;
+      --logo-dim: 48px;
     }
   </j:if>
+
+  svg.custom-header__logo {
+    height: var(--logo-dim);
+  }
 
   .custom-header__text-input::placeholder {
     color: color-mix(in srgb, var(--text-color-secondary), transparent);
@@ -19,6 +26,8 @@
   }
 
 .jenkins-header {
+   display: flex;
+  gap: 10px;
   <j:if test="${it.color != null and !it.color.equals('')}">
     --header-color: ${it.color};
     --text-color-secondary: var(--header-color);
@@ -31,7 +40,7 @@
     }
   </j:if>
 
-  <j:if test="${it.backgroundColor != null and !it.backgroundColor.equals('')}">
+  <j:if test="${it.enabled and it.backgroundColor != null and !it.backgroundColor.equals('')}">
     margin-bottom: var(--section-padding);
 
     &amp; + script + .custom-header__system-message-header {
@@ -45,8 +54,14 @@
     }
   </j:if>
 }
+.jenkins-header__navigation {
+  width: 100%;
+  <j:if test="${it.hasLinks()}">
+    padding-left: 0;
+  </j:if>
+}
 
-<j:if test="${it.backgroundColor != null and !it.backgroundColor.equals('')}">
+<j:if test="${it.enable and it.backgroundColor != null and !it.backgroundColor.equals('')}">
   .app-page-body__sidebar--sticky, .jenkins-app-bar--sticky {
     top: calc(var(--header-height) + var(--section-padding));
   }

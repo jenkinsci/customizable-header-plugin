@@ -64,7 +64,10 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private List<AbstractLink> links = new ArrayList<>();
 
+  private ContextAwareLogo contextAwareLogo;
+
   private static final transient Symbol star = new Symbol("symbol-star plugin-ionicons-api");
+
 
   @DataBoundConstructor
   public CustomHeaderConfiguration() {
@@ -82,6 +85,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     boolean result = false;
     try (BulkChange bc = new BulkChange(this)) {
       links.clear();
+      contextAwareLogo = null;
       synchronized (systemMessages) {
         systemMessages.clear();
         result = super.configure(req, json);
@@ -260,6 +264,15 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   }
 
   @DataBoundSetter
+  public void setContextAwareLogo(ContextAwareLogo contextAwareLogo) {
+    this.contextAwareLogo = contextAwareLogo;
+  }
+
+  public ContextAwareLogo getContextAwareLogo() {
+    return contextAwareLogo;
+  }
+
+  @DataBoundSetter
   public void setThinHeader(boolean thinHeader) {
     this.thinHeader = thinHeader;
     save();
@@ -292,16 +305,27 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   }
 
   public Logo getLogo() {
+    return logo;
+  }
+
+  public Logo getActiveLogo() {
     User user = User.current();
     if (user != null) {
       UserHeader userHeader = user.getProperty(UserHeader.class);
-      if (userHeader != null && userHeader.isEnabled() && userHeader.getLogo() != null) {
-        return userHeader.getLogo();
+      if (userHeader != null && userHeader.isEnabled() && userHeader.getActiveLogo() != null) {
+        return userHeader.getActiveLogo();
       }
     }
 
     if (!isEnabled()) {
       return new DefaultLogo();
+    }
+    Logo logo = null;
+    if (contextAwareLogo != null) {
+      logo = contextAwareLogo.getLogo();
+    }
+    if (logo == null) {
+      logo = this.logo;
     }
     return logo;
   }
@@ -417,12 +441,6 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   }
 
   public List<ThemeSample> getSamples() {
-    return List.of(
-            new ThemeSample("Default", null, null),
-            new ThemeSample("Classic", "color-mix(in srgb, var(--black) 85%, transparent)", "var(--white)"),
-            new ThemeSample("Hudson", "linear-gradient(#3465A4, #89A3DC calc(100% - 4px), #FCAF3E calc(100% - 4px), #FCAF3E) no-repeat",  "var(--white)"),
-            new ThemeSample("Accent", "var(--accent-color)", "var(--white)"),
-            new ThemeSample("Rainbow", "linear-gradient(45deg in oklch, var(--red), var(--orange), var(--yellow), var(--green), var(--blue), var(--indigo), var(--purple))", "var(--white)")
-    );
+    return ThemeSample.getSamples();
   }
 }
