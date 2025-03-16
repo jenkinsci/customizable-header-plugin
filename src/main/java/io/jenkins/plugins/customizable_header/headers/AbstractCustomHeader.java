@@ -9,10 +9,6 @@ import jenkins.views.FullHeader;
 
 public abstract class AbstractCustomHeader extends FullHeader {
 
-  public boolean isCompatible() {
-    return true;
-  }
-
   public Logo getLogo() {
     return CustomHeaderConfiguration.get().getActiveLogo();
   }

@@ -16,7 +16,7 @@
     width: fit-content;
   }
 
-  svg.custom-header__symbol {
+  .custom-header__symbol, .custom-header__image {
     height: var(--logo-dim);
     width: var(--logo-dim);
   }
