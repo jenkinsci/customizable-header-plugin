@@ -44,7 +44,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private String cssResource;
 
-  private String logoText = "Jenkins";
+  private String logoText = "";
 
   private Logo logo = new Symbol("symbol-jenkins");
 
@@ -365,11 +365,9 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   }
 
   public HeaderSelector getActiveHeader() {
-    // TODO - come back to this
-//    if (enabled) {
-//      return new JenkinsWrapperHeaderSelector();
-//    }
-//    return null;
+    if (enabled) {
+      return header;
+    }
     return null;
   }
 
