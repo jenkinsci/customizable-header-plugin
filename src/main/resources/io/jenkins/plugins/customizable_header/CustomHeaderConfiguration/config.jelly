@@ -7,7 +7,7 @@
         </f:repeatableProperty>
       </f:entry>
 
-      <f:optionalBlock field="enabled" title="${%Customize header}" inline="true">
+      <f:optionalBlock field="enabled" title="${%Customize Header}" inline="true">
           <f:entry field="thinHeader" title="${%Compact Header}">
               <f:checkbox/>
           </f:entry>

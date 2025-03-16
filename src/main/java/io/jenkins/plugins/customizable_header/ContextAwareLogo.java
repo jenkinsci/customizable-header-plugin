@@ -7,6 +7,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Util;
 import hudson.model.AbstractDescribableImpl;
+import hudson.model.Action;
 import hudson.model.Computer;
 import hudson.model.Descriptor;
 import hudson.model.HealthReport;
@@ -161,6 +162,12 @@ public class ContextAwareLogo extends AbstractDescribableImpl<ContextAwareLogo> 
       if (obj instanceof LabelAtom || obj instanceof LabelExpression) {
         return new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-pricetag-outline");
       }
+      if (obj instanceof Action action) {
+        String iconFileName = action.getIconFileName();
+        if (iconFileName != null && iconFileName.startsWith("symbol-")) {
+          return new io.jenkins.plugins.customizable_header.logo.Symbol(iconFileName);
+        }
+      }
       Logo logo = getLogoOrDefault(obj.getClass().getName());
       if (logo != null) {
         return logo;
@@ -211,15 +218,7 @@ public class ContextAwareLogo extends AbstractDescribableImpl<ContextAwareLogo> 
     knownPathes.add("/log");
     knownPathes.add("/load-statistics");
     defaultLogoMapping.put(
-        "jenkins.appearance.AppearanceGlobalConfiguration", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-brush-outline"));
-    defaultLogoMapping.put(
         "hudson.LocalPluginManager", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-extension-puzzle-outline"));
-    defaultLogoMapping.put(
-        "hudson.model.ManageJenkinsAction", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-settings-outline"));
-    defaultLogoMapping.put(
-        "hudson.security.GlobalSecurityConfiguration", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-lock-closed-outline"));
-    defaultLogoMapping.put(
-        "jenkins.tools.GlobalToolConfiguration", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-hammer-outline"));
     defaultLogoMapping.put("hudson.model.ComputerSet", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-computer"));
     defaultLogoMapping.put("jenkins.agents.CloudSet", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-cloud-outline"));
     defaultLogoMapping.put("hudson.cli.CLIAction", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-terminal-outline"));
@@ -230,6 +229,7 @@ public class ContextAwareLogo extends AbstractDescribableImpl<ContextAwareLogo> 
         "hudson.logging.LogRecorderManager", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-journal-outline"));
     defaultLogoMapping.put("hudson.AboutJenkins", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-jenkins"));
     defaultLogoMapping.put("hudson.model.User", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-person"));
+    defaultLogoMapping.put("hudson.security.HudsonPrivateSecurityRealm", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-people-outline"));
     defaultLogoMapping.put(
         "org.jenkinsci.plugins.configfiles.ConfigFilesManagement",
         new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-cfg-logo plugin-config-file-provider"));
@@ -237,17 +237,8 @@ public class ContextAwareLogo extends AbstractDescribableImpl<ContextAwareLogo> 
         "com.cloudbees.plugins.credentials.ViewCredentialsAction$RootActionImpl",
         new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-id-card-outline"));
     defaultLogoMapping.put(
-        "com.cloudbees.plugins.credentials.ViewCredentialsAction",
-        new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-id-card-outline"));
-    defaultLogoMapping.put(
         "org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval",
         new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-document-text-outline"));
-    defaultLogoMapping.put(
-        "com.cloudbees.plugins.credentials.GlobalCredentialsConfiguration",
-        new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-credential-providers plugin-credentials"));
-    defaultLogoMapping.put(
-        "io.jenkins.plugins.casc.ConfigurationAsCode",
-        new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-logo plugin-configuration-as-code"));
     defaultLogoMapping.put("hudson.model.Hudson/script", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-code-working-outline"));
     defaultLogoMapping.put("hudson.model.Hudson/systemInfo", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-server-outline"));
     defaultLogoMapping.put(
