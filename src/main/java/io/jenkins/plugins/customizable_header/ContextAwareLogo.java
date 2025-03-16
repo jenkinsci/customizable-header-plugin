@@ -15,7 +15,6 @@ import hudson.model.Job;
 import hudson.model.Run;
 import hudson.model.labels.LabelAtom;
 import hudson.model.labels.LabelExpression;
-import io.jenkins.plugins.customizable_header.headers.HeaderSelector;
 import io.jenkins.plugins.customizable_header.logo.Icon;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import io.jenkins.plugins.customizable_header.logo.SvgLogo;
@@ -130,7 +129,6 @@ public class ContextAwareLogo extends AbstractDescribableImpl<ContextAwareLogo> 
   public Logo getLogo() {
     List<Ancestor> ancestors = new ArrayList<>(Stapler.getCurrentRequest2().getAncestors());
     Collections.reverse(ancestors);
-    HeaderSelector header = CustomHeaderConfiguration.get().getActiveHeader();
     // LOGGER.log(Level.FINE, "Path: {0}", Stapler.getCurrentRequest().getPathInfo());
     for (Ancestor ancestor : ancestors) {
       Object obj = ancestor.getObject();

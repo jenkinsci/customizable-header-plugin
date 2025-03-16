@@ -61,7 +61,7 @@
   </j:if>
 }
 
-<j:if test="${it.enable and it.backgroundColor != null and !it.backgroundColor.equals('')}">
+<j:if test="${it.enabled and it.backgroundColor != null and !it.backgroundColor.equals('')}">
   .app-page-body__sidebar--sticky, .jenkins-app-bar--sticky {
     top: calc(var(--header-height) + var(--section-padding));
   }

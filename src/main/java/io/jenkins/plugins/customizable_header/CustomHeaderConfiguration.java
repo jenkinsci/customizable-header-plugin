@@ -37,7 +37,7 @@ import org.kohsuke.stapler.StaplerRequest2;
 
 @Extension
 @org.jenkinsci.Symbol("customHeader")
-public class CustomHeaderConfiguration extends GlobalConfiguration {
+public class CustomHeaderConfiguration extends GlobalConfiguration implements ThemeSampleProvider {
 
   private static final Logger LOGGER = Logger.getLogger(CustomHeaderConfiguration.class.getName());
   private String title = "";
@@ -440,7 +440,4 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
         .collect(Collectors.toList());
   }
 
-  public List<ThemeSample> getSamples() {
-    return ThemeSample.getSamples();
-  }
 }

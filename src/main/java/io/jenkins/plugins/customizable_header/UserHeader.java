@@ -23,7 +23,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.StaplerRequest2;
 
-public class UserHeader extends UserProperty {
+public class UserHeader extends UserProperty implements ThemeSampleProvider {
 
   private boolean enabled;
 
@@ -158,10 +158,5 @@ public class UserHeader extends UserProperty {
           .filter(d -> !(d instanceof Icon.DescriptorImpl))
           .collect(Collectors.toList());
     }
-  }
-
-
-  public List<ThemeSample> getSamples() {
-    return ThemeSample.getSamples();
   }
 }
