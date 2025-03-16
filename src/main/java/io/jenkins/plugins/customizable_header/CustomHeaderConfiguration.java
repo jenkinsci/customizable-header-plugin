@@ -312,8 +312,11 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     User user = User.current();
     if (user != null) {
       UserHeader userHeader = user.getProperty(UserHeader.class);
-      if (userHeader != null && userHeader.isEnabled() && userHeader.getActiveLogo() != null) {
-        return userHeader.getActiveLogo();
+      if (userHeader != null && userHeader.isEnabled()) {
+        Logo activeLogo = userHeader.getActiveLogo();
+        if (activeLogo != null) {
+          return activeLogo;
+        }
       }
     }
 

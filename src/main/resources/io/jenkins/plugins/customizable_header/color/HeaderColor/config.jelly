@@ -1,6 +1,6 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form" xmlns:st="jelly:stapler">
-  <f:entry title="Header Coloring Samples" help="/plugin/customizable-header/help/samples.html">
+  <f:entry title="${%Header Coloring Samples}" help="/plugin/customizable-header/help/samples.html">
     <st:include page="samples.jelly" from="${instance}"/>
     <f:helpArea />
     <f:entry field="backgroundColor" title="${%Header background}">

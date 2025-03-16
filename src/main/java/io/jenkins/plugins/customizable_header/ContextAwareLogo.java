@@ -13,6 +13,7 @@ import hudson.model.HealthReport;
 import hudson.model.Hudson;
 import hudson.model.Job;
 import hudson.model.Run;
+import hudson.model.User;
 import hudson.model.labels.LabelAtom;
 import hudson.model.labels.LabelExpression;
 import io.jenkins.plugins.customizable_header.logo.Icon;
@@ -129,7 +130,7 @@ public class ContextAwareLogo extends AbstractDescribableImpl<ContextAwareLogo> 
   public Logo getLogo() {
     List<Ancestor> ancestors = new ArrayList<>(Stapler.getCurrentRequest2().getAncestors());
     Collections.reverse(ancestors);
-    // LOGGER.log(Level.FINE, "Path: {0}", Stapler.getCurrentRequest().getPathInfo());
+    // LOGGER.log(Level.FINE, "Path: {0}", Stapler.getCurrentRequest2().getPathInfo());
     for (Ancestor ancestor : ancestors) {
       Object obj = ancestor.getObject();
       LOGGER.log(Level.FINE, "Context: {0}", obj.getClass().getName());
@@ -155,7 +156,7 @@ public class ContextAwareLogo extends AbstractDescribableImpl<ContextAwareLogo> 
       }
       if (obj instanceof Computer computer) {
         Logo logo = handleComputerUrl("hudson.model.Computer");
-        return Objects.requireNonNullElseGet(logo, () -> new Icon(computer.getIconClassName()));
+        return Objects.requireNonNullElseGet(logo, () -> new io.jenkins.plugins.customizable_header.logo.Symbol(computer.getIconClassName()));
       }
       if (obj instanceof LabelAtom || obj instanceof LabelExpression) {
         return new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-pricetag-outline");
@@ -210,6 +211,8 @@ public class ContextAwareLogo extends AbstractDescribableImpl<ContextAwareLogo> 
     knownPathes.add("/log");
     knownPathes.add("/load-statistics");
     defaultLogoMapping.put(
+        "jenkins.appearance.AppearanceGlobalConfiguration", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-brush-outline"));
+    defaultLogoMapping.put(
         "hudson.LocalPluginManager", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-extension-puzzle-outline"));
     defaultLogoMapping.put(
         "hudson.model.ManageJenkinsAction", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-settings-outline"));
@@ -217,7 +220,8 @@ public class ContextAwareLogo extends AbstractDescribableImpl<ContextAwareLogo> 
         "hudson.security.GlobalSecurityConfiguration", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-lock-closed-outline"));
     defaultLogoMapping.put(
         "jenkins.tools.GlobalToolConfiguration", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-hammer-outline"));
-    defaultLogoMapping.put("hudson.model.ComputerSet", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-cloud-outline"));
+    defaultLogoMapping.put("hudson.model.ComputerSet", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-computer"));
+    defaultLogoMapping.put("jenkins.agents.CloudSet", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-cloud-outline"));
     defaultLogoMapping.put("hudson.cli.CLIAction", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-terminal-outline"));
     defaultLogoMapping.put(
         "hudson.diagnosis.OldDataMonitor", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-trash-bin-outline"));
@@ -241,6 +245,9 @@ public class ContextAwareLogo extends AbstractDescribableImpl<ContextAwareLogo> 
     defaultLogoMapping.put(
         "com.cloudbees.plugins.credentials.GlobalCredentialsConfiguration",
         new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-credential-providers plugin-credentials"));
+    defaultLogoMapping.put(
+        "io.jenkins.plugins.casc.ConfigurationAsCode",
+        new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-logo plugin-configuration-as-code"));
     defaultLogoMapping.put("hudson.model.Hudson/script", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-code-working-outline"));
     defaultLogoMapping.put("hudson.model.Hudson/systemInfo", new io.jenkins.plugins.customizable_header.logo.Symbol("symbol-server-outline"));
     defaultLogoMapping.put(
@@ -301,5 +308,11 @@ public class ContextAwareLogo extends AbstractDescribableImpl<ContextAwareLogo> 
     public String getDisplayName() {
       return "";
     }
+
+    public boolean isRoot() {
+      List<Ancestor> ancestors = new ArrayList<>(Stapler.getCurrentRequest2().getAncestors());
+      return ancestors.stream().noneMatch(it -> it.getObject() instanceof User);
+    }
+
   }
 }
