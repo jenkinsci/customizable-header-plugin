@@ -1,7 +1,7 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
   <div class="ch-samples">
-    <j:forEach var="sample" items="${instance.samples}">
+    <j:forEach var="sample" items="${descriptor.samples}">
       <button class="jenkins-button ch-sample"
               type="button"
               style="background: ${sample.backgroundColor}; color: ${sample.color} !important;"

@@ -1,5 +1,5 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form" xmlns:ch="/lib/customizable-header">
+<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
   <f:optionalBlock field="enabled" title="${%Customize header}" inline="true">
     <f:entry field="thinHeader" title="${%Compact Header}">
       <f:checkbox/>
@@ -8,8 +8,6 @@
     <f:dropdownDescriptorSelector field="logo" title="${%The logo to show}" descriptors="${descriptor.logoDescriptors}"/>
 
     <f:optionalProperty field="contextAwareLogo" title="Context Aware Logo" help="/plugin/customizable-header/help/help-contextAwareLogo.html"/>
-
-    <ch:samples/>
 
     <f:property field="headerColor"/>
   </f:optionalBlock>

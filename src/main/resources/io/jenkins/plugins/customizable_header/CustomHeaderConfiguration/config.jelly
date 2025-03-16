@@ -1,5 +1,5 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form" xmlns:ch="/lib/customizable-header">
+<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
   <f:section title="${%Customizable Header}">
       <f:entry title="${%System Messages}" help="${descriptor.getHelpFile('systemMessage')}">
         <f:repeatableProperty field="systemMessages" add="${%Add System Message}" header="${%Message}">
@@ -22,8 +22,6 @@
           <f:entry field="title" title="${%Title}">
               <f:textbox/>
           </f:entry>
-
-          <ch:samples/>
 
           <f:property field="headerColor"/>
 

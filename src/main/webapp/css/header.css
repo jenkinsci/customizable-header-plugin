@@ -37,10 +37,15 @@
   text-decoration: underline;
 }
 
+.ch-sm-label {
+  padding: 5px 10px;
+  margin-right: 20px;
+}
+
 .ch-samples {
   display: flex;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: var(--section-padding);
 }
 
 .ch-sample {

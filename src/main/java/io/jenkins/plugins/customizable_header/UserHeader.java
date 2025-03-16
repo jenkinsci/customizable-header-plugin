@@ -23,7 +23,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.StaplerRequest2;
 
-public class UserHeader extends UserProperty implements ThemeSampleProvider {
+public class UserHeader extends UserProperty {
 
   private boolean enabled;
 
