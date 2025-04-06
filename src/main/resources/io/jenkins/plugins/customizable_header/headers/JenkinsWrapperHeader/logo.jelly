@@ -1,5 +1,6 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler">
+  <span class="custom-header__logo">
     <a href="${rootURL}/" class="app-jenkins-logo">
         <st:include page="logo" it="${it.logo}" />
         <j:choose>
@@ -15,4 +16,5 @@
     <j:if test="${it.customizeAllowed and it.title != null and !(it.title eq '')}">
         <div class="custom-header__title">${it.title}</div>
     </j:if>
+  </span>
 </j:jelly>

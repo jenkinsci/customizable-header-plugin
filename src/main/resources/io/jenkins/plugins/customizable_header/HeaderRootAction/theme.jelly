@@ -3,11 +3,13 @@
   <st:contentType value="text/css" />
   :root {
     --logo-dim: 52px;
+    --ch-section-padding: 15px;
   }
   <j:if test="${it.thinHeader}">
     :root {
-      --header-height: 2.5rem;
+      --header-height: 2.75rem;
       --logo-dim: 32px;
+      --ch-section-padding: 15px;
     }
   </j:if>
 
@@ -28,7 +30,7 @@
   }
 
   .custom-header__app-nav-button {
-    z-index: 1;
+    margin: 0 5px;
   }
 
   .custom-header__title {
@@ -36,6 +38,7 @@
     margin-left: .625rem;
     font-size: 1.125rem;
     font-weight: 600;
+    white-space: nowrap;
   }
 
   .custom-header__text {
@@ -43,25 +46,34 @@
     font-weight: 600;
   }
 
-.jenkins-header {
-  display: flex;
-  gap: 10px;
-  <j:if test="${it.color != null and !it.color.equals('')}">
-    --header-color: ${it.color};
-    --text-color-secondary: var(--header-color);
-
-    .jenkins-button {
-      --button-background: color-mix(in srgb, var(--header-color) 5%, transparent);
-      --button-background--hover: color-mix(in srgb, var(--header-color) 10%, transparent);
-      --button-background--active: color-mix(in srgb, var(--header-color) 20%, transparent);
-      --button-box-shadow--focus: color-mix(in srgb, var(--header-color) 10%, transparent);
-    }
-
-  </j:if>
-
-  &amp; .jenkins-breadcrumbs {
-    width: 100%;
+  .custom-header__logo {
+    display: inline-flex;
   }
+
+.jenkins-header {
+  gap: 0;
+  <j:if test="${it.enabled}">
+    <j:if test="${it.color != null and !it.color.equals('')}">
+      --header-color: ${it.color};
+      --text-color-secondary: var(--header-color);
+
+      <j:if test="${it.jenkinsHeader}">
+        .jenkins-button,
+      </j:if>
+      .jenkins-header__actions .jenkins-button {
+        --button-background: color-mix(in srgb, var(--header-color) 5%, transparent);
+        --button-background--hover: color-mix(in srgb, var(--header-color) 20%, transparent);
+        --button-background--active: color-mix(in srgb, var(--header-color) 20%, transparent);
+        --button-box-shadow--focus: color-mix(in srgb, var(--header-color) 20%, transparent);
+      }
+
+    </j:if>
+    <j:if test="${it.backgroundColor != null and !it.backgroundColor.equals('')}">
+      background: ${it.backgroundColor};
+      --header-background: ${it.backgroundColor};
+    </j:if>
+  </j:if>
+}
 
   <j:if test="${it.enabled and it.backgroundColor != null and !it.backgroundColor.equals('')}">
 
@@ -78,50 +90,53 @@
       z-index: unset;
     }
   </j:if>
-}
 
-  .jenkins-header__navigation {
-    display: flex;
-    width: 100%;
-    <j:if test="${it.hasLinks()}">
+
+  <j:if test="${it.hasLinks()}">
+    .jenkins-header__main {
       padding-left: 0;
+    }
+
+    .jenkins-header .app-jenkins-logo::before {
+      left: 0 !important;
+    }
+  </j:if>
+
+.custom-header {
+  &amp; .ch-section-1 {
+    display: flex;
+    gap: 0;
+    align-items: center;
+    padding-right: var(--ch-section-padding);
+    min-height: var(--header-height);
+    background: var(--background);
+    <j:if test="${it.thinHeader}">
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
+    </j:if>
+    <j:if test="${!it.thinHeader}">
+      clip-path: polygon(0 0, calc(100% - 11px) 0, 100% 50%, calc(100% - 11px) 100%, 0 100%);
+    </j:if>
+    <j:if test="${!it.hasLinks()}">
+      padding-left: calc(var(--section-padding) / 2);
     </j:if>
   }
 
-  .custom-header {
-  display: flex;
-  gap: 0;
-  <j:if test="${it.color != null and !it.color.equals('')}">
-    --header-color: ${it.color};
-    --text-color-secondary: var(--header-color);
-  </j:if>
-  &amp; .ch-section-1 {
-  display: flex;
-  gap: 0;
-  background-color: var(--background);
-  padding-right: 10px;
-  <j:if test="${it.thinHeader}">
-    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
-  </j:if>
-  <j:if test="${!it.thinHeader}">
-    clip-path: polygon(0 0, calc(100% - 11px) 0, 100% 50%, calc(100% - 11px) 100%, 0 100%);
-  </j:if>
-  }
-
   &amp; .custom-header__app-nav-button {
-    z-index: 1;
     color: var(--text-color) !important;
   }
 
   &amp; .ch-section-2 {
-    display: flex;
     gap: 0;
-    width: 100%;
     background: ${it.backgroundColor};
-  }
-
-  &amp; .ch__section-2 {
-    width: 100%;
+    min-height: var(--header-height);
+    &amp; .jenkins-breadcrumbs {
+      width: 100%;
+    }
+    &amp; .jenkins-header__navigation {
+      display: flex;
+    }
+    padding-left: var(--ch-section-padding);
+    margin-left: calc(var(--ch-section-padding) * -1);
   }
 
   &amp; .app-jenkins-logo {

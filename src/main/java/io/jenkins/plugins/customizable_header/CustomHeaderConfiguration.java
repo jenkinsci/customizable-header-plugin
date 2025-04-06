@@ -50,7 +50,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private HeaderSelector header = new JenkinsWrapperHeaderSelector();
 
-  private boolean enabled = true;
+  private boolean enabled = false;
 
   private transient String cssResourceUrl;
 
@@ -219,7 +219,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     if (links == null) {
       return false;
     }
-    return links.size() != 0;
+    return !links.isEmpty();
   }
 
   private boolean hasUserLinks() {
@@ -227,7 +227,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     if (user != null) {
       UserHeader userHeader = user.getProperty(UserHeader.class);
       if (userHeader != null) {
-        return userHeader.getLinks() != null && userHeader.getLinks().size() != 0;
+        return userHeader.getLinks() != null && !userHeader.getLinks().isEmpty();
       }
     }
     return false;
@@ -351,7 +351,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   /**
    * The active header color. If the user has overwritten the colors those colors are used.
    *
-   * @return
+   * @return the active header color
    */
   public HeaderColor getActiveHeaderColor() {
     User user = User.current();

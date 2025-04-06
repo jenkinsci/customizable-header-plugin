@@ -5,7 +5,7 @@
       <div><j:out value="${it.escapedMessage}"/></div>
       <j:if test="${!h.isAnonymous() and it.dismissible}">
         <a href="#" class="ch-dismiss-link" tooltip="${%Dismiss message}" data-uid="${it.uid}">
-          <l:icon src="symbol-close-outline plugin-ionicons-api" class="icon-sm"/>
+          <l:icon src="symbol-close-outline plugin-ionicons-api"/>
         </a>
       </j:if>
     </div>

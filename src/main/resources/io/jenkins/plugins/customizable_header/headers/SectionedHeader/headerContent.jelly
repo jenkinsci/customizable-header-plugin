@@ -6,7 +6,7 @@
       <st:include page="prefix" optional="true" />
       <st:include page="logo" />
     </div>
-    <div class="ch-section-2">
+    <div class="ch-section-2 jenkins-header__main">
       <div class="jenkins-header__navigation">
         <j:if test="${it.title != null and !(it.title eq '')}">
           <div class="custom-header__title">${it.title}</div>

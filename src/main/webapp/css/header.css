@@ -5,6 +5,7 @@
   align-items: center;
   margin-bottom: var(--section-padding);
   border-radius: 0;
+  z-index: 19;
 
   & + .custom-header__system-message-header {
     margin-top: calc(var(--section-padding) * -1);
@@ -20,6 +21,8 @@
 
 .ch-dismiss-link svg {
   color: var(--red);
+  width: 20px;
+  height: 20px;
 }
 
 .custom-header__title {
@@ -44,6 +47,7 @@
 
 .ch-samples {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: var(--section-padding);
 }

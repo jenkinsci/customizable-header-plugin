@@ -3,6 +3,7 @@ package io.jenkins.plugins.customizable_header;
 import hudson.Extension;
 import hudson.model.UnprotectedRootAction;
 import hudson.model.User;
+import io.jenkins.plugins.customizable_header.headers.JenkinsWrapperHeaderSelector;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -44,6 +45,10 @@ public class HeaderRootAction implements UnprotectedRootAction {
 
   public boolean isEnabled() {
     return CustomHeaderConfiguration.get().isEnabled();
+  }
+
+  public boolean isJenkinsHeader() {
+    return CustomHeaderConfiguration.get().getHeader() instanceof JenkinsWrapperHeaderSelector;
   }
 
   public String getBackgroundColor() {

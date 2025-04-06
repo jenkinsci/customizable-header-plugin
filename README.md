@@ -1,33 +1,35 @@
 Customizable Header Plugin
 ==========
 
+- [About](#about-the-plugin)
+- [Logo](#the-logo)
+- [Application Links](#application-links-and-favorites)
+- [System Messages](#system-messages)
+
 ## About the plugin
 This plugin allows to customize the Jenkins header.
 
-The header is visually divided into 2 parts. 
-- On the left there is a logo followed by a text. As the original header this is a link to Jenkins root. 
-This part uses the jenkins theme, thus colors change together with the selected theme.
-- After a separator (just some simple clip-path with a polygon) the title is shown followed by the search box, alerts and user links.
+You can change the logo, the text next to the logo, the background, add application links (links to external pages, internal pages or items marked as favorites) and add system messages.
 
-Logo, text, title and colors can be easily changed without the need to write your own css.
-In case fine-tuning is required (e.g. to change the padding between logo and text) you can include your own css file. 
+The plugin offers 2 layouts for the header.
+- Default Jenkins header: The complete header gets the selected background
+- Sectioned header: The header is visually divided into 2 parts.
+  * On the left there is a logo followed by a text. As the original header this is a link to Jenkins root. This part uses the jenkins theme, thus colors change together with the selected theme.
+  * After a separator (just some simple clip-path with a polygon) the title is shown followed by the crumb bar and the actions.
 
-Currently, there are 2 headers available:
-- The logo header will display the same logo on all pages
-- The Context Aware header will display a logo corresponding to the context, e.g. on a job it displays 
-  the job status or the job weather. On Folders the folder icon or the folder weather, on computers the computer state.
-  And on many manage pages the corresponding symbol. If you find a missing mapping please open an issue. You can also
-  create a properties file with a custom mapping between the class and the symbol to replace. This feature allows to overwrite
-  the weather with your own symbols.
+## Configuration
+The plugin is configured via `Manage Jenkins -> Appearance`.
+After installation of the plugin, only system messages and application links are enabled.
 
-Users can choose to use a different header than what is globally defined.
-This includes showing the original header. They can also just overwrite the coloring
+Click `Customize Header` to enable changing logo, text, title and colors.
+
 
 ## The logo
 The logo can be turned off, you can use the default Jenkins logo, use a png or jpeg image, an SVG icon.
 Ideally you use an SVG as they can be made working nicely with the dark theme.
-You can also choose a symbol from ionicons (see [Design Library](https://weekly.ci.jenkins.io/design-library/Symbols/))
-how to specify a symbol (e.g. the screenshots below use `symbol-jenkins`)
+You can also choose a symbol from any plugin that provides symbols (see [Design Library](https://weekly.ci.jenkins.io/design-library/symbols/)) 
+how to specify a symbol (e.g. the screenshots below use `symbol-jenkins`)<br/>
+Optionally the logo can be made context aware. In this mode the logo corresponds to the context, e.g. on a job it displays the job status or the job weather. On Folders the folder icon or the folder weather, on computers the computer state. And on many manage pages the corresponding symbol. In case no mapping is found then the globally defined logo is used.
 
 ## The logo text
 By default, the text `Jenkins` is displayed. You can choose any text you like or make it empty to display nothing.
@@ -39,8 +41,7 @@ formatter (see <code>Manage Jenkins > Security > Markup Formatter</code>). Depen
 contain html, e.g. to include a link to some other site. Css already takes care to make the link properly styled.
 
 ## Application links and favorites
-The plugin allows to configure additional links that are accessible via a button to the left of the logo. Users can define their personal
-links in their settings.
+The plugin allows to configure additional links that are accessible via a button to the left of the logo. Users can define their personal links in their settings.
 
 When the [Favorite Plugin](https://plugins.jenkins.io/favorite) is installed, your personal favorites will
 be added as well to this menu.
@@ -83,29 +84,6 @@ icon-health-20to39=file-userContent/svgs/mood-sad.svg
 icon-health-40to59=file-userContent/svgs/mood-empty.svg
 icon-health-60to79=file-userContent/svgs/mood-smile.svg
 icon-health-80plus=file-userContent/svgs/mood-happy.svg
-```
-
-## CSS classes assigned to the different elements
-To style the header beyond changing colors you can specify your own css file.
-Following code snippet shows the basic layout of the header and the relevant classes and ids used in the plugin.
-```
-<header class="page-header custom-header__page">
-    <div class="custom-header">
-        <a class ="custom-header__link">
-            <img class="custom-header__logo" or <svg class="custom_header__logo"
-            <div class="custom-header__text>
-              Jenkins
-            </div>
-        </a>
-    </div>
-    <div class="custom-header__title">
-      Title
-    </div>
-    
-    seachbox
-    alerts
-    user
-</header>
 ```
 
 

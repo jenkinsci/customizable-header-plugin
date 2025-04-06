@@ -1,43 +1,42 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
   <f:section title="${%Customizable Header}">
-      <f:entry title="${%System Messages}" help="${descriptor.getHelpFile('systemMessage')}">
-        <f:repeatableProperty field="systemMessages" add="${%Add System Message}" header="${%Message}">
-          <f:repeatableDeleteButton/>
-        </f:repeatableProperty>
+    <f:entry title="${%System Messages}" help="${descriptor.getHelpFile('systemMessage')}">
+      <f:repeatableProperty field="systemMessages" add="${%Add System Message}" header="${%Message}">
+        <f:repeatableDeleteButton/>
+      </f:repeatableProperty>
+    </f:entry>
+
+    <f:advanced title="${%Links}">
+      <f:entry title="${%Application Links}" field="links">
+        <f:helpArea/>
+        <f:repeatableHeteroProperty field="links" addCaption="${%Add Link}" hasHeader="true"/>
+      </f:entry>
+    </f:advanced>
+
+    <f:optionalBlock field="enabled" title="${%Customize Header}" inline="true">
+      <f:entry field="thinHeader" title="${%Compact Header}">
+        <f:checkbox/>
       </f:entry>
 
-      <f:optionalBlock field="enabled" title="${%Customize Header}" inline="true">
+      <f:dropdownDescriptorSelector field="header" title="${%The header to use}"/>
 
-          <f:entry field="thinHeader" title="${%Compact Header}">
-              <f:checkbox/>
-          </f:entry>
+      <f:dropdownDescriptorSelector field="logo" title="${%The logo to show}" descriptors="${descriptor.logoDescriptors}"/>
 
-          <f:dropdownDescriptorSelector field="header" title="${%The header to use}"/>
+      <f:optionalProperty field="contextAwareLogo" title="Context Aware Logo" help="/plugin/customizable-header/help/help-contextAwareLogo.html"/>
 
-          <f:dropdownDescriptorSelector field="logo" title="${%The logo to show}" descriptors="${descriptor.logoDescriptors}"/>
+      <f:entry field="logoText" title="${%Text}">
+        <f:textbox placeholder="Jenkins" clazz="custom-header__text-input" />
+      </f:entry>
+      <f:entry field="title" title="${%Title}">
+        <f:textbox/>
+      </f:entry>
 
-          <f:optionalProperty field="contextAwareLogo" title="Context Aware Logo" help="/plugin/customizable-header/help/help-contextAwareLogo.html"/>
+      <f:property field="headerColor"/>
 
-          <f:entry field="logoText" title="${%Text}">
-              <f:textbox placeholder="Jenkins" clazz="custom-header__text-input" />
-          </f:entry>
-          <f:entry field="title" title="${%Title}">
-              <f:textbox/>
-          </f:entry>
-
-          <f:property field="headerColor"/>
-
-          <f:entry field="cssResource" title="${%URL of theme CSS}">
-              <f:textbox/>
-          </f:entry>
-      </f:optionalBlock>
-
-      <f:advanced title="${%Links}">
-          <f:entry title="${%Application Links}" field="links">
-              <f:helpArea/>
-              <f:repeatableHeteroProperty field="links" addCaption="${%Add Link}" hasHeader="true"/>
-          </f:entry>
-      </f:advanced>
+      <f:entry field="cssResource" title="${%URL of theme CSS}">
+        <f:textbox/>
+      </f:entry>
+    </f:optionalBlock>
   </f:section>
 </j:jelly>
