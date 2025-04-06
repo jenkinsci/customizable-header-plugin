@@ -2,13 +2,13 @@ package io.jenkins.plugins.customizable_header.color;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
-import hudson.model.AbstractDescribableImpl;
+import hudson.model.Describable;
 import hudson.model.Descriptor;
 import io.jenkins.plugins.customizable_header.ThemeSample;
 import java.util.List;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-public class HeaderColor extends AbstractDescribableImpl<HeaderColor> {
+public class HeaderColor implements Describable<HeaderColor> {
 
   private final String backgroundColor;
   private final String color;

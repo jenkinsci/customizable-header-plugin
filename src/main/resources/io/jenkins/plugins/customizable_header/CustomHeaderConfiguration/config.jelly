@@ -19,7 +19,7 @@
         <f:checkbox/>
       </f:entry>
 
-      <f:dropdownDescriptorSelector field="header" title="${%The header to use}"/>
+      <f:dropdownDescriptorSelector field="header" title="${%The header to use}" descriptors="${descriptor.headerDescriptors}"/>
 
       <f:dropdownDescriptorSelector field="logo" title="${%The logo to show}" descriptors="${descriptor.logoDescriptors}"/>
 

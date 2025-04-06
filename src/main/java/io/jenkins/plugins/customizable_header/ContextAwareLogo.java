@@ -6,9 +6,9 @@ import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.Util;
-import hudson.model.AbstractDescribableImpl;
 import hudson.model.Action;
 import hudson.model.Computer;
+import hudson.model.Describable;
 import hudson.model.Descriptor;
 import hudson.model.HealthReport;
 import hudson.model.Hudson;
@@ -42,7 +42,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.Stapler;
 
-public class ContextAwareLogo extends AbstractDescribableImpl<ContextAwareLogo> {
+public class ContextAwareLogo implements Describable<ContextAwareLogo> {
 
   private boolean showJobWeather;
   private boolean showFolderWeather;

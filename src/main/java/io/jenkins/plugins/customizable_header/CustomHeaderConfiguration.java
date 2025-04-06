@@ -9,8 +9,13 @@ import hudson.model.Item;
 import hudson.model.User;
 import hudson.plugins.favorite.Favorites;
 import io.jenkins.plugins.customizable_header.color.HeaderColor;
+import io.jenkins.plugins.customizable_header.headers.ContextSelector;
+import io.jenkins.plugins.customizable_header.headers.HeaderDescriptor;
 import io.jenkins.plugins.customizable_header.headers.HeaderSelector;
+import io.jenkins.plugins.customizable_header.headers.JenkinsHeaderSelector;
 import io.jenkins.plugins.customizable_header.headers.JenkinsWrapperHeaderSelector;
+import io.jenkins.plugins.customizable_header.headers.LogoSelector;
+import io.jenkins.plugins.customizable_header.headers.SectionedHeaderSelector;
 import io.jenkins.plugins.customizable_header.logo.DefaultLogo;
 import io.jenkins.plugins.customizable_header.logo.Icon;
 import io.jenkins.plugins.customizable_header.logo.Logo;
@@ -101,6 +106,21 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     if (systemMessage != null) {
       systemMessages.add(systemMessage);
     }
+    if (header instanceof ContextSelector cs) {
+      contextAwareLogo = new ContextAwareLogo();
+      contextAwareLogo.setShowFolderWeather(cs.isShowFolderWeather());
+      contextAwareLogo.setShowJobWeather(cs.isShowJobWeather());
+      contextAwareLogo.setSymbolMappingFile(cs.getSymbolMappingFile());
+      header = new SectionedHeaderSelector();
+    }
+    if (header instanceof LogoSelector) {
+      header = new SectionedHeaderSelector();
+    }
+    if (header instanceof JenkinsHeaderSelector) {
+      header = new JenkinsWrapperHeaderSelector();
+      enabled = false;
+    }
+    save();
     return this;
   }
 
@@ -441,4 +461,10 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
         .collect(Collectors.toList());
   }
 
+  public List<Descriptor<HeaderSelector>> getHeaderDescriptors() {
+    return HeaderDescriptor.all().stream()
+        .filter(d -> !(d instanceof ContextSelector.DescriptorImpl) && !(d instanceof LogoSelector.DescriptorImpl)
+            && !(d instanceof JenkinsHeaderSelector.DescriptorImpl))
+        .collect(Collectors.toList());
+  }
 }
