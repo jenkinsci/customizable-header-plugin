@@ -5,8 +5,8 @@
       <button class="jenkins-button ch-sample"
               type="button"
               style="background: ${sample.backgroundColor}; color: ${sample.color} !important;"
-              data-background="${sample.backgroundColor}"
-              data-color="${sample.color}">
+              data-background="${sample.configBackgroundColor}"
+              data-color="${sample.configColor}">
         ${sample.displayName}
       </button>
     </j:forEach>

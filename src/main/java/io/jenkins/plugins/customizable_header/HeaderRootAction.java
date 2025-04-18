@@ -52,11 +52,11 @@ public class HeaderRootAction implements UnprotectedRootAction {
   }
 
   public String getBackgroundColor() {
-    return CustomHeaderConfiguration.get().getActiveHeaderColor().getBackgroundColor();
+    return CustomHeaderConfiguration.get().getActiveHeaderColor().getActiveBackgroundColor();
   }
 
   public String getColor() {
-    return CustomHeaderConfiguration.get().getActiveHeaderColor().getColor();
+    return CustomHeaderConfiguration.get().getActiveHeaderColor().getActiveColor();
   }
 
   public boolean isThinHeader() {

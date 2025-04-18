@@ -95,6 +95,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
         systemMessages.clear();
         result = super.configure(req, json);
       }
+      headerColor.setUserColors(false);
       bc.commit();
     } catch (IOException e) {
       LOGGER.log(Level.WARNING, "Failed to save " + getConfigFile(), e);
@@ -120,6 +121,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
       header = new JenkinsWrapperHeaderSelector();
       enabled = false;
     }
+    headerColor.setUserColors(false);
     save();
     return this;
   }
@@ -329,23 +331,23 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   }
 
   public Logo getActiveLogo() {
-    User user = User.current();
-    if (user != null) {
-      UserHeader userHeader = user.getProperty(UserHeader.class);
-      if (userHeader != null && userHeader.isEnabled()) {
-        Logo activeLogo = userHeader.getActiveLogo();
-        if (activeLogo != null) {
-          return activeLogo;
-        }
-      }
-    }
-
     if (!isEnabled()) {
       return new DefaultLogo();
     }
     Logo logo = null;
-    if (contextAwareLogo != null) {
-      logo = contextAwareLogo.getLogo();
+    User user = User.current();
+    ContextAwareLogo cal = contextAwareLogo;
+    if (user != null) {
+      UserHeader userHeader = user.getProperty(UserHeader.class);
+      if (userHeader != null && userHeader.isEnabled()) {
+        if (userHeader.getContextAwareLogo() != null) {
+          cal = userHeader.getContextAwareLogo();
+        }
+      }
+    }
+
+    if (cal != null) {
+      logo = cal.getLogo();
     }
     if (logo == null) {
       logo = this.logo;

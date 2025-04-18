@@ -5,8 +5,6 @@
       <f:checkbox/>
     </f:entry>
 
-    <f:dropdownDescriptorSelector field="logo" title="${%The logo to show}" descriptors="${descriptor.logoDescriptors}"/>
-
     <f:optionalProperty field="contextAwareLogo" title="Context Aware Logo" help="/plugin/customizable-header/help/help-contextAwareLogo.html"/>
 
     <f:property field="headerColor"/>

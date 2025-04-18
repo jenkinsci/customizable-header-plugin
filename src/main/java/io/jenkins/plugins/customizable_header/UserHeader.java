@@ -3,20 +3,16 @@ package io.jenkins.plugins.customizable_header;
 import edu.umd.cs.findbugs.annotations.CheckForNull;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
-import hudson.model.Descriptor;
 import hudson.model.User;
 import hudson.model.UserProperty;
 import hudson.model.UserPropertyDescriptor;
 import hudson.model.userproperty.UserPropertyCategory;
 import io.jenkins.plugins.customizable_header.color.HeaderColor;
-import io.jenkins.plugins.customizable_header.logo.Icon;
-import io.jenkins.plugins.customizable_header.logo.Logo;
-import io.jenkins.plugins.customizable_header.logo.LogoDescriptor;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import net.sf.json.JSONObject;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -31,8 +27,6 @@ public class UserHeader extends UserProperty {
 
   private HeaderColor headerColor;
 
-  private Logo logo;
-
   private List<AbstractLink> links = new ArrayList<>();
 
   private Set<String> dismissedMessages = new HashSet<>();
@@ -41,6 +35,19 @@ public class UserHeader extends UserProperty {
 
   @DataBoundConstructor
   public UserHeader() {
+  }
+
+  @Override
+  protected void setUser(User u) {
+    super.setUser(u);
+    if (headerColor != null && headerColor.getUserColors() == null) {
+      headerColor.setUserColors(true);
+      try {
+        u.save();
+      } catch (IOException e) {
+        //
+      }
+    }
   }
 
   @DataBoundSetter
@@ -79,26 +86,6 @@ public class UserHeader extends UserProperty {
     return headerColor;
   }
 
-  @DataBoundSetter
-  public void setLogo(Logo logo) {
-    this.logo = logo;
-  }
-
-  public Logo getLogo() {
-    return logo;
-  }
-
-  public Logo getActiveLogo() {
-    Logo logo = null;
-    if (contextAwareLogo != null) {
-      logo = contextAwareLogo.getLogo();
-    }
-    if (logo == null) {
-      logo = this.logo;
-    }
-    return logo;
-  }
-
   public List<AbstractLink> getLinks() {
     return links;
   }
@@ -108,11 +95,15 @@ public class UserHeader extends UserProperty {
     this.links = links;
   }
 
-  public Object readResolve() {
+  public Object readResolve() throws IOException {
     if (dismissedMessages == null) {
       dismissedMessages = new HashSet<>();
     }
     return this;
+  }
+
+  public void setDismissedMessages(Set<String> dismissedMessages) {
+    this.dismissedMessages = dismissedMessages;
   }
 
   public Set<String> getDismissedMessages() {
@@ -126,6 +117,7 @@ public class UserHeader extends UserProperty {
     }
     contextAwareLogo = null;
     req.bindJSON(this, form);
+    headerColor.setUserColors(true);
     return this;
   }
 
@@ -137,7 +129,7 @@ public class UserHeader extends UserProperty {
     public UserProperty newInstance(User user) {
       UserHeader userHeader = new UserHeader();
       HeaderColor globalHeaderColor = CustomHeaderConfiguration.get().getHeaderColor();
-      userHeader.setHeaderColor(new HeaderColor(globalHeaderColor));
+      userHeader.setHeaderColor(new HeaderColor("inherit", "inherit", true));
       return userHeader;
     }
 
@@ -150,13 +142,6 @@ public class UserHeader extends UserProperty {
     @Override
     public @NonNull UserPropertyCategory getUserPropertyCategory() {
         return UserPropertyCategory.get(UserPropertyCategory.Appearance.class);
-    }
-
-    // TODO - this should be combined with CustomHeaderConfiguration#401
-    public List<Descriptor<Logo>> getLogoDescriptors() {
-      return LogoDescriptor.all().stream()
-          .filter(d -> !(d instanceof Icon.DescriptorImpl))
-          .collect(Collectors.toList());
     }
   }
 }
