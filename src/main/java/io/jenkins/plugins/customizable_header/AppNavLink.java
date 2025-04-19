@@ -27,6 +27,7 @@ public class AppNavLink extends AbstractLink {
   private String url;
   private String label;
   private Logo logo;
+  private String id;
 
   private boolean external;
 
@@ -83,6 +84,15 @@ public class AppNavLink extends AbstractLink {
     this.logo = logo;
   }
 
+  @Exported
+  public String getId() {
+    return id;
+  }
+
+  @DataBoundSetter
+  public void setId(String id) {
+    this.id = id;
+  }
 
   @Exported
   @Override

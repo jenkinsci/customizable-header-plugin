@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import jenkins.model.Jenkins;
 import org.kohsuke.stapler.HttpResponse;
 import org.kohsuke.stapler.HttpResponses;
@@ -28,6 +30,8 @@ import org.kohsuke.stapler.verb.POST;
  */
 @Extension
 public class HeaderRootAction implements UnprotectedRootAction {
+  private static final Logger LOGGER = Logger.getLogger(HeaderRootAction.class.getName());
+  
   @Override
   public String getIconFileName() {
     return null;
@@ -61,6 +65,42 @@ public class HeaderRootAction implements UnprotectedRootAction {
 
   public boolean hasLinks() {
     return CustomHeaderConfiguration.get().hasLinks();
+  }
+
+  /**
+   * Notifies the frontend about favorite status changes
+   * This method is called by the FavoriteIntegrationListener when a favorite is added or removed
+   */
+  public void notifyFavoriteStatusChanged() {
+    LOGGER.fine("Favorite status changed, notifying frontend");
+    // The actual notification is handled via the /favoriteStatusChanged endpoint
+  }
+
+  /**
+   * Endpoint for the frontend to check if there was a favorite status change
+   * @return JSON response indicating whether the app-nav button should be shown/hidden
+   */
+  @GET
+  public FavoriteStatus doFavoriteStatusChanged() {
+    boolean hasLinks = hasLinks();
+    return new FavoriteStatus(hasLinks);
+  }
+
+  /**
+   * Simple status object for favorite status changes
+   */
+  @ExportedBean
+  public static class FavoriteStatus {
+    private final boolean showAppNav;
+    
+    public FavoriteStatus(boolean showAppNav) {
+      this.showAppNav = showAppNav;
+    }
+    
+    @Exported
+    public boolean isShowAppNav() {
+      return showAppNav;
+    }
   }
 
   @POST
