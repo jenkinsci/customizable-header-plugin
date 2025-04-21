@@ -128,7 +128,6 @@ public class UserHeader extends UserProperty {
     @Override
     public UserProperty newInstance(User user) {
       UserHeader userHeader = new UserHeader();
-      HeaderColor globalHeaderColor = CustomHeaderConfiguration.get().getHeaderColor();
       userHeader.setHeaderColor(new HeaderColor("inherit", "inherit", true));
       return userHeader;
     }
