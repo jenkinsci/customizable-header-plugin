@@ -1,0 +1,14 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler">
+    <a href="${rootURL}/" class="app-jenkins-logo">
+        <st:include page="logo" it="${it.logo}" />
+        <j:choose>
+            <j:when test="${it.logoText != null and !(it.logoText eq '')}">
+                <div class="custom-header__text">${it.logoText}</div>
+            </j:when>
+            <j:otherwise>
+                <span class="jenkins-mobile-hide">Jenkins</span>
+            </j:otherwise>
+        </j:choose>
+    </a>
+</j:jelly>

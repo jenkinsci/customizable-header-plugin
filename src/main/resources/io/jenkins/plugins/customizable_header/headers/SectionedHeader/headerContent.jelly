@@ -1,0 +1,24 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:h="/lib/layout/header" xmlns:l="/lib/layout" xmlns:st="jelly:stapler"
+         xmlns:ch="/lib/customizable-header">
+  <header id="page-header" class="custom-header jenkins-header">
+    <div class="ch-section-1">
+      <st:include page="prefix" optional="true" />
+      <st:include page="logo" />
+    </div>
+    <div class="ch-section-2 jenkins-header__main">
+      <div class="jenkins-header__navigation">
+        <j:if test="${it.title != null and !(it.title eq '')}">
+          <div class="custom-header__title">${it.title}</div>
+        </j:if>
+        <l:breadcrumbBar>
+          <j:out value="${breadcrumbs}" />
+        </l:breadcrumbBar>
+      </div>
+
+      <h:actions />
+    </div>
+  </header>
+  <script src="${resURL}/jsbundles/header.js" type="text/javascript" />
+  <ch:systemMessages/>
+</j:jelly>

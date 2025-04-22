@@ -9,8 +9,14 @@ import hudson.model.Item;
 import hudson.model.User;
 import hudson.plugins.favorite.Favorites;
 import io.jenkins.plugins.customizable_header.color.HeaderColor;
+import io.jenkins.plugins.customizable_header.headers.ContextSelector;
+import io.jenkins.plugins.customizable_header.headers.HeaderDescriptor;
 import io.jenkins.plugins.customizable_header.headers.HeaderSelector;
 import io.jenkins.plugins.customizable_header.headers.JenkinsHeaderSelector;
+import io.jenkins.plugins.customizable_header.headers.JenkinsWrapperHeaderSelector;
+import io.jenkins.plugins.customizable_header.headers.LogoSelector;
+import io.jenkins.plugins.customizable_header.headers.SectionedHeaderSelector;
+import io.jenkins.plugins.customizable_header.logo.DefaultLogo;
 import io.jenkins.plugins.customizable_header.logo.Icon;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import io.jenkins.plugins.customizable_header.logo.LogoDescriptor;
@@ -43,17 +49,17 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private String cssResource;
 
-  private String logoText = "Jenkins";
+  private String logoText = "";
 
   private Logo logo = new Symbol("symbol-jenkins");
 
-  private HeaderSelector header = new JenkinsHeaderSelector();
+  private HeaderSelector header = new JenkinsWrapperHeaderSelector();
 
-  private boolean enabled = true;
+  private boolean enabled = false;
 
   private transient String cssResourceUrl;
 
-  private HeaderColor headerColor = new HeaderColor("black", "grey", "white");
+  private HeaderColor headerColor = new HeaderColor("black", "white");
 
   private boolean thinHeader;
 
@@ -63,7 +69,10 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private List<AbstractLink> links = new ArrayList<>();
 
+  private ContextAwareLogo contextAwareLogo;
+
   private static final transient Symbol star = new Symbol("symbol-star plugin-ionicons-api");
+
 
   @DataBoundConstructor
   public CustomHeaderConfiguration() {
@@ -81,10 +90,12 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     boolean result = false;
     try (BulkChange bc = new BulkChange(this)) {
       links.clear();
+      contextAwareLogo = null;
       synchronized (systemMessages) {
         systemMessages.clear();
         result = super.configure(req, json);
       }
+      headerColor.setUserColors(false);
       bc.commit();
     } catch (IOException e) {
       LOGGER.log(Level.WARNING, "Failed to save " + getConfigFile(), e);
@@ -96,6 +107,22 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     if (systemMessage != null) {
       systemMessages.add(systemMessage);
     }
+    if (header instanceof ContextSelector cs) {
+      contextAwareLogo = new ContextAwareLogo();
+      contextAwareLogo.setShowFolderWeather(cs.isShowFolderWeather());
+      contextAwareLogo.setShowJobWeather(cs.isShowJobWeather());
+      contextAwareLogo.setSymbolMappingFile(cs.getSymbolMappingFile());
+      header = new SectionedHeaderSelector();
+    }
+    if (header instanceof LogoSelector) {
+      header = new SectionedHeaderSelector();
+    }
+    if (header instanceof JenkinsHeaderSelector) {
+      header = new JenkinsWrapperHeaderSelector();
+      enabled = false;
+    }
+    headerColor.setUserColors(false);
+    save();
     return this;
   }
 
@@ -214,7 +241,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     if (links == null) {
       return false;
     }
-    return links.size() != 0;
+    return !links.isEmpty();
   }
 
   private boolean hasUserLinks() {
@@ -222,7 +249,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     if (user != null) {
       UserHeader userHeader = user.getProperty(UserHeader.class);
       if (userHeader != null) {
-        return userHeader.getLinks() != null && userHeader.getLinks().size() != 0;
+        return userHeader.getLinks() != null && !userHeader.getLinks().isEmpty();
       }
     }
     return false;
@@ -248,7 +275,23 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   }
 
   public boolean isThinHeader() {
+    User user = User.current();
+    if (user != null) {
+      UserHeader userHeader = user.getProperty(UserHeader.class);
+      if (userHeader != null && userHeader.isEnabled()) {
+        return userHeader.isThinHeader();
+      }
+    }
     return thinHeader;
+  }
+
+  @DataBoundSetter
+  public void setContextAwareLogo(ContextAwareLogo contextAwareLogo) {
+    this.contextAwareLogo = contextAwareLogo;
+  }
+
+  public ContextAwareLogo getContextAwareLogo() {
+    return contextAwareLogo;
   }
 
   @DataBoundSetter
@@ -287,6 +330,31 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     return logo;
   }
 
+  public Logo getActiveLogo() {
+    if (!isEnabled()) {
+      return new DefaultLogo();
+    }
+    Logo logo = null;
+    User user = User.current();
+    ContextAwareLogo cal = contextAwareLogo;
+    if (user != null) {
+      UserHeader userHeader = user.getProperty(UserHeader.class);
+      if (userHeader != null && userHeader.isEnabled()) {
+        if (userHeader.getContextAwareLogo() != null) {
+          cal = userHeader.getContextAwareLogo();
+        }
+      }
+    }
+
+    if (cal != null) {
+      logo = cal.getLogo();
+    }
+    if (logo == null) {
+      logo = this.logo;
+    }
+    return logo;
+  }
+
   @DataBoundSetter
   public void setHeaderColor(HeaderColor headerColor) {
     this.headerColor = headerColor;
@@ -305,13 +373,13 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   /**
    * The active header color. If the user has overwritten the colors those colors are used.
    *
-   * @return
+   * @return the active header color
    */
   public HeaderColor getActiveHeaderColor() {
     User user = User.current();
     if (user != null) {
       UserHeader userHeader = user.getProperty(UserHeader.class);
-      if (userHeader != null && userHeader.isOverwriteColors()) {
+      if (userHeader != null && userHeader.isEnabled()) {
         return userHeader.getHeaderColor();
       }
     }
@@ -320,16 +388,9 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   public HeaderSelector getActiveHeader() {
     if (enabled) {
-      User user = User.current();
-      if (user != null) {
-        UserHeader userHeader = user.getProperty(UserHeader.class);
-        if (userHeader != null && userHeader.isOverwriteHeader()) {
-          return userHeader.getHeaderSelector();
-        }
-      }
       return header;
     }
-    return new JenkinsHeaderSelector();
+    return null;
   }
 
   @DataBoundSetter
@@ -392,13 +453,20 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     return cssResourceUrl;
   }
 
-  public Logo defaultLogo() {
-    return new Symbol("symbol-jenkins");
-  }
+//  public Logo defaultLogo() {
+//    return new Symbol("symbol-jenkins");
+//  }
 
   public List<Descriptor<Logo>> getLogoDescriptors() {
     return LogoDescriptor.all().stream()
         .filter(d -> !(d instanceof Icon.DescriptorImpl))
+        .collect(Collectors.toList());
+  }
+
+  public List<Descriptor<HeaderSelector>> getHeaderDescriptors() {
+    return HeaderDescriptor.all().stream()
+        .filter(d -> !(d instanceof ContextSelector.DescriptorImpl) && !(d instanceof LogoSelector.DescriptorImpl)
+            && !(d instanceof JenkinsHeaderSelector.DescriptorImpl))
         .collect(Collectors.toList());
   }
 }

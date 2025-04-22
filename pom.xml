@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>5.6</version>
+    <version>5.11</version>
     <relativePath />
   </parent>
 
@@ -35,8 +35,8 @@
   <properties>
     <changelist>999999-SNAPSHOT</changelist>
     <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
-    <jenkins.baseline>2.479</jenkins.baseline>
-    <jenkins.version>${jenkins.baseline}.1</jenkins.version>
+    <jenkins.baseline>2.492</jenkins.baseline>
+    <jenkins.version>2.507</jenkins.version>
     <gitHubRepo>jenkinsci/customizable-header-plugin</gitHubRepo>
     <node.version>20.18.0</node.version>
     <npm.version>10.9.1</npm.version>
@@ -50,7 +50,7 @@
       <dependency>
         <groupId>io.jenkins.tools.bom</groupId>
         <artifactId>bom-${jenkins.baseline}.x</artifactId>
-        <version>4051.v78dce3ce8b_d6</version>
+        <version>4628.v2b_234a_1a_20d0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

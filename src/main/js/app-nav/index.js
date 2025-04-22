@@ -102,6 +102,7 @@ function init() {
         interactive: true,
         trigger: "click",
         allowHTML: true,
+        appendTo: document.getElementById("page-header"),
         placement: "bottom-start",
         arrow: false,
         theme: "dropdown",

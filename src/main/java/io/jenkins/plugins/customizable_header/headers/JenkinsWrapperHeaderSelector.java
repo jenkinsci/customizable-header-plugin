@@ -2,22 +2,26 @@ package io.jenkins.plugins.customizable_header.headers;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
-import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-public class LogoSelector extends HeaderSelector {
+/**
+ * Selector that has no own header.
+ * This means that the Jenkins own header is used or a header from
+ * another plugin.
+ */
+public class JenkinsWrapperHeaderSelector extends HeaderSelector {
+
   @DataBoundConstructor
-  public LogoSelector() {
+  public JenkinsWrapperHeaderSelector() {
   }
 
   @Extension
-  @Symbol("logo")
+  @org.jenkinsci.Symbol("jenkins")
   public static class DescriptorImpl extends HeaderDescriptor {
-
     @NonNull
     @Override
     public String getDisplayName() {
-      return "Logo";
+      return "Jenkins Header";
     }
   }
 }
