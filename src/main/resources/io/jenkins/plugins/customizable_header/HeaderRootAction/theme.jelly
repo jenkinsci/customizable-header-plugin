@@ -3,13 +3,13 @@
   <st:contentType value="text/css" />
   :root {
     --logo-dim: 52px;
-    --ch-section-padding: 15px;
+    --ch-padding: 11px;
   }
   <j:if test="${it.thinHeader}">
     :root {
       --header-height: 2.75rem;
       --logo-dim: 32px;
-      --ch-section-padding: 15px;
+      --ch-padding: 8px;
     }
   </j:if>
 
@@ -72,6 +72,7 @@
       background: ${it.backgroundColor};
       --header-background: ${it.backgroundColor};
     </j:if>
+    margin-bottom: 0.25rem;
   </j:if>
 }
 
@@ -103,19 +104,15 @@
   </j:if>
 
 .custom-header {
+  background: unset;
   &amp; .ch-section-1 {
     display: flex;
     gap: 0;
     align-items: center;
-    padding-right: var(--ch-section-padding);
+    padding-right: var(--ch-padding);
     min-height: var(--header-height);
     background: var(--background);
-    <j:if test="${it.thinHeader}">
-      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
-    </j:if>
-    <j:if test="${!it.thinHeader}">
-      clip-path: polygon(0 0, calc(100% - 11px) 0, 100% 50%, calc(100% - 11px) 100%, 0 100%);
-    </j:if>
+    clip-path: polygon(0 0, calc(100% - var(--ch-padding)) 0, 100% 50%, calc(100% - var(--ch-padding)) 100%, 0 100%);
     <j:if test="${!it.hasLinks()}">
       padding-left: calc(var(--section-padding) / 2);
     </j:if>
@@ -135,13 +132,14 @@
     &amp; .jenkins-header__navigation {
       display: flex;
     }
-    padding-left: var(--ch-section-padding);
-    margin-left: calc(var(--ch-section-padding) * -1);
+    padding-left: var(--ch-padding);
+    margin-left: calc(var(--ch-padding) * -1);
   }
 
   &amp; .app-jenkins-logo {
     gap: .5rem;
-    color: var(--text-color)
+    color: var(--text-color);
+    padding-right: 10px;
   }
 
   &amp; .jenkins-header__navigation {
