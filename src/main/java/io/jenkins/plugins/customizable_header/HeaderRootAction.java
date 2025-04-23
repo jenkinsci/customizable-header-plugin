@@ -86,6 +86,7 @@ public class HeaderRootAction implements UnprotectedRootAction {
    */
   @GET
   public FavoriteStatus doFavoriteStatusChanged() {
+    
     Jenkins.get().checkPermission(Jenkins.READ);
     boolean hasLinks = hasLinks();
     LOGGER.info("DEBUG: doFavoriteStatusChanged endpoint called, hasLinks=" + hasLinks);
