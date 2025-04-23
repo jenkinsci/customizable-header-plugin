@@ -76,7 +76,7 @@ public class HeaderRootAction implements UnprotectedRootAction {
    * This method is called by the FavoriteIntegrationListener when a favorite is added or removed
    */
   public void notifyFavoriteStatusChanged() {
-    LOGGER.fine("Favorite status changed, notifying frontend");
+    LOGGER.info("DEBUG: notifyFavoriteStatusChanged called in HeaderRootAction");
     // The actual notification is handled via the /favoriteStatusChanged endpoint
   }
 
@@ -87,6 +87,7 @@ public class HeaderRootAction implements UnprotectedRootAction {
   @GET
   public FavoriteStatus doFavoriteStatusChanged() {
     boolean hasLinks = hasLinks();
+    LOGGER.info("DEBUG: doFavoriteStatusChanged endpoint called, hasLinks=" + hasLinks);
     return new FavoriteStatus(hasLinks);
   }
 

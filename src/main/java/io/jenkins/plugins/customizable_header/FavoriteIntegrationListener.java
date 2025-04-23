@@ -21,6 +21,7 @@ public class FavoriteIntegrationListener extends FavoriteListener {
     
     @Override
     public void onAddFavourite(Item item, User user) {
+        LOGGER.info("DEBUG: onAddFavourite triggered for item " + item.getFullName() + " and user " + user.getId());
         updateFavoritesNavLink(user, true);
         // Trigger the favorite status refresh event for UI
         triggerAppNavRefresh();
@@ -28,8 +29,10 @@ public class FavoriteIntegrationListener extends FavoriteListener {
     
     @Override
     public void onRemoveFavourite(Item item, User user) {
+        LOGGER.info("DEBUG: onRemoveFavourite triggered for item " + item.getFullName() + " and user " + user.getId());
         // Check if the user has any favorites left
         boolean hasFavorites = !isEmpty(Favorites.getFavorites(user));
+        LOGGER.info("DEBUG: User " + user.getId() + " has favorites: " + hasFavorites);
         updateFavoritesNavLink(user, hasFavorites);
         // Trigger the favorite status refresh event for UI
         triggerAppNavRefresh();
@@ -86,6 +89,7 @@ public class FavoriteIntegrationListener extends FavoriteListener {
             // Use Jenkins.getInstance() to get the Jenkins instance
             Jenkins jenkins = Jenkins.get();
             if (jenkins != null) {
+                LOGGER.info("DEBUG: Triggering app-nav refresh after favorite change");
                 // Notify the frontend about the favorite status change
                 jenkins.getExtensionList(HeaderRootAction.class)
                     .get(0)
