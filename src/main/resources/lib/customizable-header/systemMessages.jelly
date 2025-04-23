@@ -1,6 +1,8 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler">
-  <j:forEach var="systemMessage" items="${it.systemMessages}">
-    <st:include page="index.jelly" it="${systemMessage}" class="io.jenkins.plugins.customizable_header.SystemMessage"/>
-  </j:forEach>
+  <div class="custom-header__system-messages">
+    <j:forEach var="systemMessage" items="${it.systemMessages}">
+      <st:include page="index.jelly" it="${systemMessage}" class="io.jenkins.plugins.customizable_header.SystemMessage"/>
+    </j:forEach>
+  </div>
 </j:jelly>

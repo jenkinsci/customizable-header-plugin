@@ -1,15 +1,15 @@
+.custom-header__system-messages:has(div.custom-header__system-message-header) {
+  margin-bottom: 1rem;
+  margin-top: -0.5rem;
+  z-index: 19;
+}
+
 .custom-header__system-message-header {
   padding: 0.5rem var(--section-padding);
   margin: 0;
   display: flex;
   align-items: center;
-  margin-bottom: var(--section-padding);
   border-radius: 0;
-  z-index: 19;
-
-  & + .custom-header__system-message-header {
-    margin-top: calc(var(--section-padding) * -1);
-  }
 }
 
 .ch-dismiss-link {
