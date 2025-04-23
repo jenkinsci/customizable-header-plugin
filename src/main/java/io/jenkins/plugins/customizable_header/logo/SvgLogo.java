@@ -142,7 +142,7 @@ public class SvgLogo extends Logo {
             .replaceAll("(tooltip=\")[^&]*?(\")", "")
             .replaceAll("(data-html-tooltip=\").*?(\")", "")
             .replaceAll("<svg", "<svg aria-hidden=\"true\"")
-            .replaceAll("<svg", "<svg class=\"custom-header__logo\"")
+            .replaceAll("<svg", "<svg class=\"custom-header__svg\"")
             .replaceAll("<svg", "<svg alt=\"[Jenkins]\"")
             .replace("stroke:#000", "stroke:currentColor");
 

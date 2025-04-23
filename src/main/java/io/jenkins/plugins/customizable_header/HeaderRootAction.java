@@ -3,7 +3,7 @@ package io.jenkins.plugins.customizable_header;
 import hudson.Extension;
 import hudson.model.UnprotectedRootAction;
 import hudson.model.User;
-import io.jenkins.plugins.customizable_header.headers.LogoSelector;
+import io.jenkins.plugins.customizable_header.headers.JenkinsWrapperHeaderSelector;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -47,20 +47,24 @@ public class HeaderRootAction implements UnprotectedRootAction {
     return "customizable-header";
   }
 
-  public String getBackgroundColor() {
-    return CustomHeaderConfiguration.get().getActiveHeaderColor().getBackgroundColor();
+  public boolean isEnabled() {
+    return CustomHeaderConfiguration.get().isEnabled();
   }
 
-  public String getHoverColor() {
-    return CustomHeaderConfiguration.get().getActiveHeaderColor().getHoverColor();
+  public boolean isJenkinsHeader() {
+    return CustomHeaderConfiguration.get().getHeader() instanceof JenkinsWrapperHeaderSelector;
+  }
+
+  public String getBackgroundColor() {
+    return CustomHeaderConfiguration.get().getActiveHeaderColor().getActiveBackgroundColor();
   }
 
   public String getColor() {
-    return CustomHeaderConfiguration.get().getActiveHeaderColor().getColor();
+    return CustomHeaderConfiguration.get().getActiveHeaderColor().getActiveColor();
   }
 
   public boolean isThinHeader() {
-    return CustomHeaderConfiguration.get().isThinHeader() && CustomHeaderConfiguration.get().getHeader() instanceof LogoSelector;
+    return  CustomHeaderConfiguration.get().isEnabled() && CustomHeaderConfiguration.get().isThinHeader();
   }
 
   public boolean hasLinks() {

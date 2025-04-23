@@ -15,11 +15,11 @@ public class CustomHeaderDecorator extends PageDecorator {
   }
 
   public boolean isImageLogo() {
-    return CustomHeaderConfiguration.get().getLogo() instanceof ImageLogo;
+    return CustomHeaderConfiguration.get().getActiveLogo() instanceof ImageLogo;
   }
 
   public String getImageUrl() {
-    Logo logo = CustomHeaderConfiguration.get().getLogo();
+    Logo logo = CustomHeaderConfiguration.get().getActiveLogo();
     if (logo instanceof ImageLogo) {
       return ((ImageLogo) logo).getUrl();
     }

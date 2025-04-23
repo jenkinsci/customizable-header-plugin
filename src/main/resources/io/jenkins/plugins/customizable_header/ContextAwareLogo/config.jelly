@@ -6,7 +6,7 @@
   <f:entry field="showFolderWeather" title="${%Show the weather as logo for folders}">
     <f:checkbox/>
   </f:entry>
-  <j:if test="${it.class.name == 'hudson.model.Hudson'}">
+  <j:if test="${descriptor.root}">
     <f:entry field="symbolMappingFile" title="${%Additional Mappings}">
       <f:textbox/>
     </f:entry>

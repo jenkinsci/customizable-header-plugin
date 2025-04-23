@@ -1,168 +1,155 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler">
   <st:contentType value="text/css" />
+  :root {
+    --logo-dim: 52px;
+    --ch-padding: 11px;
+  }
   <j:if test="${it.thinHeader}">
-.jenkins-breadcrumbs {
-  padding-top: 0.2rem;
-  padding-bottom: 0.2rem;
-  overflow-y: hidden;
+    :root {
+      --header-height: 2.75rem;
+      --logo-dim: 32px;
+      --ch-padding: 8px;
+    }
+  </j:if>
+
+  svg.custom-header__svg {
+    height: var(--header-height);
+    width: fit-content;
+  }
+
+  .custom-header__symbol, .custom-header__image {
+    height: var(--logo-dim);
+    width: var(--logo-dim);
+  }
+
+  .custom-header__text-input::placeholder {
+    color: color-mix(in srgb, var(--text-color-secondary), transparent);
+    font-family: "Georgia";
+    font-weight: bold;
+  }
+
+  .custom-header__app-nav-button {
+    margin: 0 5px;
+  }
+
+  .custom-header__title {
+    align-self: center;
+    margin-left: .625rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .custom-header__text {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .custom-header__logo {
+    display: inline-flex;
+  }
+
+.jenkins-header {
+  gap: 0;
+  <j:if test="${it.enabled}">
+    <j:if test="${it.color != null and !it.color.equals('')}">
+      --header-color: ${it.color};
+      --text-color-secondary: var(--header-color);
+
+      <j:if test="${it.jenkinsHeader}">
+        .jenkins-button,
+      </j:if>
+      .jenkins-header__actions .jenkins-button {
+        --button-background: color-mix(in srgb, var(--header-color) 5%, transparent);
+        --button-background--hover: color-mix(in srgb, var(--header-color) 20%, transparent);
+        --button-background--active: color-mix(in srgb, var(--header-color) 20%, transparent);
+        --button-box-shadow--focus: color-mix(in srgb, var(--header-color) 20%, transparent);
+      }
+
+    </j:if>
+    <j:if test="${it.backgroundColor != null and !it.backgroundColor.equals('')}">
+      background: ${it.backgroundColor};
+      --header-background: ${it.backgroundColor};
+    </j:if>
+    margin-bottom: 0.25rem;
+  </j:if>
 }
 
-#searchform {
-  height: 2rem;
-}
+  <j:if test="${it.enabled and it.backgroundColor != null and !it.backgroundColor.equals('')}">
 
-#jenkins-head-icon {
-  height: 2rem;
-}
+    margin-bottom: var(--section-padding);
 
-.main-search__icon-leading, .main-search__icon-trailing {
-  height: 2rem;
-  width: 2rem;
-}
+    &amp; + script + .custom-header__system-message-header {
+      margin-top: calc(var(--section-padding) * -1);
+    }
 
-.page-header>* {
-  margin-right: 0.5rem;
-}
-
-.app-page-body__sidebar--sticky {
-  top: 28px!important;
-}
-
-.jenkins-app-bar--sticky {
-  top: 24px!important;
-}
-
-.am-container.visible div.am-list {
-  top: 40px!important;
-}
+    &amp;::before {
+      background: ${it.backgroundColor};
+      bottom: 0 !important;
+      mask-image: none !important;
+      z-index: unset;
+    }
   </j:if>
 
 
-.custom-header__page {
-  background: ${it.backgroundColor};
-  <j:if test="${it.thinHeader}">
-    height: 2.5rem;
+  <j:if test="${it.hasLinks()}">
+    .jenkins-header__main {
+      padding-left: 0;
+    }
+
+    .jenkins-header .app-jenkins-logo::before {
+      left: 0 !important;
+    }
   </j:if>
-}
-
-.custom-header__app-nav .icon-xs {
-  width: 12px;
-  height: 12px;
-}
-
-.custom-header__app-nav .jenkins-dropdown__item {
-  padding-right: 1rem;
-}
-
-.custom-header__app-nav-button {
-  <j:if test="${it.thinHeader}">
-    height: 2.5rem;
-  </j:if>
-  <j:if test="${!it.thinHeader}">
-    height: 3.5rem;
-  </j:if>
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  display: inline-flex;
-  align-items: center;
-  background-color: var(--background);
-  border: none;
-}
-
-.custom-header__app-nav {
-  background-color: var(--background);
-  margin-right: 0;
-}
-
-.custom-header__app-nav-button:hover {
-  background-color: var(--item-background--hover) !important;
-  cursor: pointer;
-}
 
 .custom-header {
-  <j:if test="${it.thinHeader}">
-    height: 2.5rem;
+  background: unset;
+  &amp; .ch-section-1 {
+    display: flex;
+    gap: 0;
+    align-items: center;
+    padding-right: var(--ch-padding);
+    min-height: var(--header-height);
+    background: var(--background);
+    clip-path: polygon(0 0, calc(100% - var(--ch-padding)) 0, 100% 50%, calc(100% - var(--ch-padding)) 100%, 0 100%);
+    <j:if test="${!it.hasLinks()}">
+      padding-left: calc(var(--section-padding) / 2);
+    </j:if>
+  }
+
+  &amp; .custom-header__app-nav-button {
+    color: var(--text-color) !important;
+  }
+
+  &amp; .ch-section-2 {
+    gap: 0;
+    background: ${it.backgroundColor};
+    min-height: var(--header-height);
+    &amp; .jenkins-breadcrumbs {
+      width: 100%;
+    }
+    &amp; .jenkins-header__navigation {
+      display: flex;
+    }
+    padding-left: var(--ch-padding);
+    margin-left: calc(var(--ch-padding) * -1);
+  }
+
+  &amp; .app-jenkins-logo {
+    gap: .5rem;
+    color: var(--text-color);
+    padding-right: 10px;
+  }
+
+  &amp; .jenkins-header__navigation {
+    padding-left: 0 !important;
+  }
+}
+
+  <j:if test="${it.enabled and it.backgroundColor != null and !it.backgroundColor.equals('')}">
+    .app-page-body__sidebar--sticky, .jenkins-app-bar--sticky {
+      top: calc(var(--header-height) + var(--section-padding));
+    }
   </j:if>
-  <j:if test="${!it.thinHeader}">
-    height: 3.5rem;
-  </j:if>
-}
-
-.custom-header__title {
-  font-weight: bold;
-  font-size: 150%;
-  flex: 1;
-  color: ${it.color};
-}
-
-.custom-header__title a:link, .custom-header__title a:visited {
-  font-weight: bold;
-  color: ${it.color};
-}
-
-.custom-header__text {
-  flex: 1;
-  padding-left: 5px;
-  color: var(--text-color);
-}
-
-.custom-header__link-image {
-  width: unset!important;
-}
-
-.custom-header__logo {
-  <j:if test="${it.thinHeader}">
-    height: 2.5rem;
-  </j:if>
-  <j:if test="${!it.thinHeader}">
-    height: 3.5rem;
-  </j:if>
-}
-
-a.custom-header__link:hover {
-  text-decoration: none;
-}
-
-a.custom-header__link {
-  display: inline-flex;
-  align-items: center;
-  height: 100%;
-  <j:if test="${it.hasLinks()}">
-    padding:  16px 16px 16px 0;
-  </j:if>
-  <j:if test="${!it.hasLinks()}">
-    padding:  16px 16px 16px 16px;
-  </j:if>
-  <j:if test="${it.thinHeader}">
-    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
-  </j:if>
-  <j:if test="${!it.thinHeader}">
-    clip-path: polygon(0 0, calc(100% - 11px) 0, 100% 50%, calc(100% - 11px) 100%, 0 100%);
-  </j:if>
-  background-color: var(--background);
-  color: var(--text-color);
-  font-size: 150%;
-  font-weight: bold;
-}
-
-.page-header__hyperlinks a:hover,
-.page-header__hyperlinks a:focus,
-.page-header__hyperlinks a.mouseIsOverMenuSelector {
-  background-color: ${it.hoverColor};
-  text-decoration-color: ${it.color};
-}
-
-.page-header__hyperlinks a:link, .page-header__hyperlinks a:visited {
-  color: ${it.color};
-}
-
-#search-box.main-search__input:focus, #search-box.main-search__input:active {
-  box-shadow: 0 0 0 5px ${it.hoverColor};
-}
-
-.page-header__hyperlinks .jenkins-menu-dropdown-chevron:after {
-  background-color: ${it.color};
-}
 </j:jelly>
-

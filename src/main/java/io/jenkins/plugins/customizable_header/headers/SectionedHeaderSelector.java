@@ -5,19 +5,20 @@ import hudson.Extension;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-public class LogoSelector extends HeaderSelector {
+public class SectionedHeaderSelector extends HeaderSelector {
+
   @DataBoundConstructor
-  public LogoSelector() {
+  public SectionedHeaderSelector() {
   }
 
   @Extension
-  @Symbol("logo")
+  @Symbol("sectioned")
   public static class DescriptorImpl extends HeaderDescriptor {
 
     @NonNull
     @Override
     public String getDisplayName() {
-      return "Logo";
+      return "Sectioned Header";
     }
   }
 }

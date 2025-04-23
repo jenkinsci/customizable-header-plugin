@@ -1,8 +1,15 @@
 .custom-header__system-message-header {
-  padding: 5px 1.15rem;
+  padding: 0.5rem var(--section-padding);
   margin: 0;
   display: flex;
   align-items: center;
+  margin-bottom: var(--section-padding);
+  border-radius: 0;
+  z-index: 19;
+
+  & + .custom-header__system-message-header {
+    margin-top: calc(var(--section-padding) * -1);
+  }
 }
 
 .ch-dismiss-link {
@@ -14,6 +21,12 @@
 
 .ch-dismiss-link svg {
   color: var(--red);
+  width: 20px;
+  height: 20px;
+}
+
+.custom-header__title {
+  opacity: 0.9;
 }
 
 .custom-header__system-message-header a {
@@ -32,3 +45,17 @@
   margin-right: 20px;
 }
 
+.ch-samples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: var(--section-padding);
+}
+
+.ch-sample {
+  min-width: 150px;
+  min-height: 50px;
+  font-weight: 450;
+  box-shadow: inset 0 0 0 1.5px var(--input-border);
+  justify-content: start;
+}

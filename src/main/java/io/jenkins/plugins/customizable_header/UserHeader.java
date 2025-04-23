@@ -6,8 +6,9 @@ import hudson.Extension;
 import hudson.model.User;
 import hudson.model.UserProperty;
 import hudson.model.UserPropertyDescriptor;
+import hudson.model.userproperty.UserPropertyCategory;
 import io.jenkins.plugins.customizable_header.color.HeaderColor;
-import io.jenkins.plugins.customizable_header.headers.HeaderSelector;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -20,28 +21,60 @@ import org.kohsuke.stapler.StaplerRequest2;
 
 public class UserHeader extends UserProperty {
 
-  private boolean overwriteHeader;
+  private boolean enabled;
 
-  private boolean overwriteColors;
+  private boolean thinHeader;
+
   private HeaderColor headerColor;
-
-  private HeaderSelector headerSelector;
 
   private List<AbstractLink> links = new ArrayList<>();
 
   private Set<String> dismissedMessages = new HashSet<>();
 
+  private ContextAwareLogo contextAwareLogo;
+
   @DataBoundConstructor
   public UserHeader() {
   }
 
-  public boolean isOverwriteColors() {
-    return overwriteColors;
+  @Override
+  protected void setUser(User u) {
+    super.setUser(u);
+    if (headerColor != null && headerColor.getUserColors() == null) {
+      headerColor.setUserColors(true);
+      try {
+        u.save();
+      } catch (IOException e) {
+        //
+      }
+    }
   }
 
   @DataBoundSetter
-  public void setOverwriteColors(boolean overwriteColors) {
-    this.overwriteColors = overwriteColors;
+  public void setContextAwareLogo(ContextAwareLogo contextAwareLogo) {
+    this.contextAwareLogo = contextAwareLogo;
+  }
+
+  public ContextAwareLogo getContextAwareLogo() {
+    return contextAwareLogo;
+  }
+
+  public boolean isEnabled() {
+    return enabled;
+  }
+
+  @DataBoundSetter
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
+
+  public boolean isThinHeader() {
+    return thinHeader;
+  }
+
+  @DataBoundSetter
+  public void setThinHeader(boolean thinHeader) {
+    this.thinHeader = thinHeader;
   }
 
   @DataBoundSetter
@@ -49,26 +82,8 @@ public class UserHeader extends UserProperty {
     this.headerColor = headerColor;
   }
 
-  @DataBoundSetter
-  public void setHeaderSelector(HeaderSelector headerSelector) {
-    this.headerSelector = headerSelector;
-  }
-
   public HeaderColor getHeaderColor() {
     return headerColor;
-  }
-
-  public HeaderSelector getHeaderSelector() {
-    return headerSelector;
-  }
-
-  @DataBoundSetter
-  public void setOverwriteHeader(boolean overwriteHeader) {
-    this.overwriteHeader = overwriteHeader;
-  }
-
-  public boolean isOverwriteHeader() {
-    return overwriteHeader;
   }
 
   public List<AbstractLink> getLinks() {
@@ -80,11 +95,15 @@ public class UserHeader extends UserProperty {
     this.links = links;
   }
 
-  public Object readResolve() {
+  public Object readResolve() throws IOException {
     if (dismissedMessages == null) {
       dismissedMessages = new HashSet<>();
     }
     return this;
+  }
+
+  public void setDismissedMessages(Set<String> dismissedMessages) {
+    this.dismissedMessages = dismissedMessages;
   }
 
   public Set<String> getDismissedMessages() {
@@ -96,7 +115,9 @@ public class UserHeader extends UserProperty {
     if (links != null) {
       links.clear();
     }
+    contextAwareLogo = null;
     req.bindJSON(this, form);
+    headerColor.setUserColors(true);
     return this;
   }
 
@@ -107,14 +128,8 @@ public class UserHeader extends UserProperty {
     @Override
     public UserProperty newInstance(User user) {
       UserHeader userHeader = new UserHeader();
-      HeaderColor globalHeaderColor = CustomHeaderConfiguration.get().getHeaderColor();
-      userHeader.setHeaderColor(new HeaderColor(globalHeaderColor));
+      userHeader.setHeaderColor(new HeaderColor("inherit", "inherit", true));
       return userHeader;
-    }
-
-    @Override
-    public boolean isEnabled() {
-      return CustomHeaderConfiguration.get().isEnabled();
     }
 
     @NonNull
@@ -123,15 +138,9 @@ public class UserHeader extends UserProperty {
       return "Customizable Header";
     }
 
-    //        @Override
-    //        public @NonNull UserPropertyCategory getUserPropertyCategory() {
-    //            return UserPropertyCategory.get(UserPropertyCategory.Appearance.class);
-    //        }
-
-    // replace with above method when bumping core to version including:
-    // https://github.com/jenkinsci/jenkins/pull/7268
-    public @CheckForNull String getUserPropertyCategoryAsString() {
-        return "appearance";
+    @Override
+    public @NonNull UserPropertyCategory getUserPropertyCategory() {
+        return UserPropertyCategory.get(UserPropertyCategory.Appearance.class);
     }
   }
 }
