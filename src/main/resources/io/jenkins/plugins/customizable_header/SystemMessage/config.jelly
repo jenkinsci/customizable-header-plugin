@@ -1,7 +1,7 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
   <f:entry>
-    <f:textarea field="message" previewEndpoint="/markupFormatter/previewDescription"/>
+    <f:textarea field="message" previewEndpoint="/markupFormatter/previewDescription?isPreview=true"/>
   </f:entry>
   <f:entry field="dismissible" title="${%Dismissible}">
     <f:checkbox default="true"/>
