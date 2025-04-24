@@ -21,6 +21,8 @@ import org.kohsuke.stapler.StaplerRequest2;
 
 public class UserHeader extends UserProperty {
 
+  private boolean classicSearch;
+
   private boolean enabled;
 
   private boolean thinHeader;
@@ -48,6 +50,15 @@ public class UserHeader extends UserProperty {
         //
       }
     }
+  }
+
+  public boolean isClassicSearch() {
+    return classicSearch;
+  }
+
+  @DataBoundSetter
+  public void setClassicSearch(boolean classicSearch) {
+    this.classicSearch = classicSearch;
   }
 
   @DataBoundSetter

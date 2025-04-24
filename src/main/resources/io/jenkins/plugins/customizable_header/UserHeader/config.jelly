@@ -1,5 +1,8 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
+  <f:entry title="${%Classic Search}" field="classicSearch">
+    <f:checkbox/>
+  </f:entry>
   <f:optionalBlock field="enabled" title="${%Customize header}" inline="true">
     <f:entry field="thinHeader" title="${%Compact Header}">
       <f:checkbox/>
