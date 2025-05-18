@@ -122,7 +122,6 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
       enabled = false;
     }
     headerColor.setUserColors(false);
-    save();
     return this;
   }
 
