@@ -103,10 +103,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     return result;
   }
 
-  public Object readResolve() {
-    if (systemMessage != null) {
-      systemMessages.add(systemMessage);
-    }
+  private void convertOldHeaders() {
     if (header instanceof ContextSelector cs) {
       contextAwareLogo = new ContextAwareLogo();
       contextAwareLogo.setShowFolderWeather(cs.isShowFolderWeather());
@@ -121,6 +118,13 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
       header = new JenkinsWrapperHeaderSelector();
       enabled = false;
     }
+  }
+
+  public Object readResolve() {
+    if (systemMessage != null) {
+      systemMessages.add(systemMessage);
+    }
+    convertOldHeaders();
     headerColor.setUserColors(false);
     return this;
   }
@@ -302,6 +306,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   @DataBoundSetter
   public void setHeader(HeaderSelector header) {
     this.header = header;
+    convertOldHeaders();
     save();
   }
 

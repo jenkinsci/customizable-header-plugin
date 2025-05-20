@@ -2,7 +2,6 @@ package io.jenkins.plugins.customizable_header.headers;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
-import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 public class JenkinsHeaderSelector extends HeaderSelector {
@@ -11,8 +10,7 @@ public class JenkinsHeaderSelector extends HeaderSelector {
   public JenkinsHeaderSelector() {
   }
 
-  @Extension
-  @Symbol("jenkins")
+  @Extension(ordinal = -9999)
   public static class DescriptorImpl extends HeaderDescriptor {
 
     @NonNull

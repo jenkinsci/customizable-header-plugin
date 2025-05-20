@@ -1,0 +1,29 @@
+appearance:
+  customHeader:
+    enabled: true
+    header: "sectioned"
+    headerColor:
+      backgroundColor: "linear-gradient(90deg, rgba(28,99,190,1) 0%, rgba(53,224,192,1) 100%);"
+      color: "var(--white)"
+    links:
+      - appNavLink:
+          label: "Google"
+          logo:
+            svg:
+              logoPath: "userContent/logo.svg"
+          url: "https://google.com"
+      - linkSeparator:
+          title: "External"
+      - appNavLink:
+          external: true
+          label: "Youtube"
+          logo:
+            symbol:
+              symbol: "symbol-logo-youtube plugin-ionicons-api"
+          url: "https://youtube.com"
+    logo:
+      svg:
+        logoPath: "userContent/logo.svg"
+    logoText: "Jenkins"
+    thinHeader: true
+    title: "CasC"

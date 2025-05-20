@@ -9,12 +9,14 @@ import io.jenkins.plugins.customizable_header.CustomHeaderConfiguration;
 import io.jenkins.plugins.customizable_header.ThemeSample;
 import java.util.List;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.Stapler;
 
 public class HeaderColor implements Describable<HeaderColor> {
 
   private final String backgroundColor;
   private final String color;
+  private transient String hoverColor;
   private Boolean userColors = null;
 
   @DataBoundConstructor
@@ -37,6 +39,16 @@ public class HeaderColor implements Describable<HeaderColor> {
       return false;
     }
     return userColors;
+  }
+
+  // just so loading an old CasC works
+  @DataBoundSetter
+  public void setHoverColor(String hoverColor) {
+    this.hoverColor = hoverColor;
+  }
+
+  public String getHoverColor() {
+    return hoverColor;
   }
 
   public String getBackgroundColor() {
