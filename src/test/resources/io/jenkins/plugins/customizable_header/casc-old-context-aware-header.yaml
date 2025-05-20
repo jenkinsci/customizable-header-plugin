@@ -1,0 +1,26 @@
+appearance:
+  customHeader:
+    enabled: true
+    header:
+      context:
+        showFolderWeather: true
+        showJobWeather: true
+    headerColor:
+      backgroundColor: "linear-gradient(90deg, rgba(151,10,130,1) 0%, rgba(240,171,0,1)\
+        \ 100%);"
+      color: "white"
+      hoverColor: "#bb4a4e"
+    links:
+      - appNavLink:
+          external: true
+          label: "Google"
+          logo:
+            svg:
+              logoPath: "userContent/jira.svg"
+          url: "https://google.com"
+    logo:
+      svg:
+        logoPath: "userContent/logo.svg"
+    logoText: "Jenkins"
+    thinHeader: true
+    title: "CasC"

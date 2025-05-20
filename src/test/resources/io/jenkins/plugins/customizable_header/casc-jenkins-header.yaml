@@ -1,0 +1,13 @@
+appearance:
+  customHeader:
+    enabled: true
+    header: "jenkins"
+    headerColor:
+      backgroundColor: "linear-gradient(90deg, rgba(28,99,190,1) 0%, rgba(53,224,192,1) 100%);"
+      color: "var(--white)"
+    logo:
+      svg:
+        logoPath: "userContent/logo.svg"
+    logoText: "Jenkins"
+    thinHeader: true
+    title: "CasC"
