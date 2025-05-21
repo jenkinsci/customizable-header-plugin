@@ -1,7 +1,9 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout" >
+<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout">
   <j:if test="${!it.dismissed}">
-    <div class="jenkins-alert jenkins-alert-${it.level.name()} custom-header__system-message-header">
+    <!-- Use a conditional style for previews -->
+    <div class="jenkins-alert jenkins-alert-${it.level.name()} custom-header__system-message-header"
+         style="${it.level.name() == 'preview' ? 'background-color: gray;' : ''}">
       <div><j:out value="${it.escapedMessage}"/></div>
       <j:if test="${!h.isAnonymous() and it.dismissible}">
         <a href="#" class="ch-dismiss-link" tooltip="${%Dismiss message}" data-uid="${it.uid}">
