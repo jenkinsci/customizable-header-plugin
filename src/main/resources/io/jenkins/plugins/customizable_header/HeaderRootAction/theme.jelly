@@ -39,6 +39,11 @@
     font-size: 1.125rem;
     font-weight: 600;
     white-space: nowrap;
+    color: ${it.color};
+  }
+
+  .custom-header__title a:link, .custom-header__title a:visited {
+    color: ${it.color};
   }
 
   .custom-header__text {
