@@ -1,8 +1,10 @@
 package io.jenkins.plugins.customizable_header.headers;
 
+import hudson.model.User;
 import io.jenkins.plugins.customizable_header.AbstractLink;
 import io.jenkins.plugins.customizable_header.CustomHeaderConfiguration;
 import io.jenkins.plugins.customizable_header.SystemMessage;
+import io.jenkins.plugins.customizable_header.UserHeader;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -44,5 +46,17 @@ public abstract class AbstractCustomHeader extends PartialHeader {
 
   public List<SystemMessage> getSystemMessages() {
     return CustomHeaderConfiguration.get().getSystemMessages();
+  }
+
+  public boolean isClassicSearch() {
+    User user = User.current();
+    if (user != null) {
+      UserHeader userHeader = user.getProperty(UserHeader.class);
+      if (userHeader != null) {
+        return userHeader.isClassicSearch();
+      }
+    }
+
+    return false;
   }
 }

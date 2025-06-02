@@ -5,6 +5,7 @@ Customizable Header Plugin
 - [Logo](#the-logo)
 - [Application Links](#application-links-and-favorites)
 - [System Messages](#system-messages)
+- [Classic Search](#classic-search)
 
 ## About the plugin
 This plugin allows to customize the Jenkins header.
@@ -49,7 +50,7 @@ be added as well to this menu.
 ![App Links](/docs/pics/app-links.png)<br/>
 
 ## System Messages
-One or more system messages can be shown between the header and the breadcrumb bar. This allows to notify users about important
+One or more system messages can be shown below the header. This allows to notify users about important
 things related to the instance, e.g. a planned update of Jenkins, a downtime due to hardware replacement or an ongoing
 incident. The message is formatted using the global markup formatter (see <code>Manage Jenkins > Security > Markup
 Formatter</code>). Depending on the configured formatter it may contain html, e.g. to apply some simple styling or
@@ -73,6 +74,14 @@ Parameters:
 | dismissible  | false    | Message can be dismissed by users, defaults to `true`        |
 
 To delete a system message do a post request to `<jenkins_url>/customizable-header/deleteSystemMessage?id=<id>`
+
+## Classic Search
+The Command Palette that was introduced with 2.489 has the drawback that it doesn't allow to forward to the old search page that lists all matching things.
+You can now bring back a search box in the header by going to your users `Appearance` setting and check `Classic Search`. 
+
+The search box will list the first 15 matches for the given query. These entries are direct links to the matching things. Pressing `Enter` will get you to the search page that will list everything that matched based on the active search engine (e.g. nested-view and lucene-search plugins offer alternative searches).
+
+![Classic Search](/docs/pics/classic-search.png)<br/>
 
 ## The weather symbols
 To demonstrate the custom weather symbols download the svgs from `docs/svgs` to `userContent/svgs` in your

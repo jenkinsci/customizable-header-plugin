@@ -1,0 +1,16 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout" xmlns:ch="/lib/customizable-header">
+  <j:if test="${it.classicSearch}">
+    <div id="ch-classic-search--container">
+      <form action="${h.searchURL}" method="get" class="no-json" name="search" role="search">
+        <div id="ch-classic-search">
+          <input name="q" placeholder="${%Search}" id="ch-classic-search-input" class="jenkins-input ch-classic-search" value="${request.getParameter('q')}" role="searchbox" autocomplete="off"/>
+          <span class="ch-search-symbol">
+            <l:icon src="symbol-search"/>
+          </span>
+        </div>
+        <div id="ch-classic-search--results" class="jenkins-hidden" data-no-results-for="${%No results for}"/>
+      </form>
+    </div>
+  </j:if>
+</j:jelly>
