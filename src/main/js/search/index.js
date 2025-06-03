@@ -35,28 +35,26 @@ function init() {
           let counter = 0;
           results.forEach((r) => {
             if (++counter <= 15) {
-              const l = document.createElement("a");
-              const url = adjustUrl(r["url"]);
-              l.classList.add("jenkins-button", "jenkins-button--tertiary");
-              let icon;
-              if (r["type"] === "image") {
-                icon = document.createElement("img");
-                icon.src = r["icon"];
-              } else {
-                icon = createElementFromHtml(r["icon"]);
-              }
-              l.appendChild(icon);
-              l.href = xmlEscape(url);
-              l.appendChild(document.createTextNode(r["name"]));
+              const label = xmlEscape(r["name"]);
+              const l = createElementFromHtml(`
+                <a class="jenkins-dropdown__item" href="${adjustUrl(r["url"])}">
+                <div class="jenkins-dropdown__item__icon">
+                  ${
+                    r["type"] === "image"
+                    ? `<img src="${r["icon"]}"/>`
+                    : r["icon"]
+                  }
+                  </div>
+                  ${label}
+              `);
               resultsDiv.appendChild(l);
             }
           })
         } else {
-          resultsDiv.innerHTML = "<p>" +  resultsDiv.dataset.noResultsFor + " <code>" + xmlEscape(query) + "</code></p>";
+          resultsDiv.innerHTML = "<p>" +  classicSearchInput.dataset.noResultsFor + " <code>" + xmlEscape(query) + "</code></p>";
         }
       });
     }
-
   }
 
   const debounceCS = debounce(() => {
@@ -64,21 +62,21 @@ function init() {
   }, 250);
 
   Behaviour.specify("#ch-classic-search-input", "ch-classic-search-input", 0, function(element) {
-    const container = document.getElementById('ch-classic-search--results');
     element.addEventListener("input", () => {
       debounceCS();
     });
+    const resultsDiv = document.getElementById('ch-classic-search--results');
     element.addEventListener("focus", (e) => {
       if (e.target === element) {
-        if (container.childElementCount > 0) {
-          container.classList.remove('jenkins-hidden');
+        if (resultsDiv.childElementCount > 0) {
+          resultsDiv.classList.remove('jenkins-hidden');
         }
       }
     });
     document.addEventListener("click", function(e) {
-      if(e.target.id !== 'ch-classic-search--results' && e.target !== element) {
+      if (e.target.id !== 'ch-classic-search--results' && e.target !== element) {
         //element clicked wasn't the div; hide the div
-        container.classList.add('jenkins-hidden');
+        resultsDiv.classList.add('jenkins-hidden');
       }
     });
   });

@@ -4,12 +4,14 @@
     <div id="ch-classic-search--container">
       <form action="${h.searchURL}" method="get" class="no-json" name="search" role="search">
         <div id="ch-classic-search">
-          <input name="q" placeholder="${%Search}" id="ch-classic-search-input" class="jenkins-input ch-classic-search" value="${request.getParameter('q')}" role="searchbox" autocomplete="off"/>
+          <input name="q" placeholder="${%Search}" id="ch-classic-search-input" class="jenkins-input ch-classic-search"
+                 value="${request.getParameter('q')}" role="searchbox" autocomplete="off"
+                 data-no-results-for="${%No results for}"/>
           <span class="ch-search-symbol">
             <l:icon src="symbol-search"/>
           </span>
         </div>
-        <div id="ch-classic-search--results" class="jenkins-hidden" data-no-results-for="${%No results for}"/>
+        <div id="ch-classic-search--results" class="jenkins-hidden jenkins-dropdown" />
       </form>
     </div>
   </j:if>
