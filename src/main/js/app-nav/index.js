@@ -86,7 +86,7 @@ function init() {
         interactive: true,
         trigger: "click",
         allowHTML: true,
-        appendTo: document.getElementById("page-header"),
+        appendTo: () => document.body,
         placement: "bottom-start",
         arrow: false,
         theme: "dropdown",
