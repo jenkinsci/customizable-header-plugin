@@ -82,6 +82,9 @@
     border-color: var(--focus-input-border);
     box-shadow: 0 0 0 2px var(--focus-input-glow);
   }
+  &::placeholder {
+    color: oklch(from var(--text-color) 50% c h) !important;
+  }
 }
 
 .ch-search-symbol {
