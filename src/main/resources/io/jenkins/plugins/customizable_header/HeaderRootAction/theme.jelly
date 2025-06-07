@@ -18,9 +18,9 @@
     width: fit-content;
   }
 
-  .custom-header__symbol, .custom-header__image {
-    height: var(--logo-dim);
-    width: var(--logo-dim);
+  .custom-header__symbol, .custom-header__image, .custom-header__icon {
+    height: var(--logo-dim) !important;
+    width: var(--logo-dim) !important;
   }
 
   .custom-header__text-input::placeholder {
