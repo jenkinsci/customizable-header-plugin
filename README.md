@@ -42,10 +42,9 @@ formatter (see <code>Manage Jenkins > Security > Markup Formatter</code>). Depen
 contain html, e.g. to include a link to some other site. Css already takes care to make the link properly styled.
 
 ## Application links and favorites
-The plugin allows to configure additional links that are accessible via a button to the left of the logo. Users can define their personal links in their settings.
+The plugin allows to configure additional links that are accessible via a button to the left of the logo. Links can be configured globally, for jobs and folders and for users. Links on folder level will be propagated to its child items. 
 
-When the [Favorite Plugin](https://plugins.jenkins.io/favorite) is installed, your personal favorites will
-be added as well to this menu.
+When the [Favorite Plugin](https://plugins.jenkins.io/favorite) is installed, your personal favorites will be added as well to this menu.
 
 ![App Links](/docs/pics/app-links.png)<br/>
 

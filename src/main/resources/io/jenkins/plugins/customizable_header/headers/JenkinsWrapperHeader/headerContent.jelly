@@ -1,5 +1,6 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:ch="/lib/customizable-header" xmlns:st="jelly:stapler">
+  <div data-has-links="${it.hasLinks()}"/>
   <st:include page="headerContent" class="jenkins.views.JenkinsHeader" />
   <ch:systemMessages/>
 </j:jelly>

@@ -1,11 +1,14 @@
 package io.jenkins.plugins.customizable_header;
 
+import com.cloudbees.hudson.plugins.folder.AbstractFolder;
+import com.cloudbees.hudson.plugins.folder.AbstractFolderProperty;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.BulkChange;
 import hudson.Extension;
 import hudson.Util;
 import hudson.model.Descriptor;
 import hudson.model.Item;
+import hudson.model.Job;
 import hudson.model.User;
 import hudson.plugins.favorite.Favorites;
 import io.jenkins.plugins.customizable_header.color.HeaderColor;
@@ -16,6 +19,8 @@ import io.jenkins.plugins.customizable_header.headers.JenkinsHeaderSelector;
 import io.jenkins.plugins.customizable_header.headers.JenkinsWrapperHeaderSelector;
 import io.jenkins.plugins.customizable_header.headers.LogoSelector;
 import io.jenkins.plugins.customizable_header.headers.SectionedHeaderSelector;
+import io.jenkins.plugins.customizable_header.links.FolderLinks;
+import io.jenkins.plugins.customizable_header.links.JobLinks;
 import io.jenkins.plugins.customizable_header.logo.DefaultLogo;
 import io.jenkins.plugins.customizable_header.logo.Icon;
 import io.jenkins.plugins.customizable_header.logo.Logo;
@@ -25,7 +30,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -36,8 +40,10 @@ import jenkins.model.GlobalConfiguration;
 import jenkins.model.GlobalConfigurationCategory;
 import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
+import org.kohsuke.stapler.Ancestor;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
+import org.kohsuke.stapler.Stapler;
 import org.kohsuke.stapler.StaplerRequest2;
 
 @Extension
@@ -70,9 +76,6 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   private List<AbstractLink> links = new ArrayList<>();
 
   private ContextAwareLogo contextAwareLogo;
-
-  private static final transient Symbol star = new Symbol("symbol-star plugin-ionicons-api");
-
 
   @DataBoundConstructor
   public CustomHeaderConfiguration() {
@@ -127,39 +130,6 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     convertOldHeaders();
     headerColor.setUserColors(false);
     return this;
-  }
-
-  private static List<AppNavLink> getFavorites(User user) {
-    String rootUrl = Jenkins.get().getRootUrl();
-    Iterable<Item> items = Favorites.getFavorites(user);
-    List<AppNavLink> favorites = new ArrayList<>();
-    items.forEach(
-        item -> {
-          AppNavLink fav = new AppNavLink(rootUrl + item.getUrl(), item.getFullDisplayName(), star);
-          fav.setColor("jenkins-!-color-yellow");
-          favorites.add(fav);
-        });
-    favorites.sort(new Comparator<AppNavLink>() {
-      @Override
-      public int compare(AppNavLink o1, AppNavLink o2) {
-        int labelCompare = o1.getLabel().compareToIgnoreCase(o2.getLabel());
-        if (labelCompare != 0) {
-          return labelCompare;
-        }
-        return o1.getUrl().compareTo(o2.getUrl());
-      }
-    });
-    return favorites;
-  }
-
-  public List<AppNavLink> getFavorites() {
-    if (Jenkins.get().getPlugin("favorite") != null) {
-      User user = User.current();
-      if (user != null) {
-        return getFavorites(user);
-      }
-    }
-    return Collections.emptyList();
   }
 
   @Deprecated
@@ -258,23 +228,31 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     return false;
   }
 
-  public boolean hasLinks() {
-    return hasFavorites() || hasAppLinks() || hasUserLinks();
-  }
-
-  public List<AbstractLink> getUserLinks() {
-    User user = User.current();
-    List<AbstractLink> links = null;
-    if (user != null) {
-      UserHeader userHeader = user.getProperty(UserHeader.class);
-      if (userHeader != null) {
-        links = userHeader.getLinks();
+  public boolean hasContextLinks() {
+    List<Ancestor> ancestors = new ArrayList<>(Stapler.getCurrentRequest2().getAncestors());
+    for (Ancestor ancestor : ancestors) {
+      Object obj = ancestor.getObject();
+      if (obj instanceof Job<?, ?> job) {
+        JobLinks jobLinks = job.getProperty(JobLinks.class);
+        if (jobLinks != null) {
+          return true;
+        }
+      }
+      if (obj instanceof AbstractFolder<?> folder) {
+        for (AbstractFolderProperty<?> prop: folder.getProperties()) {
+          if (prop instanceof FolderLinks folderLinks) {
+            if (!folderLinks.getLinks().isEmpty()) {
+              return true;
+            }
+          }
+        }
       }
     }
-    if (links != null) {
-      return links;
-    }
-    return Collections.emptyList();
+    return false;
+  }
+
+  public boolean hasLinks() {
+    return hasFavorites() || hasAppLinks() || hasUserLinks() || hasContextLinks();
   }
 
   public boolean isThinHeader() {

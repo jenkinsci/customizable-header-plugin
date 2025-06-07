@@ -18,9 +18,9 @@
     width: fit-content;
   }
 
-  .custom-header__symbol, .custom-header__image {
-    height: var(--logo-dim);
-    width: var(--logo-dim);
+  .custom-header__symbol, .custom-header__image, .custom-header__icon {
+    height: var(--logo-dim) !important;
+    width: var(--logo-dim) !important;
   }
 
   .custom-header__text-input::placeholder {
@@ -98,15 +98,13 @@
   </j:if>
 
 
-  <j:if test="${it.hasLinks()}">
-    .jenkins-header__main {
+    div[data-has-links="true"] + .jenkins-header .jenkins-header__main {
       padding-left: 0;
     }
 
-    .jenkins-header .app-jenkins-logo::before {
+    div[data-has-links="true"] + .jenkins-header .app-jenkins-logo::before {
       left: 0 !important;
     }
-  </j:if>
 
 .custom-header {
   background: unset;
@@ -118,9 +116,6 @@
     min-height: var(--header-height);
     background: var(--background);
     clip-path: polygon(0 0, calc(100% - var(--ch-padding)) 0, 100% 50%, calc(100% - var(--ch-padding)) 100%, 0 100%);
-    <j:if test="${!it.hasLinks()}">
-      padding-left: calc(var(--section-padding) / 2);
-    </j:if>
   }
 
   &amp; .custom-header__app-nav-button {
@@ -137,7 +132,7 @@
     &amp; .jenkins-header__navigation {
       display: flex;
     }
-    padding-left: var(--ch-padding);
+    padding-left: var(--ch-padding) !important;
     margin-left: calc(var(--ch-padding) * -1);
   }
 
@@ -150,6 +145,10 @@
   &amp; .jenkins-header__navigation {
     padding-left: 0 !important;
   }
+}
+
+div[data-has-links="false"] + .custom-header .ch-section-1 {
+  padding-left: calc(var(--section-padding) / 2);
 }
 
   <j:if test="${it.enabled and it.backgroundColor != null and !it.backgroundColor.equals('')}">

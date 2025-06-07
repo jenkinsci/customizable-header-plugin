@@ -1,14 +1,26 @@
 package io.jenkins.plugins.customizable_header;
 
+import com.cloudbees.hudson.plugins.folder.AbstractFolder;
+import com.cloudbees.hudson.plugins.folder.AbstractFolderProperty;
 import hudson.Extension;
+import hudson.model.Item;
+import hudson.model.ItemGroup;
+import hudson.model.Job;
+import hudson.model.TopLevelItem;
 import hudson.model.UnprotectedRootAction;
 import hudson.model.User;
+import hudson.plugins.favorite.Favorites;
 import io.jenkins.plugins.customizable_header.headers.JenkinsWrapperHeaderSelector;
+import io.jenkins.plugins.customizable_header.links.FolderLinks;
+import io.jenkins.plugins.customizable_header.links.JobLinks;
+import io.jenkins.plugins.customizable_header.logo.Symbol;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import jenkins.model.Jenkins;
 import org.kohsuke.stapler.HttpResponse;
@@ -28,6 +40,9 @@ import org.kohsuke.stapler.verb.POST;
  */
 @Extension
 public class HeaderRootAction implements UnprotectedRootAction {
+
+  private static final Symbol star = new Symbol("symbol-star plugin-ionicons-api");
+
   @Override
   public String getIconFileName() {
     return null;
@@ -61,10 +76,6 @@ public class HeaderRootAction implements UnprotectedRootAction {
 
   public boolean isThinHeader() {
     return  CustomHeaderConfiguration.get().isEnabled() && CustomHeaderConfiguration.get().isThinHeader();
-  }
-
-  public boolean hasLinks() {
-    return CustomHeaderConfiguration.get().hasLinks();
   }
 
   @POST
@@ -114,22 +125,110 @@ public class HeaderRootAction implements UnprotectedRootAction {
     }
   }
 
+  private static List<AppNavLink> getFavorites(User user) {
+    String rootUrl = Jenkins.get().getRootUrl();
+    Iterable<Item> items = Favorites.getFavorites(user);
+    List<AppNavLink> favorites = new ArrayList<>();
+    items.forEach(
+        item -> {
+          AppNavLink fav = new AppNavLink(rootUrl + item.getUrl(), item.getFullDisplayName(), star);
+          fav.setColor("jenkins-!-color-yellow");
+          favorites.add(fav);
+        });
+    favorites.sort(new Comparator<AppNavLink>() {
+      @Override
+      public int compare(AppNavLink o1, AppNavLink o2) {
+        int labelCompare = o1.getLabel().compareToIgnoreCase(o2.getLabel());
+        if (labelCompare != 0) {
+          return labelCompare;
+        }
+        return o1.getUrl().compareTo(o2.getUrl());
+      }
+    });
+    return favorites;
+  }
+
+  private static List<AppNavLink> getFavorites() {
+    if (Jenkins.get().getPlugin("favorite") != null) {
+      User user = User.current();
+      if (user != null) {
+        return getFavorites(user);
+      }
+    }
+    return Collections.emptyList();
+  }
+
+  public static List<AbstractLink> getUserLinks() {
+    User user = User.current();
+    List<AbstractLink> links = null;
+    if (user != null) {
+      UserHeader userHeader = user.getProperty(UserHeader.class);
+      if (userHeader != null) {
+        links = userHeader.getLinks();
+      }
+    }
+    if (links != null) {
+      return links;
+    }
+    return Collections.emptyList();
+  }
+
+  public static List<AbstractLink> getContextLinks(String item) {
+    List<AbstractLink> links = new ArrayList<>();
+    if (item != null && !item.isEmpty()) {
+      TopLevelItem topLevelItem = Jenkins.get().getItemByFullName(item, TopLevelItem.class);
+      while (topLevelItem != null) {
+        if (topLevelItem instanceof Job<?, ?> job) {
+          JobLinks jobLinks = job.getProperty(JobLinks.class);
+          if (jobLinks != null) {
+            links.addAll(jobLinks.getLinks());
+          }
+        }
+        if (topLevelItem instanceof AbstractFolder<?> folder) {
+          for (AbstractFolderProperty<?> prop : folder.getProperties()) {
+            if (prop instanceof FolderLinks folderLinks) {
+              links.addAll(folderLinks.getLinks());
+            }
+          }
+        }
+        ItemGroup<?> parent = topLevelItem.getParent();
+        if (parent instanceof TopLevelItem p) {
+          topLevelItem = p;
+        } else {
+          break;
+        }
+      }
+    }
+    return links;
+  }
+
   @ExportedBean
   static class Links implements HttpResponse {
+    private String item;
+
+    public Links(String item) {
+      this.item = item;
+    }
+
     @Exported(inline = true)
     public List<AbstractLink> getLinks() {
+
       List<AbstractLink> links = new ArrayList<>(CustomHeaderConfiguration.get().getLinks());
-      List<AbstractLink> userLinks = CustomHeaderConfiguration.get().getUserLinks();
+      List<AbstractLink> jobLinks = new ArrayList<>(getContextLinks(item));
+      links.addAll(jobLinks);
+      List<AbstractLink> userLinks = getUserLinks();
       if (!userLinks.isEmpty()) {
         if (!links.isEmpty() && !(links.get(links.size() - 1) instanceof LinkSeparator) && !(userLinks.get(0) instanceof LinkSeparator)) {
           links.add(new LinkSeparator());
         }
         links.addAll(userLinks);
       }
-      List<AppNavLink> favorites = CustomHeaderConfiguration.get().getFavorites();
+      List<AppNavLink> favorites = getFavorites();
       if (!favorites.isEmpty()) {
         if (!links.isEmpty() && !(links.get(links.size() - 1) instanceof LinkSeparator)) {
-          links.add(new LinkSeparator());
+          LinkSeparator sep = new LinkSeparator();
+          sep.setTitle("Favorites");
+          links.add(sep);
         }
         links.addAll(favorites);
       }
@@ -144,7 +243,7 @@ public class HeaderRootAction implements UnprotectedRootAction {
   }
 
   @GET
-  public Links doGetLinks() throws Exception {
-    return new Links();
+  public Links doGetLinks(@QueryParameter String item) throws Exception {
+    return new Links(item);
   }
 }

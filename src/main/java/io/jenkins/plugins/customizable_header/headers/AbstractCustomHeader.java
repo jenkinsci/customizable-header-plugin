@@ -1,5 +1,6 @@
 package io.jenkins.plugins.customizable_header.headers;
 
+import hudson.model.TopLevelItem;
 import hudson.model.User;
 import io.jenkins.plugins.customizable_header.AbstractLink;
 import io.jenkins.plugins.customizable_header.CustomHeaderConfiguration;
@@ -8,9 +9,13 @@ import io.jenkins.plugins.customizable_header.UserHeader;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import jenkins.model.Jenkins;
 import jenkins.views.PartialHeader;
+import org.kohsuke.stapler.Ancestor;
+import org.kohsuke.stapler.Stapler;
 
 public abstract class AbstractCustomHeader extends PartialHeader {
 
@@ -42,6 +47,18 @@ public abstract class AbstractCustomHeader extends PartialHeader {
 
   public  List<AbstractLink> getLinks() {
     return CustomHeaderConfiguration.get().getLinks();
+  }
+
+  public String getItemContextFullName() {
+    List<Ancestor> ancestors = new ArrayList<>(Stapler.getCurrentRequest2().getAncestors());
+    Collections.reverse(ancestors);
+    for (Ancestor ancestor: ancestors) {
+      Object obj = ancestor.getObject();
+      if (obj instanceof TopLevelItem item) {
+        return item.getFullName();
+      }
+    }
+    return null;
   }
 
   public List<SystemMessage> getSystemMessages() {

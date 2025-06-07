@@ -69,8 +69,10 @@ function generateItems(links) {
 
 function callback(element, instance) {
   const href = element.dataset.href;
+  const item = element.dataset.item;
+  const params = new URLSearchParams({ item: item });
 
-  fetch(href).then((response) => response.json()).then(json => {
+  fetch(href + "?" + params).then((response) => response.json()).then(json => {
     instance.setContent(generateItems(json.links));
   })
   .catch((error) => console.log(`AppNav request failed: ${error}`))
