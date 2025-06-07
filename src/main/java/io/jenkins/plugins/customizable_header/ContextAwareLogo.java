@@ -18,8 +18,10 @@ import hudson.model.User;
 import hudson.model.labels.LabelAtom;
 import hudson.model.labels.LabelExpression;
 import io.jenkins.plugins.customizable_header.logo.Icon;
+import io.jenkins.plugins.customizable_header.logo.ImageLogo;
 import io.jenkins.plugins.customizable_header.logo.Logo;
 import io.jenkins.plugins.customizable_header.logo.SvgLogo;
+import io.jenkins.plugins.customizable_header.logo.Symbol;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -152,8 +154,22 @@ public class ContextAwareLogo implements Describable<ContextAwareLogo> {
           HealthReport health = folder.getBuildHealth();
           return getLogoOrDefault(health.getIconClassName());
         }
-        FolderIcon folderIcon = folder.getIcon();
-        return new Icon(folderIcon.getIconClassName());
+        FolderIcon fIcon = folder.getIcon();
+        String folderIconName = fIcon.getIconClassName();
+        if (folderIconName == null) {
+          folderIconName = fIcon.getImageOf("32x32");
+          if (folderIconName.startsWith(Stapler.getCurrentRequest2().getContextPath())) {
+            folderIconName = folderIconName.substring(Stapler.getCurrentRequest2().getContextPath().length());
+          }
+          return new ImageLogo(folderIconName);
+        }
+        if (folderIconName.startsWith("icon-")) {
+          return new Icon(folderIconName);
+        }
+        if (folderIconName.startsWith("symbol-")) {
+          return new Symbol(folderIconName);
+        }
+        return new Symbol("symbol-folder-outline plugin-ionicons-api");
       }
       if (obj instanceof Computer computer) {
         Logo logo = handleComputerUrl("hudson.model.Computer");
