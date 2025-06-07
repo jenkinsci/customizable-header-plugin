@@ -158,7 +158,7 @@ public class HeaderRootAction implements UnprotectedRootAction {
     return Collections.emptyList();
   }
 
-  public static List<AbstractLink> getUserLinks() {
+  private static List<AbstractLink> getUserLinks() {
     User user = User.current();
     List<AbstractLink> links = null;
     if (user != null) {
@@ -173,7 +173,7 @@ public class HeaderRootAction implements UnprotectedRootAction {
     return Collections.emptyList();
   }
 
-  public static List<AbstractLink> getContextLinks(String item) {
+  private static List<AbstractLink> getContextLinks(String item) {
     List<AbstractLink> links = new ArrayList<>();
     if (item != null && !item.isEmpty()) {
       TopLevelItem topLevelItem = Jenkins.get().getItemByFullName(item, TopLevelItem.class);
