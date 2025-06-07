@@ -1,6 +1,7 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:h="/lib/layout/header" xmlns:l="/lib/layout" xmlns:st="jelly:stapler"
          xmlns:ch="/lib/customizable-header">
+  <div data-has-links="${it.hasLinks()}"/>
   <header id="page-header" class="custom-header jenkins-header">
     <div class="ch-section-1">
       <st:include page="prefix" optional="true" />
