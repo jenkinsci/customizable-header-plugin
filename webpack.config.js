@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
   entry: './src/main/js/index.js',
   output: {
-    filename: 'app-nav.js',
+    filename: 'custom-header.js',
     path: path.join(__dirname, 'src/main/webapp/js/bundles')
   },
   devtool: 'source-map',
