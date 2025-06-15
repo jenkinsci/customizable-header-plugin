@@ -76,8 +76,8 @@
     <j:if test="${it.backgroundColor != null and !it.backgroundColor.equals('')}">
       background: ${it.backgroundColor};
       --header-background: ${it.backgroundColor};
+      margin-bottom: 1rem;
     </j:if>
-    margin-bottom: 1rem;
   </j:if>
 }
 
