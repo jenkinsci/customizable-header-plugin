@@ -10,7 +10,7 @@
     <div class="ch-section-2 jenkins-header__main">
       <div class="jenkins-header__navigation">
         <j:if test="${it.title != null and !(it.title eq '')}">
-          <div class="custom-header__title"><j:out value="${it.title}"/></div>
+          <div class="custom-header__title jenkins-mobile-hide"><j:out value="${it.title}"/></div>
         </j:if>
         <l:breadcrumbBar>
           <j:out value="${breadcrumbs}" />
