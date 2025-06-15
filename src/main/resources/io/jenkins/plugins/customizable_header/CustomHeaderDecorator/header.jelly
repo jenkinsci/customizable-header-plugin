@@ -1,7 +1,6 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core">
   <link rel="stylesheet" href="${resURL}/plugin/customizable-header/css/header.css" type="text/css"/>
-  <link rel="preload" href="${rootURL}/customizable-header/theme.css" as="style"/>
   <link rel="stylesheet" href="${rootURL}/customizable-header/theme.css" type="text/css"/>
   <script src="${resURL}/plugin/customizable-header/js/bundles/custom-header.js" type="text/javascript"></script>
   <j:if test="${it.enabled}">
