@@ -14,7 +14,7 @@
     </a>
 
     <j:if test="${it.customizeAllowed and it.title != null and !(it.title eq '')}">
-        <div class="custom-header__title"><j:out value="${it.title}"/></div>
+        <div class="custom-header__title jenkins-mobile-hide"><j:out value="${it.title}"/></div>
     </j:if>
   </span>
 </j:jelly>
