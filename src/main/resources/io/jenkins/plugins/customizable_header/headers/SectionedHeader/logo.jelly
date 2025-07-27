@@ -3,7 +3,7 @@
     <a href="${rootURL}/" class="app-jenkins-logo">
         <st:include page="logo" it="${it.logo}" />
         <j:choose>
-            <j:when test="${it.logoText != null and !(it.logoText eq '')}">
+            <j:when test="${it.logoText != null}">
                 <div class="custom-header__text">${it.logoText}</div>
             </j:when>
             <j:otherwise>

@@ -49,6 +49,7 @@
   .custom-header__text {
     font-size: 1.125rem;
     font-weight: 600;
+    text-wrap: nowrap;
   }
 
   .custom-header__logo {
