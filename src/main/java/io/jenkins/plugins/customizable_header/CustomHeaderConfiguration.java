@@ -55,7 +55,7 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private String cssResource;
 
-  private String logoText = "";
+  private String logoText = "Jenkins";
 
   private Logo logo = new Symbol("symbol-jenkins");
 
