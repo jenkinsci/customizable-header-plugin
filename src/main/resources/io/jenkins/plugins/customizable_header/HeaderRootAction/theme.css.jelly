@@ -11,6 +11,10 @@
       --logo-dim: 32px;
       --ch-padding: 8px;
     }
+
+    .jenkins-breadcrumbs__list {
+      margin: 0;
+    }
   </j:if>
 
   svg.custom-header__svg {
