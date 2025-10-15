@@ -22,7 +22,12 @@
     width: fit-content;
   }
 
-  .custom-header__symbol, .custom-header__image, .custom-header__icon {
+  .custom-header__image, .custom-header__icon {
+    height: var(--logo-dim) !important;
+    width: fit-content;
+  }
+
+  .custom-header__symbol {
     height: var(--logo-dim) !important;
     width: var(--logo-dim) !important;
   }
