@@ -43,6 +43,7 @@
     <yarn.version>1.22.19</yarn.version>
     <hpi.compatibleSinceVersion>54</hpi.compatibleSinceVersion>
     <spotless.check.skip>false</spotless.check.skip>
+    <ban-junit4-imports.skip>false</ban-junit4-imports.skip>
   </properties>
 
   <dependencyManagement>
