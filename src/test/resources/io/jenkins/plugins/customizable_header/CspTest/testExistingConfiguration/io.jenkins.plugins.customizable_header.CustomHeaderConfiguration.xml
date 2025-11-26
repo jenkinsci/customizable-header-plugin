@@ -1,0 +1,19 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<io.jenkins.plugins.customizable__header.CustomHeaderConfiguration plugin="customizable-header@999999-SNAPSHOT">
+  <title></title>
+  <cssResource></cssResource>
+  <logoText>Jenkins</logoText>
+  <logo class="io.jenkins.plugins.customizable_header.logo.ImageLogo">
+    <logoUrl>https://example.com/logo.png</logoUrl>
+  </logo>
+  <header class="io.jenkins.plugins.customizable_header.headers.JenkinsWrapperHeaderSelector"/>
+  <enabled>true</enabled>
+  <headerColor>
+    <backgroundColor>black</backgroundColor>
+    <color>white</color>
+    <userColors>false</userColors>
+  </headerColor>
+  <thinHeader>false</thinHeader>
+  <systemMessages/>
+  <links/>
+</io.jenkins.plugins.customizable__header.CustomHeaderConfiguration>

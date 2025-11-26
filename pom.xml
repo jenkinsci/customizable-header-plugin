@@ -36,7 +36,7 @@
     <changelist>999999-SNAPSHOT</changelist>
     <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
     <jenkins.baseline>2.516</jenkins.baseline>
-    <jenkins.version>${jenkins.baseline}.1</jenkins.version>
+    <jenkins.version>2.539</jenkins.version>
     <gitHubRepo>jenkinsci/customizable-header-plugin</gitHubRepo>
     <node.version>20.18.0</node.version>
     <npm.version>10.9.1</npm.version>
@@ -80,6 +80,12 @@
       <groupId>org.jvnet.hudson.plugins</groupId>
       <artifactId>favorite</artifactId>
       <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.kohsuke</groupId>
+      <artifactId>access-modifier-suppressions</artifactId>
+      <version>${access-modifier-checker.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.jenkins.configuration-as-code</groupId>
