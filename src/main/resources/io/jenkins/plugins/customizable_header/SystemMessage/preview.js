@@ -61,7 +61,7 @@ function showPreview(message, toggle, visible) {
       }
     }
     const messageDiv = message.querySelector('.ch-message');
-    const textarea = message.getElementsByTagName("textarea")[0];
+    let textarea = message.getElementsByTagName("textarea")[0];
     const messagePreviewDiv = container.querySelector('.ch-sm--preview-text');
     let text = "";
     if (textarea == null) {
