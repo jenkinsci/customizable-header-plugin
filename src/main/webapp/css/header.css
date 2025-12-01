@@ -10,6 +10,12 @@
   display: flex;
   align-items: center;
   border-radius: 0;
+  gap: 0.5rem;
+}
+
+.custom-header__system-message-header svg {
+  width: 20px;
+  height: 20px;
 }
 
 .ch-dismiss-link {

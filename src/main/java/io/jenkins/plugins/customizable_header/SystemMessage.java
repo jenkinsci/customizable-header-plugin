@@ -27,6 +27,7 @@ public class SystemMessage implements Describable<SystemMessage> {
   private SystemMessageColor level;
   private LocalDateTime expireDate;
   private String uid;
+  private boolean includeSymbol;
 
   private Boolean dismissible = true;
 
@@ -38,6 +39,14 @@ public class SystemMessage implements Describable<SystemMessage> {
       uid = UUID.randomUUID().toString();
     }
     this.uid = uid;
+  }
+
+  public boolean isIncludeSymbol() {
+    return includeSymbol;
+  }
+  @DataBoundSetter
+  public void setIncludeSymbol(boolean includeSymbol) {
+    this.includeSymbol = includeSymbol;
   }
 
   public Boolean getDismissible() {
