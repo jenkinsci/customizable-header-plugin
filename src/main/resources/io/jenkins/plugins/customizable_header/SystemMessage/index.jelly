@@ -2,6 +2,19 @@
 <j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout" >
   <j:if test="${!it.dismissed}">
     <div class="jenkins-alert jenkins-alert-${it.level.name()} custom-header__system-message-header">
+      <j:if test="${it.includeSymbol}">
+        <j:choose>
+          <j:when test="${it.level == it.level.danger}">
+            <l:icon src="symbol-alert-circle-outline plugin-ionicons-api"/>
+          </j:when>
+          <j:when test="${it.level == it.level.warning}">
+            <l:icon src="symbol-warning-outline plugin-ionicons-api"/>
+          </j:when>
+          <j:otherwise>
+            <l:icon src="symbol-information-circle-outline plugin-ionicons-api"/>
+          </j:otherwise>
+        </j:choose>
+      </j:if>
       <div><j:out value="${it.escapedMessage}"/></div>
       <j:if test="${!h.isAnonymous() and it.dismissible}">
         <a href="#" class="ch-dismiss-link" tooltip="${%Dismiss message}" data-uid="${it.uid}">
