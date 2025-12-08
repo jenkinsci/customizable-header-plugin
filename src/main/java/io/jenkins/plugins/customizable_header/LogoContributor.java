@@ -13,7 +13,6 @@ import io.jenkins.plugins.customizable_header.logo.Logo;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jenkins.model.Jenkins;
@@ -62,14 +61,23 @@ public class LogoContributor implements Contributor {
         }
 
         if (Jenkins.get().hasPermission(Jenkins.READ)) {
-            // TODO Do we need to consider UnprotectedRootAction with l:layout and custom header links?
             final CustomHeaderConfiguration configuration = ExtensionList.lookupSingleton(CustomHeaderConfiguration.class);
             allowLinks(csp, configuration.getLinks());
+
+            allowLogo(csp, configuration.getLogo());
+            allowLogo(csp, configuration.getActiveLogo());
         }
     }
 
     private void allowLinks(CspBuilder csp, List<AbstractLink> links) {
-        links.stream().filter(l -> l instanceof AppNavLink).map(l -> (AppNavLink) l).map(AppNavLink::getLogo).map(this::mapToLogoUrl).filter(Objects::nonNull).forEach(url -> csp.add(Directive.IMG_SRC, url));
+        links.stream().filter(l -> l instanceof AppNavLink).map(l -> (AppNavLink) l).map(AppNavLink::getLogo).forEach(logo -> allowLogo(csp, logo));
+    }
+
+    private void allowLogo(CspBuilder csp, Logo logo) {
+        String url = mapToLogoUrl(logo);
+        if (url != null) {
+            csp.add(Directive.IMG_SRC, url);
+        }
     }
 
     private String mapToLogoUrl(Logo logo) {
