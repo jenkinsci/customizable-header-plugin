@@ -60,12 +60,11 @@ public class LogoContributor implements Contributor {
             }
         }
 
-        if (Jenkins.get().hasPermission(Jenkins.READ)) {
-            final CustomHeaderConfiguration configuration = ExtensionList.lookupSingleton(CustomHeaderConfiguration.class);
-            allowLinks(csp, configuration.getLinks());
+        final CustomHeaderConfiguration configuration = ExtensionList.lookupSingleton(CustomHeaderConfiguration.class);
+        allowLogo(csp, configuration.getActiveLogo());
 
-            allowLogo(csp, configuration.getLogo());
-            allowLogo(csp, configuration.getActiveLogo());
+        if (Jenkins.get().hasPermission(Jenkins.READ)) {
+            allowLinks(csp, configuration.getLinks());
         }
     }
 

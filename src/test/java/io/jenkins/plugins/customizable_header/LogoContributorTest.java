@@ -24,6 +24,7 @@ public class LogoContributorTest {
     @Test
     void basics(JenkinsRule j) throws Exception {
         final CustomHeaderConfiguration configuration = ExtensionList.lookupSingleton(CustomHeaderConfiguration.class);
+        configuration.setEnabled(true);
         configuration.setLogo(new ImageLogo("https://logo.example.com/logo.png"));
         configuration.setLinks(List.of(new AppNavLink("https://example.com", "Example", new ImageLogo("https://link.example.org/logo.png"))));
         final FreeStyleProject freeStyleProject = j.createFreeStyleProject();
@@ -53,10 +54,10 @@ public class LogoContributorTest {
         }
 
         try (JenkinsRule.WebClient webClient = j.createWebClient().withJavaScriptEnabled(false)) {
-            // anon gets nothing
+            // anon gets only the header logo
             final HtmlPage htmlPage = webClient.goTo("whoAmI");
             final String csp = htmlPage.getWebResponse().getResponseHeaderValue("Content-Security-Policy");
-            assertThat(csp, containsString("img-src 'self' data:;"));
+            assertThat(csp, containsString("img-src 'self' data: https://logo.example.com/logo.png;"));
         }
     }
 }
