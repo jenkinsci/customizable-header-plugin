@@ -252,7 +252,8 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
   }
 
   public boolean hasLinks() {
-    return hasFavorites() || hasAppLinks() || hasUserLinks() || hasContextLinks();
+
+    return Jenkins.get().hasPermission(Jenkins.READ) && (hasFavorites() || hasAppLinks() || hasUserLinks() || hasContextLinks());
   }
 
   public boolean isThinHeader() {

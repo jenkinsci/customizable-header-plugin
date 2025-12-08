@@ -4,12 +4,42 @@
   z-index: 19;
 }
 
+.ch-sm--preview-button,
+.ch-sm--preview-hide-button {
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.ch-sm--preview-hide-button {
+  margin-left: 0.5rem;
+}
+
+.ch-message .CodeMirror {
+  margin-bottom: 0;
+}
+
+.ch-sm--preview-container {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem var(--section-padding);
+}
+
 .custom-header__system-message-header {
   padding: 0.5rem var(--section-padding);
   margin: 0;
   display: flex;
   align-items: center;
   border-radius: 0;
+  gap: 0.5rem;
+}
+
+.custom-header__system-message-header svg,
+.ch-sm--preview-container svg{
+  width: 20px;
+  height: 20px;
 }
 
 .ch-dismiss-link {

@@ -1,31 +1,49 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
-  <f:entry>
-    <f:textarea field="message" previewEndpoint="/markupFormatter/previewDescription"/>
-  </f:entry>
-  <f:entry field="dismissible" title="${%Dismissible}">
-    <f:checkbox default="true"/>
-  </f:entry>
-  <f:entry title="${%Background of System Message}">
-    <div class="jenkins-radio">
-      <j:forEach var="it" items="${descriptor.getPropertyType(instance,'level').getEnumConstants()}">
-        <input type="radio" name="level" value="${it}" class="jenkins-radio__input"
-               checked="${(instance == null and it == 'info') || instance.level == it ? 'true' : null}" id="ch-sm-${it}"/>
-        <label for="ch-sm-${it}" class="jenkins-radio__label"><span class="jenkins-alert jenkins-alert-${it} ch-sm-label">${it.text}</span></label>
-      </j:forEach>
-    </div>
-  </f:entry>
-  <f:entry field="expireDate" title="${%Expiration Time}">
-    <div class="custom-header__system-message--expireDate" data-now="${descriptor.minDate}">
-      <f:textbox checkDependsOn="" data-input=""/>
-      <button class="jenkins-button" type="button" data-toggle="" tooltip="Open calendar">
-        <l:icon src="symbol-calendar-outline plugin-ionicons-api"/>
+  <div class="ch-sm--config" data-preview-url="/markupFormatter/previewDescription">
+    <f:entry class="ch-message">
+      <f:textarea field="message" codemirror-mode="${app.markupFormatter.codeMirrorMode}" codemirror-config="${app.markupFormatter.codeMirrorConfig}"/>
+      <button class="jenkins-button jenkins-button--secondary ch-sm--preview-button" type="button" tooltip="${%Show preview}">
+        <l:icon src="symbol-eye-outline plugin-ionicons-api"/>
       </button>
-    </div>
-  </f:entry>
-  <f:invisibleEntry>
-    <f:textbox field="uid"/>
-  </f:invisibleEntry>
+      <button class="jenkins-button jenkins-button--secondary ch-sm--preview-hide-button jenkins-hidden" type="button" tooltip="${%Hide preview}">
+        <l:icon src="symbol-eye-off-outline plugin-ionicons-api"/>
+      </button>
+      <div class="ch-sm--preview-container jenkins-hidden jenkins-alert">
+        <l:icon src="symbol-alert-circle-outline plugin-ionicons-api" class="jenkins-hidden ch-symbol ch-symbol-alert"/>
+        <l:icon src="symbol-warning-outline plugin-ionicons-api" class="jenkins-hidden ch-symbol ch-symbol-warning"/>
+        <l:icon src="symbol-information-circle-outline plugin-ionicons-api" class="jenkins-hidden ch-symbol ch-symbol-info"/>
+        <div class="ch-sm--preview-text"/>
+      </div>
+    </f:entry>
+    <f:entry field="dismissible" title="${%Dismissible}">
+      <f:checkbox default="true" class="ch-include-symbol"/>
+    </f:entry>
+    <f:entry field="includeSymbol" title="${%Show a symbol next to the message}" class="ch-include-symbol">
+      <f:checkbox/>
+    </f:entry>
+    <f:entry title="${%Background of System Message}">
+      <div class="jenkins-radio">
+        <j:forEach var="it" items="${descriptor.getPropertyType(instance,'level').getEnumConstants()}">
+          <input type="radio" name="level" value="${it}" class="jenkins-radio__input ch-level-radio"
+                 checked="${(instance == null and it == 'info') || instance.level == it ? 'true' : null}" id="ch-sm-${it}"/>
+          <label for="ch-sm-${it}" class="jenkins-radio__label"><span class="jenkins-alert jenkins-alert-${it} ch-sm-label">${it.text}</span></label>
+        </j:forEach>
+      </div>
+    </f:entry>
+    <f:entry field="expireDate" title="${%Expiration Time}">
+      <div class="custom-header__system-message--expireDate" data-now="${descriptor.minDate}">
+        <f:textbox checkDependsOn="" data-input=""/>
+        <button class="jenkins-button" type="button" data-toggle="" tooltip="Open calendar">
+          <l:icon src="symbol-calendar-outline plugin-ionicons-api"/>
+        </button>
+      </div>
+    </f:entry>
+    <f:invisibleEntry>
+      <f:textbox field="uid"/>
+    </f:invisibleEntry>
+  </div>
   <st:adjunct includes="io.jenkins.plugins.flatpickr"/>
   <st:adjunct includes="io.jenkins.plugins.customizable_header.flatpickr"/>
+  <st:adjunct includes="io.jenkins.plugins.customizable_header.SystemMessage.preview"/>
 </j:jelly>
