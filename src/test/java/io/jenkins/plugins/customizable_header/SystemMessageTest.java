@@ -2,6 +2,7 @@ package io.jenkins.plugins.customizable_header;
 
 import static io.jenkins.plugins.customizable_header.SystemMessage.DATE_INPUT_FORMATTER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.markup.MarkupFormatter;
@@ -9,41 +10,52 @@ import hudson.markup.RawHtmlMarkupFormatter;
 import java.io.IOException;
 import java.io.Writer;
 import java.time.LocalDateTime;
+import org.htmlunit.html.HtmlPage;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
+import org.xml.sax.SAXException;
 
 @WithJenkins
 class SystemMessageTest {
 
-@Test
-void escapedMessage(@SuppressWarnings("unused") JenkinsRule r) {
-  // save message
-  SystemMessage saveMessage = new SystemMessage("Save message", SystemMessage.SystemMessageColor.success, null);
-  assertEquals("Save message", saveMessage.getEscapedMessage());
+  @Test
+  void escapedMessage(@SuppressWarnings("unused") JenkinsRule r) {
+    // save message
+    SystemMessage saveMessage = new SystemMessage("Save message", SystemMessage.SystemMessageColor.success, null);
+    assertEquals("Save message", saveMessage.getEscapedMessage());
 
-  // expired message
-  SystemMessage expiredMessage = new SystemMessage("Expired message", SystemMessage.SystemMessageColor.warning, null);
-  expiredMessage.setExpireDate(LocalDateTime.now().minusHours(1).format(DATE_INPUT_FORMATTER));
-  assertEquals("", expiredMessage.getEscapedMessage());
+    // expired message
+    SystemMessage expiredMessage = new SystemMessage("Expired message", SystemMessage.SystemMessageColor.warning, null);
+    expiredMessage.setExpireDate(LocalDateTime.now().minusHours(1).format(DATE_INPUT_FORMATTER));
+    assertEquals("", expiredMessage.getEscapedMessage());
 
-  // dangerous message with global formatter
-  SystemMessage dangerousMessage  = new SystemMessage("<script>alert('PWND!')</script>", SystemMessage.SystemMessageColor.danger, null);
-  assertEquals("&lt;script&gt;alert(&#039;PWND!&#039;)&lt;/script&gt;", dangerousMessage.getEscapedMessage());
+    // dangerous message with global formatter
+    SystemMessage dangerousMessage  = new SystemMessage("<script>alert('PWND!')</script>", SystemMessage.SystemMessageColor.danger, null);
+    assertEquals("&lt;script&gt;alert(&#039;PWND!&#039;)&lt;/script&gt;", dangerousMessage.getEscapedMessage());
 
-  // dangerous message with OWASP formatter
-  r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
-  assertEquals("", dangerousMessage.getEscapedMessage());
+    // dangerous message with OWASP formatter
+    r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
+    assertEquals("", dangerousMessage.getEscapedMessage());
 
-  // save message with broken formatter
-  MarkupFormatter formatter = new MarkupFormatter() {
-  @Override
-  public void translate(String markup, @NonNull Writer output) throws IOException {
-    throw new IOException("Oh no!");
+    // save message with broken formatter
+    MarkupFormatter formatter = new MarkupFormatter() {
+    @Override
+    public void translate(String markup, @NonNull Writer output) throws IOException {
+      throw new IOException("Oh no!");
+    }
+    };
+    r.jenkins.setMarkupFormatter(formatter);
+    assertEquals("", saveMessage.getEscapedMessage());
   }
-  };
-  r.jenkins.setMarkupFormatter(formatter);
-  assertEquals("", saveMessage.getEscapedMessage());
-}
 
+  @Test
+  void systemMessageIsShown(JenkinsRule r) throws IOException, SAXException {
+    SystemMessage message = new SystemMessage("This is a test message", SystemMessage.SystemMessageColor.info, null);
+    CustomHeaderConfiguration.get().addSystemMessage(message);
+    try (JenkinsRule.WebClient client = r.createWebClient()) {
+      HtmlPage page = client.goTo("");
+      assertTrue(page.getBody().getTextContent().contains("This is a test message"));
+    }
+  }
 }
