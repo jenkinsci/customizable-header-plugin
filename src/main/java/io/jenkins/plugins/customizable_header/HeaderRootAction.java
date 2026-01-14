@@ -80,7 +80,8 @@ public class HeaderRootAction implements UnprotectedRootAction {
 
   @POST
   public HttpResponse doAddSystemMessage(@QueryParameter(fixEmpty = true) String message, @QueryParameter(fixEmpty = true) String level,
-                                @QueryParameter String expireDate, @QueryParameter(fixEmpty = true) String id, @QueryParameter(fixEmpty = true) Boolean dismissible) throws IOException {
+                                @QueryParameter String expireDate, @QueryParameter(fixEmpty = true) String id, @QueryParameter(fixEmpty = true) Boolean dismissible,
+                                @QueryParameter(fixEmpty = true) Boolean includeSymbol) throws IOException {
     Jenkins.get().checkPermission(Jenkins.ADMINISTER);
     if (message == null || level == null) {
       throw HttpResponses.error(HttpServletResponse.SC_BAD_REQUEST, "Missing parameters: message and level are mandatory");
@@ -90,6 +91,9 @@ public class HeaderRootAction implements UnprotectedRootAction {
       SystemMessage msg = new SystemMessage(message, lvl, id);
       msg.setExpireDate(expireDate);
       msg.setDismissible(dismissible);
+      if (includeSymbol != null) {
+        msg.setIncludeSymbol(includeSymbol);
+      }
       CustomHeaderConfiguration config = CustomHeaderConfiguration.get();
       config.addSystemMessage(msg);
       return HttpResponses.text(msg.getUid());
