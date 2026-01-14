@@ -64,13 +64,14 @@ To be able to later delete a system message, pass an id parameter in the call. I
 
 Parameters:
 
-| Parameter    | required | description                                                  |
-|--------------|----------|--------------------------------------------------------------|
-| message      | true     | The message, can contain html                                |
-| level        | true     | Message level, one of `info`, `success`, `warning`, `danger` |
-| expireDate   | false    | Expiration date for the message, format: `yyyy-M-d H:m`      |
-| uid          | false    | An optional unique id                                        |
-| dismissible  | false    | Message can be dismissed by users, defaults to `true`        |
+| Parameter     | required | description                                                  |
+|---------------|----------|--------------------------------------------------------------|
+| message       | true     | The message, can contain html                                |
+| level         | true     | Message level, one of `info`, `success`, `warning`, `danger` |
+| expireDate    | false    | Expiration date for the message, format: `yyyy-M-d H:m`      |
+| uid           | false    | An optional unique id                                        |
+| dismissible   | false    | Message can be dismissed by users, defaults to `true`        |
+| includeSymbol | false    | Include a symbol in the message, defaults to `false`         |
 
 To delete a system message do a post request to `<jenkins_url>/customizable-header/deleteSystemMessage?id=<id>`
 
@@ -121,4 +122,5 @@ icon-health-80plus=file-userContent/svgs/mood-happy.svg
 #### Manage something
 ![Manage](docs/pics/manage-jenkins.png)<br/>
 ![Security](docs/pics/configure-security.png)
+
 

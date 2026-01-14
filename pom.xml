@@ -11,7 +11,7 @@
 
   <groupId>io.jenkins.plugins</groupId>
   <artifactId>customizable-header</artifactId>
-  <version>${changelist}</version>
+  <version>251.${changelist}</version>
   <packaging>hpi</packaging>
 
   <name>Customizable Header</name>
