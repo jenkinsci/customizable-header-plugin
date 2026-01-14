@@ -44,6 +44,7 @@ public class SystemMessage implements Describable<SystemMessage> {
   public boolean isIncludeSymbol() {
     return includeSymbol;
   }
+
   @DataBoundSetter
   public void setIncludeSymbol(boolean includeSymbol) {
     this.includeSymbol = includeSymbol;
