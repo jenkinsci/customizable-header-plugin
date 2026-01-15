@@ -19,12 +19,10 @@
 
   svg.custom-header__svg {
     height: var(--header-height);
-    width: fit-content;
   }
 
   .custom-header__image, .custom-header__icon {
     height: var(--logo-dim) !important;
-    width: fit-content;
   }
 
   .custom-header__symbol {
