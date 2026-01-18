@@ -5,7 +5,15 @@
 .settings
 work
 keystore
-.idea
 node/
 node_modules/
 src/main/webapp/js/bundles
+
+# IntelliJ IDEA project files
+*.iml
+*.iws
+*.ipr
+.idea
+
+# VSCode
+.vscode
