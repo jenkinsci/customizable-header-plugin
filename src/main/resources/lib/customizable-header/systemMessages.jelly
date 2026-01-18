@@ -1,10 +1,10 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
-  <j:test test="${h.hasPermission(app, app.READ)}">
+  <j:if test="${h.hasPermission(app, app.READ)}">
     <div class="custom-header__system-messages">
       <j:forEach var="systemMessage" items="${it.systemMessages}">
         <st:include page="index.jelly" it="${systemMessage}" class="io.jenkins.plugins.customizable_header.SystemMessage"/>
       </j:forEach>
     </div>
-  </j:test>
+  </j:if>
 </j:jelly>

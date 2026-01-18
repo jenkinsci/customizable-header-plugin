@@ -1,14 +1,18 @@
 import debounce from "lodash/debounce";
 import { createElementFromHtml, xmlEscape } from "../util";
 
+/* global Behaviour */
+
 function init() {
   const rootUrl = document.head.dataset.rooturl;
 
   function classicSearch(q) {
     const searchUrl = document.querySelector("body").dataset.searchUrl;
-    return fetch(`${searchUrl}?query=${encodeURIComponent(q)}`).then((rsp) => rsp.json().then((data) => {
-      return data["suggestions"];
-    }));
+    return fetch(`${searchUrl}?query=${encodeURIComponent(q)}`).then((rsp) =>
+      rsp.json().then((data) => {
+        return data["suggestions"];
+      }),
+    );
   }
 
   function adjustUrl(url) {
@@ -39,19 +43,16 @@ function init() {
               const l = createElementFromHtml(`
                 <a class="jenkins-dropdown__item" href="${adjustUrl(r["url"])}">
                 <div class="jenkins-dropdown__item__icon">
-                  ${
-                    r["type"] === "image"
-                    ? `<img src="${r["icon"]}"/>`
-                    : r["icon"]
-                  }
+                  ${r["type"] === "image" ? `<img src="${r["icon"]}"/>` : r["icon"]}
                   </div>
                   ${label}
               `);
               resultsDiv.appendChild(l);
             }
-          })
+          });
         } else {
-          resultsDiv.innerHTML = "<p>" +  classicSearchInput.dataset.noResultsFor + " <code>" + xmlEscape(query) + "</code></p>";
+          resultsDiv.innerHTML =
+            "<p>" + classicSearchInput.dataset.noResultsFor + " <code>" + xmlEscape(query) + "</code></p>";
         }
       });
     }
@@ -61,22 +62,22 @@ function init() {
     renderClassicSearchResults();
   }, 250);
 
-  Behaviour.specify("#ch-classic-search-input", "ch-classic-search-input", 0, function(element) {
+  Behaviour.specify("#ch-classic-search-input", "ch-classic-search-input", 0, function (element) {
     element.addEventListener("input", () => {
       debounceCS();
     });
-    const resultsDiv = document.getElementById('ch-classic-search--results');
+    const resultsDiv = document.getElementById("ch-classic-search--results");
     element.addEventListener("focus", (e) => {
       if (e.target === element) {
         if (resultsDiv.childElementCount > 0) {
-          resultsDiv.classList.remove('jenkins-hidden');
+          resultsDiv.classList.remove("jenkins-hidden");
         }
       }
     });
-    document.addEventListener("click", function(e) {
-      if (e.target.id !== 'ch-classic-search--results' && e.target !== element) {
-        //element clicked wasn't the div; hide the div
-        resultsDiv.classList.add('jenkins-hidden');
+    document.addEventListener("click", function (e) {
+      if (e.target.id !== "ch-classic-search--results" && e.target !== element) {
+        // element clicked wasn't the div; hide the div
+        resultsDiv.classList.add("jenkins-hidden");
       }
     });
   });

@@ -1,16 +1,18 @@
 import tippy from "tippy.js";
 import { xmlEscape } from "../util";
 
+/* global Behaviour */
+
 function generateSVGIcon(name) {
-    const icons = document.getElementById("custom-header-icons");
-    return icons.content.querySelector(`#${name}`).cloneNode(true);
+  const icons = document.getElementById("custom-header-icons");
+  return icons.content.querySelector(`#${name}`).cloneNode(true);
 }
 
 function createElementFromHtml(html) {
   const template = document.createElement("template");
   template.innerHTML = html.trim();
   return template.content.firstElementChild;
-};
+}
 
 function menuItem(options) {
   let item = null;
@@ -33,13 +35,11 @@ function menuItem(options) {
       color = options.color;
     }
     item = createElementFromHtml(`
-      <a class="jenkins-dropdown__item" href="${options.linkUrl}" ${options.external? `target="_blank"` : ``}>
+      <a class="jenkins-dropdown__item" href="${options.linkUrl}" ${options.external ? `target="_blank"` : ``}>
         ${
           options.iconUrl
             ? `<div class="jenkins-dropdown__item__icon ${color}">${
-                options.iconXml
-                  ? options.iconXml
-                  : `<img src="${options.iconUrl}" class="custom-header__link-image"/>`
+                options.iconXml ? options.iconXml : `<img src="${options.iconUrl}" class="custom-header__link-image"/>`
               }</div>`
             : ``
         }
@@ -48,21 +48,20 @@ function menuItem(options) {
     `);
   }
   return item;
-};
+}
 
 function separator() {
-  return createElementFromHtml(
-    `<div class="jenkins-dropdown__separator"></div>`,
-  );
+  return createElementFromHtml(`<div class="jenkins-dropdown__separator"></div>`);
 }
 
 function generateItems(links) {
   const menuItems = document.createElement("div");
   menuItems.classList.add("jenkins-dropdown");
-  links.map((item) => {
-    return menuItem(item);
-  })
-  .forEach((item) => menuItems.appendChild(item));
+  links
+    .map((item) => {
+      return menuItem(item);
+    })
+    .forEach((item) => menuItems.appendChild(item));
 
   return menuItems;
 }
@@ -72,45 +71,44 @@ function callback(element, instance) {
   const item = element.dataset.item;
   const params = new URLSearchParams({ item: item });
 
-  fetch(href + "?" + params).then((response) => response.json()).then(json => {
-    instance.setContent(generateItems(json.links));
-  })
-  .catch((error) => console.log(`AppNav request failed: ${error}`))
-  .finally(() => (instance.loaded = true));
+  fetch(href + "?" + params)
+    .then((response) => response.json())
+    .then((json) => {
+      instance.setContent(generateItems(json.links));
+    })
+    .catch((error) => console.warn(`AppNav request failed: ${error}`))
+    .finally(() => (instance.loaded = true));
 }
 
 function init() {
   Behaviour.specify(".custom-header__app-nav-button", "app-nav", 0, function (element) {
-    tippy(
-      element,
-      {
-        content: "<p class='jenkins-spinner'></p>",
-        interactive: true,
-        trigger: "click",
-        allowHTML: true,
-        appendTo: () => document.body,
-        placement: "bottom-start",
-        arrow: false,
-        theme: "dropdown",
-        offset: [0, 0],
-        animation: "dropdown",
-        onCreate(instance) {
-          instance.reference.addEventListener("click", () => {
-            callback(element, instance);
-            if (instance.loaded) {
-              return;
-            }
+    tippy(element, {
+      content: "<p class='jenkins-spinner'></p>",
+      interactive: true,
+      trigger: "click",
+      allowHTML: true,
+      appendTo: () => document.body,
+      placement: "bottom-start",
+      arrow: false,
+      theme: "dropdown",
+      offset: [0, 0],
+      animation: "dropdown",
+      onCreate(instance) {
+        instance.reference.addEventListener("click", () => {
+          callback(element, instance);
+          if (instance.loaded) {
+            return;
+          }
 
-            instance.popper.addEventListener("click", () => {
-              instance.hide();
-            });
+          instance.popper.addEventListener("click", () => {
+            instance.hide();
           });
-        },
-        onShown(instance) {
-          Behaviour.applySubtree(instance.popper);
-        },
-      }
-    )
+        });
+      },
+      onShown(instance) {
+        Behaviour.applySubtree(instance.popper);
+      },
+    });
   });
 }
 
