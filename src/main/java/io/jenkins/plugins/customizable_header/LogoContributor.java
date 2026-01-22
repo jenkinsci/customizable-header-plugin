@@ -20,6 +20,7 @@ import jenkins.security.csp.Contributor;
 import jenkins.security.csp.CspBuilder;
 import jenkins.security.csp.Directive;
 import org.kohsuke.accmod.restrictions.suppressions.SuppressRestrictedWarnings;
+import org.kohsuke.stapler.Stapler;
 
 /**
  * Add the image logo URLs to CSP. This is permission-aware, i.e., you only get
@@ -61,7 +62,18 @@ public class LogoContributor implements Contributor {
         }
 
         final CustomHeaderConfiguration configuration = ExtensionList.lookupSingleton(CustomHeaderConfiguration.class);
-        allowLogo(csp, configuration.getActiveLogo());
+
+        try {
+            final Logo activeLogo = configuration.getActiveLogo();
+            allowLogo(csp, activeLogo);
+        } catch (RuntimeException e) {
+            // If we're outside Stapler (i.e., in the servlet filter), log only on FINE level -- this happens with context-dependent logos
+            if (Stapler.getCurrentRequest2() == null) {
+                LOGGER.log(Level.FINE, "Failed to retrieve logo for CSP", e);
+            } else {
+                throw e;
+            }
+        }
 
         if (Jenkins.get().hasPermission(Jenkins.READ)) {
             allowLinks(csp, configuration.getLinks());
