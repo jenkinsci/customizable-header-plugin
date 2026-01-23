@@ -2,6 +2,8 @@ package io.jenkins.plugins.customizable_header;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.is;
 
 import com.cloudbees.hudson.plugins.folder.Folder;
 import hudson.ExtensionList;
@@ -11,10 +13,14 @@ import io.jenkins.plugins.customizable_header.links.FolderLinks;
 import io.jenkins.plugins.customizable_header.links.JobLinks;
 import io.jenkins.plugins.customizable_header.logo.ImageLogo;
 import java.util.List;
+import java.util.logging.Level;
 import jenkins.model.Jenkins;
+import jenkins.security.csp.CspBuilder;
 import org.htmlunit.html.HtmlPage;
 import org.junit.jupiter.api.Test;
+import org.jvnet.hudson.test.Issue;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.LoggerRule;
 import org.jvnet.hudson.test.MockAuthorizationStrategy;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
@@ -59,5 +65,21 @@ public class LogoContributorTest {
             final String csp = htmlPage.getWebResponse().getResponseHeaderValue("Content-Security-Policy");
             assertThat(csp, containsString("img-src 'self' data: https://logo.example.com/logo.png;"));
         }
+    }
+
+    @Issue("https://github.com/jenkinsci/customizable-header-plugin/issues/304")
+    @Test
+    void logSpam(JenkinsRule j) throws Exception {
+        final CustomHeaderConfiguration configuration = ExtensionList.lookupSingleton(CustomHeaderConfiguration.class);
+        configuration.setEnabled(true);
+        configuration.setContextAwareLogo(new ContextAwareLogo());
+
+        LoggerRule loggerRule = new LoggerRule().record(CspBuilder.class, Level.WARNING).capture(100);
+
+        try (JenkinsRule.WebClient webClient = j.createWebClient().withJavaScriptEnabled(false)) {
+            webClient.goTo("whoAmI");
+        }
+
+        assertThat(loggerRule.getMessages(), is(empty()));
     }
 }
