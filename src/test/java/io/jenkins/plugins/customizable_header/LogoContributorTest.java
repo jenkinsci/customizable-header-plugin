@@ -72,12 +72,15 @@ public class LogoContributorTest {
     void logSpam(JenkinsRule j) throws Exception {
         final CustomHeaderConfiguration configuration = ExtensionList.lookupSingleton(CustomHeaderConfiguration.class);
         configuration.setEnabled(true);
+        configuration.setLogo(new ImageLogo("https://logo.example.com/logo.png"));
         configuration.setContextAwareLogo(new ContextAwareLogo());
 
         LoggerRule loggerRule = new LoggerRule().record(CspBuilder.class, Level.WARNING).capture(100);
 
         try (JenkinsRule.WebClient webClient = j.createWebClient().withJavaScriptEnabled(false)) {
-            webClient.goTo("whoAmI");
+            final HtmlPage htmlPage = webClient.goTo("whoAmI");
+            final String csp = htmlPage.getWebResponse().getResponseHeaderValue("Content-Security-Policy");
+            assertThat(csp, containsString("https://logo.example.com/logo.png"));
         }
 
         assertThat(loggerRule.getMessages(), is(empty()));
