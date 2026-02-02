@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -113,9 +114,17 @@ public class HeaderRootAction implements UnprotectedRootAction {
       if (url.startsWith("/")) {
         path = path.substring(1);
       }
-      File file = new File(Jenkins.get().getRootDir(), path);
+
+      File rootDir = Jenkins.get().getRootDir();
+      Path rootDirPath = rootDir.toPath().toAbsolutePath().normalize();
+      Path filePath = rootDirPath.resolve(path).normalize().toAbsolutePath();
+      if (!filePath.startsWith(rootDirPath)) {
+        rsp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid local path: " + url);
+        return;
+      }
+      File file = filePath.toFile();
       if (file.isFile()) {
-        try (InputStream in = Files.newInputStream(file.toPath())) {
+        try (InputStream in = Files.newInputStream(filePath)) {
           rsp.serveFile(req, in, file.lastModified(), -1, file.length(), file.getName());
           return;
         } catch (IOException | ServletException e) {
