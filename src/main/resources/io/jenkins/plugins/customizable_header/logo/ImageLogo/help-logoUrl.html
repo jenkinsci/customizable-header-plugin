@@ -1,6 +1,7 @@
 <div>
-  The url can either be an absolute http/https url or path relative to the Jenkins root directory (JENKINS_HOME). Typically, you want to put the file
-  in the <em>userContent</em> folder in your <em>JENKINS_HOME</em> directory.
-  Do not use the absolute url <em>&gt;jenkins_url&lt;/userContent/...</em> as the plugin would try to download the file from Jenkins as anonymous user
-  which will likely fail if <em>anonymous</em> has no <em>Overall/Read</em> permissions.
+  The url can either be an absolute http/https url or path inside the Jenkins root directory (JENKINS_HOME). Typically, you want to put the file
+  in the <em>userContent</em> folder in your <em>JENKINS_HOME</em> directory. Paths outside the Jenkins root directory are not allowed for
+  security reasons.<br/>
+  Do not use the absolute url <em>&lt;jenkins_url&gt;/userContent/...</em> as the plugin would try to download the file from Jenkins as <em>anonymous</em>
+  user which will fail if <em>anonymous</em> has no <em>Overall/Read</em> permissions.
 </div>
