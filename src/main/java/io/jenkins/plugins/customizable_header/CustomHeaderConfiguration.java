@@ -27,7 +27,6 @@ import io.jenkins.plugins.customizable_header.logo.Logo;
 import io.jenkins.plugins.customizable_header.logo.LogoDescriptor;
 import io.jenkins.plugins.customizable_header.logo.Symbol;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -413,22 +412,13 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private void setCssResourceUrl() {
     if (Util.fixEmptyAndTrim(cssResource) != null) {
-      try {
-        URI uri = URI.create(cssResource);
-        if (uri.isAbsolute()) {
-          cssResourceUrl = cssResource;
-        } else {
-          cssResourceUrl = Jenkins.get().getRootUrl() + cssResource;
-        }
-      } catch (IllegalArgumentException iae) {
-        LOGGER.log(Level.WARNING, "The given css resource is not a valid uri", iae);
-        cssResourceUrl = "";
-      }
+      cssResourceUrl = cssResource;
     } else {
       cssResourceUrl = "";
     }
   }
 
+  @NonNull
   public String getCssResourceUrl() {
     if (cssResourceUrl == null) {
       setCssResourceUrl();

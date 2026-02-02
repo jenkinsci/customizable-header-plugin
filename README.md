@@ -10,7 +10,7 @@ Customizable Header Plugin
 ## About the plugin
 This plugin allows to customize the Jenkins header.
 
-You can change the logo, the text next to the logo, the background, add application links (links to external pages, internal pages or items marked as favorites) and add system messages.
+You can change the logo, the text next to the logo, the background, add a title, add application links (links to external pages, internal pages or items marked as favorites) and add system messages.
 
 The plugin offers 2 layouts for the header.
 - Default Jenkins header: The complete header gets the selected background
@@ -26,11 +26,13 @@ Click `Customize Header` to enable changing logo, text, title and colors.
 
 
 ## The logo
-The logo can be turned off, you can use the default Jenkins logo, use a png or jpeg image, an SVG icon.
+The logo can be turned off, you can use the default Jenkins logo, use a png or jpeg image or an SVG icon.
 Ideally you use an SVG as they can be made working nicely with the dark theme.
 You can also choose a symbol from any plugin that provides symbols (see [Design Library](https://weekly.ci.jenkins.io/design-library/symbols/)) 
 how to specify a symbol (e.g. the screenshots below use `symbol-jenkins`)<br/>
 Optionally the logo can be made context aware. In this mode the logo corresponds to the context, e.g. on a job it displays the job status or the job weather. On Folders the folder icon or the folder weather, on computers the computer state. And on many manage pages the corresponding symbol. In case no mapping is found then the globally defined logo is used.
+
+When using an image from an external url, the plugin will download the image and cache it internally for 1 hour. This is necessary to avoid that the plugins has to set content security policies to allow loading images from external urls.
 
 ## The logo text
 By default, the text `Jenkins` is displayed. You can choose any text you like or make it empty to display nothing.

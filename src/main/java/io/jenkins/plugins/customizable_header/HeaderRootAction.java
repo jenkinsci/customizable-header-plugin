@@ -3,6 +3,7 @@ package io.jenkins.plugins.customizable_header;
 import com.cloudbees.hudson.plugins.folder.AbstractFolder;
 import com.cloudbees.hudson.plugins.folder.AbstractFolderProperty;
 import hudson.Extension;
+import hudson.Util;
 import hudson.model.Item;
 import hudson.model.ItemGroup;
 import hudson.model.Job;
@@ -16,7 +17,12 @@ import io.jenkins.plugins.customizable_header.links.JobLinks;
 import io.jenkins.plugins.customizable_header.logo.Symbol;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,6 +82,63 @@ public class HeaderRootAction implements UnprotectedRootAction {
 
   public boolean isThinHeader() {
     return  CustomHeaderConfiguration.get().isEnabled() && CustomHeaderConfiguration.get().isThinHeader();
+  }
+
+  @GET
+  public void doFetch(@QueryParameter(value = "u") String url, StaplerRequest2 req, StaplerResponse2 rsp) throws IOException {
+    String u = Util.fixEmptyAndTrim(url);
+    if (u == null) {
+      rsp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing 'u' query parameter");
+      return;
+    }
+
+    if (!RemoteAssetCache.isAllowed(u)) {
+      rsp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Fetching remote asset not allowed: " + url);
+      return;
+    }
+
+    URI uri = null;
+    try {
+      uri = new URI(url);
+    } catch (URISyntaxException e) {
+      rsp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid URL: " + url);
+      return;
+    }
+    if (!uri.isAbsolute()) {
+      String path = uri.getPath();
+      if (path == null) {
+        rsp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid path: " + url);
+        return;
+      }
+      if (url.startsWith("/")) {
+        path = path.substring(1);
+      }
+      File file = new File(Jenkins.get().getRootDir(), path);
+      if (file.isFile()) {
+        try (InputStream in = Files.newInputStream(file.toPath())) {
+          rsp.serveFile(req, in, file.lastModified(), -1, file.length(), file.getName());
+          return;
+        } catch (IOException | ServletException e) {
+          rsp.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failed to serve file " + url);
+          return;
+        }
+      }
+      rsp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Requested local image not found: " + url);
+      return;
+    }
+
+    RemoteAssetCache.CachedResource cr = RemoteAssetCache.get(u);
+    if (cr == null) {
+      rsp.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failed to fetch remote asset: " + url);
+      return;
+    }
+
+    // Same-origin caching headers for browsers and reverse proxies.
+    rsp.setHeader("Cache-Control", "public, max-age=3600");
+    rsp.setHeader("X-Content-Type-Options", "nosniff");
+    rsp.setContentType(cr.contentType);
+    rsp.setContentLength(cr.bytes.length);
+    rsp.getOutputStream().write(cr.bytes);
   }
 
   @POST

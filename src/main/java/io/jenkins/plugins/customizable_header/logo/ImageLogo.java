@@ -2,7 +2,9 @@ package io.jenkins.plugins.customizable_header.logo;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
-import java.net.URI;
+import io.jenkins.plugins.customizable_header.RemoteAssetCache;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import jenkins.model.Jenkins;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -21,11 +23,13 @@ public class ImageLogo extends Logo {
   }
 
   public String getUrl() {
-    URI uri = URI.create(logoUrl);
-    if (!uri.isAbsolute()) {
-      uri = URI.create(Jenkins.get().getRootUrl() + logoUrl);
-    }
-    return uri.toString();
+    return proxiedUrl(logoUrl);
+  }
+
+  private String proxiedUrl(String remoteUrl) {
+    RemoteAssetCache.addUrlToCache(remoteUrl);
+    String enc = URLEncoder.encode(remoteUrl, StandardCharsets.UTF_8);
+    return Jenkins.get().getRootUrl() + "customizable-header/fetch?u=" + enc;
   }
 
   @Extension

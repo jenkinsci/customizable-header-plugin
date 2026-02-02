@@ -1,3 +1,6 @@
 <div>
-    An absolute url or an url relative to the root url of Jenkins.
+  The url can either be an absolute http/https url or path relative to the Jenkins root directory (JENKINS_HOME). Typically, you want to put the file
+  in the <em>userContent</em> folder in your <em>JENKINS_HOME</em> directory.
+  Do not use the absolute url <em>&gt;jenkins_url&lt;/userContent/...</em> as the plugin would try to download the file from Jenkins as anonymous user
+  which will likely fail if <em>anonymous</em> has no <em>Overall/Read</em> permissions.
 </div>
