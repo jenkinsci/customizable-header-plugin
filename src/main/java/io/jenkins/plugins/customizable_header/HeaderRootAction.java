@@ -115,10 +115,8 @@ public class HeaderRootAction implements UnprotectedRootAction {
         path = path.substring(1);
       }
 
-      File rootDir = Jenkins.get().getRootDir();
-      Path rootDirPath = rootDir.toPath().toAbsolutePath().normalize();
-      Path filePath = rootDirPath.resolve(path).normalize().toAbsolutePath();
-      if (!filePath.startsWith(rootDirPath)) {
+      Path filePath = resolvePath(path);
+      if (isNotValidPath(filePath)) {
         rsp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid local path: " + url);
         return;
       }
@@ -148,6 +146,18 @@ public class HeaderRootAction implements UnprotectedRootAction {
     rsp.setContentType(cr.contentType);
     rsp.setContentLength(cr.bytes.length);
     rsp.getOutputStream().write(cr.bytes);
+  }
+
+  public static Path resolvePath(String path) {
+    File rootDir = Jenkins.get().getRootDir();
+    Path rootDirPath = rootDir.toPath().toAbsolutePath().normalize();
+    return rootDirPath.resolve(path).normalize().toAbsolutePath();
+  }
+
+  public static boolean isNotValidPath(Path path) {
+    File userContentDir = new File(Jenkins.get().getRootDir(), "userContent");
+    Path userContentPath = userContentDir.toPath().toAbsolutePath().normalize();
+    return !path.startsWith(userContentPath);
   }
 
   @POST
