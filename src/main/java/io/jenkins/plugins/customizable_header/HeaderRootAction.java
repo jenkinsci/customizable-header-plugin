@@ -94,7 +94,7 @@ public class HeaderRootAction implements UnprotectedRootAction {
     }
 
     if (!RemoteAssetCache.isAllowed(u)) {
-      rsp.sendError(HttpServletResponse.SC_BAD_REQUEST, "The given url is not a valid asset: " + url);
+      rsp.sendError(HttpServletResponse.SC_NOT_FOUND, "The given url is not a valid asset: " + url);
       return;
     }
 
@@ -105,8 +105,8 @@ public class HeaderRootAction implements UnprotectedRootAction {
       rsp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid URL: " + url);
       return;
     }
-    if (!uri.isAbsolute()) {
 
+    if (!uri.isAbsolute()) {
       Path filePath = resolvePath(url);
       if (isNotValidPath(filePath)) {
         rsp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid local path: " + url);
@@ -118,11 +118,11 @@ public class HeaderRootAction implements UnprotectedRootAction {
           rsp.serveFile(req, in, file.lastModified(), -1, file.length(), file.getName());
           return;
         } catch (IOException | ServletException e) {
-          rsp.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failed to serve file " + url);
+          rsp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to serve file " + url);
           return;
         }
       }
-      rsp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Requested local resource not found: " + url);
+      rsp.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested local resource not found: " + url);
       return;
     }
 
