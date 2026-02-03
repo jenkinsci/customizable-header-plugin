@@ -37,7 +37,7 @@ public class HeaderRootActionTest {
   @LocalData
   void canAccessLogo() throws Exception {
     try (JenkinsRule.WebClient w = r.createWebClient()) {
-      HtmlPage page = w.withThrowExceptionOnFailingStatusCode(false).goTo("");
+      w.withThrowExceptionOnFailingStatusCode(false).goTo("");
       Page image = w.withThrowExceptionOnFailingStatusCode(false).goTo("customizable-header/fetch?u=%2FuserContent%2Fbeekeeper.png", "image/png");
       assertEquals(200, image.getWebResponse().getStatusCode());
     }
