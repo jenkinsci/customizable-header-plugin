@@ -1,6 +1,6 @@
 <div>
   The url can either be an absolute http/https url or a path inside <em>JENKINS_HOME/userContent/</em>. Path outside this directory are not allowed for
-  security reasons. For backward compatibility <em>userContent</em> must be included in the path.<br/>
+  security reasons. For backward compatibility path starting with <em>[/]userContent/</em> are also possible.<br/>
   Do not use the absolute url <em>&lt;jenkins_url&gt;/userContent/...</em> as the plugin would try to download the file from Jenkins as <em>anonymous</em>
   user which will fail if <em>anonymous</em> has no <em>Overall/Read</em> permissions.
 </div>
