@@ -94,7 +94,7 @@ public class HeaderRootAction implements UnprotectedRootAction {
     }
 
     if (!RemoteAssetCache.isAllowed(u)) {
-      rsp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Fetching remote asset not allowed: " + url);
+      rsp.sendError(HttpServletResponse.SC_BAD_REQUEST, "The given url is not a valid asset: " + url);
       return;
     }
 
@@ -106,12 +106,8 @@ public class HeaderRootAction implements UnprotectedRootAction {
       return;
     }
     if (!uri.isAbsolute()) {
-      String path = url;
-      if (path.startsWith("/")) {
-        path = path.substring(1);
-      }
 
-      Path filePath = resolvePath(path);
+      Path filePath = resolvePath(url);
       if (isNotValidPath(filePath)) {
         rsp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid local path: " + url);
         return;
@@ -145,12 +141,18 @@ public class HeaderRootAction implements UnprotectedRootAction {
   }
 
   public static Path resolvePath(String path) {
-    // Intentionally use Jenkins root dir as the base for resolving paths to remain backward compatible
-    // Existing configurations might use path that start with "/userContent" and that should be resolved correctly
-    // The validation that the resolved path is under "userContent" is done in the isNotValidPath method
-    File rootDir = Jenkins.get().getRootDir();
-    Path rootDirPath = rootDir.toPath().toAbsolutePath().normalize();
-    return rootDirPath.resolve(path).normalize().toAbsolutePath();
+    // Use the Jenkins userContent directory as the base for resolving paths.
+    // Existing configurations that reference paths under "/userContent" will still be resolved correctly
+    if (path.startsWith("/")) {
+      path = path.substring(1);
+    }
+
+    if (path.startsWith("userContent/")) {
+      path = path.substring("userContent/".length());
+    }
+    File userContentDir = new File(Jenkins.get().getRootDir(), "userContent");
+    Path userContentPath = userContentDir.toPath().toAbsolutePath().normalize();
+    return userContentPath.resolve(path).normalize().toAbsolutePath();
   }
 
   public static boolean isNotValidPath(Path path) {

@@ -56,12 +56,8 @@ public class ImageLogo extends Logo {
       try {
         URI uri = new URI(value);
         if (!uri.isAbsolute()) {
-          String path = value;
-          if (path.startsWith("/")) {
-            path = path.substring(1);
-          }
 
-          Path filePath = HeaderRootAction.resolvePath(path);
+          Path filePath = HeaderRootAction.resolvePath(value);
           if (HeaderRootAction.isNotValidPath(filePath)) {
             return FormValidation.error("Relative path must be within the \"userContent\" directory under \"JENKINS_HOME\"");
           }
