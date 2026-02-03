@@ -457,7 +457,11 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
     try {
       URI uri = new URI(value);
       if (!uri.isAbsolute()) {
-        String path = uri.getPath();
+        String path = value;
+        if (path.startsWith("/")) {
+          path = path.substring(1);
+        }
+
         Path filePath = HeaderRootAction.resolvePath(path);
         if (HeaderRootAction.isNotValidPath(filePath)) {
           return FormValidation.error("Relative path must be within the \"userContent\" directory under \"JENKINS_HOME\"");

@@ -106,12 +106,8 @@ public class HeaderRootAction implements UnprotectedRootAction {
       return;
     }
     if (!uri.isAbsolute()) {
-      String path = uri.getPath();
-      if (path == null) {
-        rsp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid path: " + url);
-        return;
-      }
-      if (url.startsWith("/")) {
+      String path = url;
+      if (path.startsWith("/")) {
         path = path.substring(1);
       }
 
@@ -130,7 +126,7 @@ public class HeaderRootAction implements UnprotectedRootAction {
           return;
         }
       }
-      rsp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Requested local image not found: " + url);
+      rsp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Requested local resource not found: " + url);
       return;
     }
 
@@ -149,6 +145,9 @@ public class HeaderRootAction implements UnprotectedRootAction {
   }
 
   public static Path resolvePath(String path) {
+    // Intentionally use Jenkins root dir as the base for resolving paths to remain backward compatible
+    // Existing configurations might use path that start with "/userContent" and that should be resolved correctly
+    // The validation that the resolved path is under "userContent" is done in the isNotValidPath method
     File rootDir = Jenkins.get().getRootDir();
     Path rootDirPath = rootDir.toPath().toAbsolutePath().normalize();
     return rootDirPath.resolve(path).normalize().toAbsolutePath();
