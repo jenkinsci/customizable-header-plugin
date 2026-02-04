@@ -140,12 +140,12 @@ public class HeaderRootAction implements UnprotectedRootAction {
     rsp.getOutputStream().write(cr.bytes);
   }
 
-  private static Path getUserContentBasePath() {
+  private static Path getUserContentBasePath() throws IOException {
     File userContentDir = new File(Jenkins.get().getRootDir(), "userContent");
-    return userContentDir.toPath().toAbsolutePath().normalize();
+    return userContentDir.toPath().toRealPath();
   }
 
-  public static Path resolvePath(String path) {
+  public static Path resolvePath(String path) throws IOException {
     // Use the Jenkins userContent directory as the base for resolving paths.
     // Existing configurations that reference paths under "/userContent" will still be resolved correctly
     if (path.startsWith("/")) {
@@ -156,12 +156,12 @@ public class HeaderRootAction implements UnprotectedRootAction {
       path = path.substring("userContent/".length());
     }
     Path userContentPath = getUserContentBasePath();
-    return userContentPath.resolve(path).normalize().toAbsolutePath();
+    return userContentPath.resolve(path).toRealPath();
   }
 
-  public static boolean isNotValidPath(Path path) {
+  public static boolean isNotValidPath(Path path) throws IOException {
     Path userContentPath = getUserContentBasePath();
-    Path normalizedPath = path.toAbsolutePath().normalize();
+    Path normalizedPath = path.toRealPath();
     return !normalizedPath.startsWith(userContentPath);
   }
 

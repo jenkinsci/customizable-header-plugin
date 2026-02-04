@@ -36,7 +36,7 @@ public class ImageLogo extends Logo {
   private String proxiedUrl(String remoteUrl) {
     RemoteAssetCache.addUrlToCache(remoteUrl);
     String enc = URLEncoder.encode(remoteUrl, StandardCharsets.UTF_8);
-    return Jenkins.get().getRootUrl() + "customizable-header/fetch?u=" + enc;
+    return Jenkins.get().getRootUrlFromRequest() + "customizable-header/fetch?u=" + enc;
   }
 
   @Extension
