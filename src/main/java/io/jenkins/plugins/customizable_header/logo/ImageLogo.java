@@ -14,6 +14,8 @@ import jenkins.model.Jenkins;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.Stapler;
+import org.kohsuke.stapler.StaplerRequest2;
 import org.kohsuke.stapler.verb.POST;
 
 public class ImageLogo extends Logo {
@@ -34,9 +36,16 @@ public class ImageLogo extends Logo {
   }
 
   private String proxiedUrl(String remoteUrl) {
+    StaplerRequest2 req = Stapler.getCurrentRequest2();
+    String rootUrl;
+    if (req != null) {
+      rootUrl = req.getContextPath() + "/";
+    } else {
+      rootUrl = Jenkins.get().getRootUrl();
+    }
     RemoteAssetCache.addUrlToCache(remoteUrl);
     String enc = URLEncoder.encode(remoteUrl, StandardCharsets.UTF_8);
-    return Jenkins.get().getRootUrlFromRequest() + "customizable-header/fetch?u=" + enc;
+    return rootUrl + "customizable-header/fetch?u=" + enc;
   }
 
   @Extension
