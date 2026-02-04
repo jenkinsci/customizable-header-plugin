@@ -11,6 +11,7 @@ import hudson.model.Item;
 import hudson.model.Job;
 import hudson.model.User;
 import hudson.plugins.favorite.Favorites;
+import hudson.util.FormValidation;
 import io.jenkins.plugins.customizable_header.color.HeaderColor;
 import io.jenkins.plugins.customizable_header.headers.ContextSelector;
 import io.jenkins.plugins.customizable_header.headers.HeaderDescriptor;
@@ -28,6 +29,8 @@ import io.jenkins.plugins.customizable_header.logo.LogoDescriptor;
 import io.jenkins.plugins.customizable_header.logo.Symbol;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,8 +46,10 @@ import net.sf.json.JSONObject;
 import org.kohsuke.stapler.Ancestor;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
+import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.Stapler;
 import org.kohsuke.stapler.StaplerRequest2;
+import org.kohsuke.stapler.verb.POST;
 
 @Extension
 @org.jenkinsci.Symbol("customHeader")
@@ -413,22 +418,13 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private void setCssResourceUrl() {
     if (Util.fixEmptyAndTrim(cssResource) != null) {
-      try {
-        URI uri = URI.create(cssResource);
-        if (uri.isAbsolute()) {
-          cssResourceUrl = cssResource;
-        } else {
-          cssResourceUrl = Jenkins.get().getRootUrl() + cssResource;
-        }
-      } catch (IllegalArgumentException iae) {
-        LOGGER.log(Level.WARNING, "The given css resource is not a valid uri", iae);
-        cssResourceUrl = "";
-      }
+      cssResourceUrl = cssResource;
     } else {
       cssResourceUrl = "";
     }
   }
 
+  @NonNull
   public String getCssResourceUrl() {
     if (cssResourceUrl == null) {
       setCssResourceUrl();
@@ -452,4 +448,29 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
             && !(d instanceof JenkinsHeaderSelector.DescriptorImpl))
         .collect(Collectors.toList());
   }
+
+  @POST
+  public FormValidation doCheckCssResource(@QueryParameter String value) throws Exception {
+    if (value == null || value.isBlank()) {
+      return FormValidation.ok();
+    }
+    try {
+      URI uri = new URI(value);
+      if (!uri.isAbsolute()) {
+        Path filePath = HeaderRootAction.resolvePath(value);
+        if (HeaderRootAction.isNotValidPath(filePath)) {
+          return FormValidation.error("Relative path must be within the \"userContent\" directory under \"JENKINS_HOME\"");
+        }
+      } else {
+        String scheme = uri.getScheme();
+        if (!scheme.equals("http") && !scheme.equals("https")) {
+          return FormValidation.error("Only HTTP and HTTPS URLs are supported");
+        }
+      }
+      return FormValidation.ok();
+    } catch (URISyntaxException e) {
+      return FormValidation.error("Invalid URL: " + e.getMessage());
+    }
+  }
+
 }

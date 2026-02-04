@@ -3,6 +3,7 @@ package io.jenkins.plugins.customizable_header;
 import com.cloudbees.hudson.plugins.folder.AbstractFolder;
 import com.cloudbees.hudson.plugins.folder.AbstractFolderProperty;
 import hudson.Extension;
+import hudson.Util;
 import hudson.model.Item;
 import hudson.model.ItemGroup;
 import hudson.model.Job;
@@ -16,7 +17,13 @@ import io.jenkins.plugins.customizable_header.links.JobLinks;
 import io.jenkins.plugins.customizable_header.logo.Symbol;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,6 +83,86 @@ public class HeaderRootAction implements UnprotectedRootAction {
 
   public boolean isThinHeader() {
     return  CustomHeaderConfiguration.get().isEnabled() && CustomHeaderConfiguration.get().isThinHeader();
+  }
+
+  @GET
+  public void doFetch(@QueryParameter(value = "u") String url, StaplerRequest2 req, StaplerResponse2 rsp) throws IOException {
+    String u = Util.fixEmptyAndTrim(url);
+    if (u == null) {
+      rsp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing 'u' query parameter");
+      return;
+    }
+
+    if (!RemoteAssetCache.isAllowed(u)) {
+      rsp.sendError(HttpServletResponse.SC_NOT_FOUND, "The given url is not a valid asset: " + url);
+      return;
+    }
+
+    URI uri = null;
+    try {
+      uri = new URI(url);
+    } catch (URISyntaxException e) {
+      rsp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid URL: " + url);
+      return;
+    }
+
+    if (!uri.isAbsolute()) {
+      Path filePath = resolvePath(url);
+      if (isNotValidPath(filePath)) {
+        rsp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid local path: " + url);
+        return;
+      }
+      File file = filePath.toFile();
+      if (file.isFile()) {
+        try (InputStream in = Files.newInputStream(filePath)) {
+          rsp.serveFile(req, in, file.lastModified(), -1, file.length(), file.getName());
+          return;
+        } catch (IOException | ServletException e) {
+          rsp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to serve file " + url);
+          return;
+        }
+      }
+      rsp.sendError(HttpServletResponse.SC_NOT_FOUND, "Requested local resource not found: " + url);
+      return;
+    }
+
+    RemoteAssetCache.CachedResource cr = RemoteAssetCache.get(u);
+    if (cr == null) {
+      rsp.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Failed to fetch remote asset: " + url);
+      return;
+    }
+
+    // Same-origin caching headers for browsers and reverse proxies.
+    rsp.setHeader("Cache-Control", "public, max-age=3600");
+    rsp.setHeader("X-Content-Type-Options", "nosniff");
+    rsp.setContentType(cr.contentType);
+    rsp.setContentLength(cr.bytes.length);
+    rsp.getOutputStream().write(cr.bytes);
+  }
+
+  private static Path getUserContentBasePath() throws IOException {
+    File userContentDir = new File(Jenkins.get().getRootDir(), "userContent");
+    return userContentDir.toPath().toRealPath();
+  }
+
+  public static Path resolvePath(String path) throws IOException {
+    // Use the Jenkins userContent directory as the base for resolving paths.
+    // Existing configurations that reference paths under "/userContent" will still be resolved correctly
+    if (path.startsWith("/")) {
+      path = path.substring(1);
+    }
+
+    if (path.startsWith("userContent/")) {
+      path = path.substring("userContent/".length());
+    }
+    Path userContentPath = getUserContentBasePath();
+    return userContentPath.resolve(path).toRealPath();
+  }
+
+  public static boolean isNotValidPath(Path path) throws IOException {
+    Path userContentPath = getUserContentBasePath();
+    Path normalizedPath = path.toRealPath();
+    return !normalizedPath.startsWith(userContentPath);
   }
 
   @POST

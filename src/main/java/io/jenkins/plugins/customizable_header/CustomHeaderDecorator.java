@@ -4,6 +4,9 @@ import hudson.Extension;
 import hudson.model.PageDecorator;
 import io.jenkins.plugins.customizable_header.logo.ImageLogo;
 import io.jenkins.plugins.customizable_header.logo.Logo;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import jenkins.model.Jenkins;
 import org.jenkinsci.Symbol;
 
 @Extension
@@ -11,7 +14,12 @@ import org.jenkinsci.Symbol;
 public class CustomHeaderDecorator extends PageDecorator {
 
   public String getCssResourceUrl() {
-    return CustomHeaderConfiguration.get().getCssResourceUrl();
+    String url = CustomHeaderConfiguration.get().getCssResourceUrl();
+    if (!url.isBlank()) {
+      RemoteAssetCache.addUrlToCache(url);
+    }
+    String enc = URLEncoder.encode(url, StandardCharsets.UTF_8);
+    return Jenkins.get().getRootUrl() + "customizable-header/fetch?u=" + enc;
   }
 
   public boolean isImageLogo() {
