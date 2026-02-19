@@ -7,7 +7,7 @@
     <script src="${resURL}/plugin/customizable-header/js/messages.js" type="text/javascript"></script>
   </l:hasPermission>
   <j:if test="${it.enabled}">
-    <j:if test="${it.cssResourceUrl != ''}">
+    <j:if test="${it.cssResourceUrl != null}">
       <link rel="preload" href="${it.cssResourceUrl}" as="style"/>
       <link rel="stylesheet" href="${it.cssResourceUrl}" type="text/css"/>
     </j:if>
