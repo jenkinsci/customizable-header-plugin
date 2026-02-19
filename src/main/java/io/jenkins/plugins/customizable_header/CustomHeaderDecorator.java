@@ -17,6 +17,8 @@ public class CustomHeaderDecorator extends PageDecorator {
     String url = CustomHeaderConfiguration.get().getCssResourceUrl();
     if (!url.isBlank()) {
       RemoteAssetCache.addUrlToCache(url);
+    } else {
+      return null;
     }
     String enc = URLEncoder.encode(url, StandardCharsets.UTF_8);
     return Jenkins.get().getRootUrl() + "customizable-header/fetch?u=" + enc;
