@@ -112,4 +112,41 @@ function init() {
   });
 }
 
+function updateAppNavVisibility() {
+  const appNavButton = document.querySelector(".custom-header__app-nav-button");
+  if (!appNavButton) return;
+
+  const item = appNavButton.dataset.item;
+
+  const applyVisibility = (hasLinks) => {
+    appNavButton.classList.toggle("jenkins-hidden", !hasLinks);
+
+    const hasLinksDiv = document.querySelector("[data-has-links]");
+    if (hasLinksDiv) {
+      hasLinksDiv.dataset.hasLinks = String(hasLinks);
+    }
+  };
+
+  if (item) {
+    fetch(appNavButton.dataset.href + "?" + new URLSearchParams({ item }))
+      .then((r) => r.json())
+      .then((data) => applyVisibility(data.links && data.links.length > 0))
+      .catch((e) => console.warn(`AppNav visibility update failed: ${e}`));
+  } else {
+    applyVisibility(document.querySelectorAll('.favorite-toggle[data-fav="true"]').length > 0);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const root = document.getElementById("jenkins") || document.body;
+  new MutationObserver(updateAppNavVisibility).observe(root, {
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["data-fav"],
+  });
+  updateAppNavVisibility();
+});
+
+document.addEventListener("favorite-plugin-icon-change", updateAppNavVisibility);
+
 export default { init };

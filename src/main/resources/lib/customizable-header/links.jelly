@@ -1,11 +1,9 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout">
-  <j:if test="${it.hasLinks()}">
     <template id="custom-header-icons">
       <l:icon id="external-link" src="symbol-open-outline plugin-ionicons-api" class="icon-xs"/>
     </template>
-    <button class="jenkins-button jenkins-button--tertiary custom-header__app-nav-button" data-href="${rootURL}/customizable-header/getLinks" data-item="${it.itemContextFullName}">
+    <button class="jenkins-button jenkins-button--tertiary custom-header__app-nav-button" data-href="${rootURL}/customizable-header/getLinks" data-item="${it.itemContextFullName != null ? it.itemContextFullName : ''}">
       <l:icon src="symbol-apps-outline plugin-ionicons-api" class="icon-md"/>
     </button>
-  </j:if>
 </j:jelly>
