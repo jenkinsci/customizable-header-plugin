@@ -112,4 +112,29 @@ function init() {
   });
 }
 
+function updateAppNavVisibility() {
+  const appNavButton = document.querySelector(".custom-header__app-nav-button");
+  if (!appNavButton) return;
+
+  const url = new URL(appNavButton.dataset.href, window.location.origin);
+  if (appNavButton.dataset.item) {
+    url.searchParams.set("item", appNavButton.dataset.item);
+  }
+
+  fetch(url)
+    .then((r) => r.json())
+    .then((data) => {
+      const hasLinks = data.links && data.links.length > 0;
+      appNavButton.classList.toggle("jenkins-hidden", !hasLinks);
+
+      const hasLinksDiv = document.querySelector("[data-has-links]");
+      if (hasLinksDiv) {
+        hasLinksDiv.dataset.hasLinks = String(hasLinks);
+      }
+    })
+    .catch((e) => console.warn(`AppNav visibility update failed: ${e}`));
+}
+
+window.addEventListener("favorite-plugin-icon-change", updateAppNavVisibility);
+
 export default { init };
