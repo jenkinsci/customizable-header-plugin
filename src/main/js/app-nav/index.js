@@ -116,37 +116,43 @@ function updateAppNavVisibility() {
   const appNavButton = document.querySelector(".custom-header__app-nav-button");
   if (!appNavButton) return;
 
-  const item = appNavButton.dataset.item;
+  const url = new URL(appNavButton.dataset.href, window.location.origin);
 
-  const applyVisibility = (hasLinks) => {
-    appNavButton.classList.toggle("jenkins-hidden", !hasLinks);
-
-    const hasLinksDiv = document.querySelector("[data-has-links]");
-    if (hasLinksDiv) {
-      hasLinksDiv.dataset.hasLinks = String(hasLinks);
-    }
-  };
-
-  if (item) {
-    fetch(appNavButton.dataset.href + "?" + new URLSearchParams({ item }))
-      .then((r) => r.json())
-      .then((data) => applyVisibility(data.links && data.links.length > 0))
-      .catch((e) => console.warn(`AppNav visibility update failed: ${e}`));
-  } else {
-    applyVisibility(document.querySelectorAll('.favorite-toggle[data-fav="true"]').length > 0);
+  if (appNavButton.dataset.item) {
+    url.searchParams.set("item", appNavButton.dataset.item);
   }
+
+  fetch(url)
+    .then((r) => r.json())
+    .then((data) => {
+      const hasLinks = data.links && data.links.length > 0;
+
+      appNavButton.classList.toggle("jenkins-hidden", !hasLinks);
+
+      const hasLinksDiv = document.querySelector("[data-has-links]");
+      if (hasLinksDiv) {
+        hasLinksDiv.dataset.hasLinks = String(hasLinks);
+      }
+    })
+    .catch((e) => console.warn(`AppNav visibility update failed: ${e}`));
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const root = document.getElementById("jenkins") || document.body;
-  new MutationObserver(updateAppNavVisibility).observe(root, {
+Behaviour.specify(".custom-header__app-nav-button", "app-nav-visibility-init", 0, function () {
+  updateAppNavVisibility();
+  const root = document.getElementById("jenkins");
+  if (!root) return;
+
+  const observer = new MutationObserver(() => {
+    updateAppNavVisibility();
+  });
+
+  observer.observe(root, {
     subtree: true,
     attributes: true,
     attributeFilter: ["data-fav"],
   });
-  updateAppNavVisibility();
 });
 
-document.addEventListener("favorite-plugin-icon-change", updateAppNavVisibility);
+window.addEventListener("favorite-plugin-icon-change", updateAppNavVisibility);
 
 export default { init };
