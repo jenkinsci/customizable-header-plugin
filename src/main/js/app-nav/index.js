@@ -117,7 +117,6 @@ function updateAppNavVisibility() {
   if (!appNavButton) return;
 
   const url = new URL(appNavButton.dataset.href, window.location.origin);
-
   if (appNavButton.dataset.item) {
     url.searchParams.set("item", appNavButton.dataset.item);
   }
@@ -126,7 +125,6 @@ function updateAppNavVisibility() {
     .then((r) => r.json())
     .then((data) => {
       const hasLinks = data.links && data.links.length > 0;
-
       appNavButton.classList.toggle("jenkins-hidden", !hasLinks);
 
       const hasLinksDiv = document.querySelector("[data-has-links]");
@@ -136,22 +134,6 @@ function updateAppNavVisibility() {
     })
     .catch((e) => console.warn(`AppNav visibility update failed: ${e}`));
 }
-
-Behaviour.specify(".custom-header__app-nav-button", "app-nav-visibility-init", 0, function () {
-  updateAppNavVisibility();
-  const root = document.getElementById("jenkins");
-  if (!root) return;
-
-  const observer = new MutationObserver(() => {
-    updateAppNavVisibility();
-  });
-
-  observer.observe(root, {
-    subtree: true,
-    attributes: true,
-    attributeFilter: ["data-fav"],
-  });
-});
 
 window.addEventListener("favorite-plugin-icon-change", updateAppNavVisibility);
 
