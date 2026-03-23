@@ -3,8 +3,8 @@
   <st:adjunct includes="io.jenkins.plugins.customizable_header.header"/>
   <link rel="stylesheet" href="${rootURL}/customizable-header/theme.css" type="text/css"/>
   <l:hasPermission it="${app}" permission="${app.READ}">
-    <script src="${resURL}/plugin/customizable-header/js/bundles/custom-header.js" type="text/javascript"></script>
-    <script src="${resURL}/plugin/customizable-header/js/messages.js" type="text/javascript"></script>
+    <script src="${resURL}/plugin/customizable-header/js/bundles/custom-header.js" type="module" />
+    <script src="${resURL}/plugin/customizable-header/js/messages.js" type="module" />
   </l:hasPermission>
   <j:if test="${it.enabled}">
     <j:if test="${it.cssResourceUrl != null}">
