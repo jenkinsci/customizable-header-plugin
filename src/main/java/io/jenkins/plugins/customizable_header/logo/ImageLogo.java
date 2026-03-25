@@ -20,11 +20,18 @@ import org.kohsuke.stapler.verb.POST;
 
 public class ImageLogo extends Logo {
 
-  private String logoUrl;
+  private final String logoUrl;
+  private final boolean noCache;
 
   @DataBoundConstructor
   public ImageLogo(String logoUrl) {
     this.logoUrl = logoUrl;
+    this.noCache = false;
+  }
+
+  public ImageLogo(String logoUrl, boolean noCache) {
+    this.logoUrl = logoUrl;
+    this.noCache = noCache;
   }
 
   public String getLogoUrl() {
@@ -36,6 +43,9 @@ public class ImageLogo extends Logo {
   }
 
   private String proxiedUrl(String remoteUrl) {
+    if (noCache) {
+      return remoteUrl;
+    }
     StaplerRequest2 req = Stapler.getCurrentRequest2();
     String rootUrl;
     if (req != null) {
