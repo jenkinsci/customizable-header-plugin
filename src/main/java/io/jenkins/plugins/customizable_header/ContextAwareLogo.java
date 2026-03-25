@@ -37,6 +37,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jenkins.model.Jenkins;
+import jenkins.plugins.foldericon.CustomFolderIcon;
+import jenkins.plugins.foldericon.UrlFolderIcon;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.Ancestor;
@@ -158,6 +160,11 @@ public class ContextAwareLogo implements Describable<ContextAwareLogo> {
         String folderIconName = fIcon.getIconClassName();
         if (folderIconName == null) {
           folderIconName = fIcon.getImageOf("32x32");
+          if (Jenkins.get().getPlugin("custom-folder-icon") != null) {
+            if (fIcon instanceof CustomFolderIcon || fIcon instanceof UrlFolderIcon) {
+              return new ImageLogo(folderIconName, true);
+            }
+          }
           if (folderIconName.startsWith(Stapler.getCurrentRequest2().getContextPath())) {
             folderIconName = folderIconName.substring(Stapler.getCurrentRequest2().getContextPath().length());
           }
