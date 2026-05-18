@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "tippy.js": "6.3.7",
-    "lodash": "4.17.23"
+    "lodash": "4.18.1"
   },
   "browserslist": [
     "defaults",
