@@ -84,11 +84,16 @@
   </j:if>
 }
 
-body {
-  <j:if test="${it.backgroundColor != null and !it.backgroundColor.equals('')}">
+<j:if test="${it.backgroundColor != null and !it.backgroundColor.equals('')}">
+  body {
     background: ${it.backgroundColor};
-  </j:if>
-}
+  }
+
+  .app-page-body {
+    border: none;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--text-color) 15%, transparent);
+  }
+</j:if>
 
   <j:if test="${it.enabled and it.backgroundColor != null and !it.backgroundColor.equals('')}">
 
