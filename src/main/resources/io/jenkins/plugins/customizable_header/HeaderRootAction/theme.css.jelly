@@ -138,7 +138,6 @@
 
   &amp; .ch-section-2 {
     gap: 0;
-    background: ${it.backgroundColor};
     min-height: var(--header-height);
     &amp; .jenkins-breadcrumbs {
       width: 100%;
