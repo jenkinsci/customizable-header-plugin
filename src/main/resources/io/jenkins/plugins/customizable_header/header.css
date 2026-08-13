@@ -1,6 +1,4 @@
 .custom-header__system-messages:has(div.custom-header__system-message-header) {
-  margin-bottom: 1rem;
-  margin-top: -0.5rem;
   z-index: 19;
 }
 
