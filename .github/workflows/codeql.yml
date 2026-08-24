@@ -26,6 +26,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Set up Java
+        uses: actions/setup-java@v5.6.0
+        with:
+          distribution: 'temurin'
+          java-version: '25'
+          cache: ${{ inputs.java-cache }}
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
         with:
