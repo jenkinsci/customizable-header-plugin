@@ -82,7 +82,6 @@ public class CustomHeaderConfiguration extends GlobalConfiguration {
 
   private ContextAwareLogo contextAwareLogo;
 
-  @DataBoundConstructor
   public CustomHeaderConfiguration() {
     load();
   }
