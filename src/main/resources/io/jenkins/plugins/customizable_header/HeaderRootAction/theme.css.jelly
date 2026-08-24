@@ -81,13 +81,19 @@
       }
 
     </j:if>
-    <j:if test="${it.backgroundColor != null and !it.backgroundColor.equals('')}">
-      background: ${it.backgroundColor};
-      --header-background: ${it.backgroundColor};
-      margin-bottom: 1rem;
-    </j:if>
   </j:if>
 }
+
+<j:if test="${it.backgroundColor != null and !it.backgroundColor.equals('')}">
+  body {
+    background: ${it.backgroundColor};
+  }
+
+  .app-page-body {
+    border: none;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--text-color) 15%, transparent);
+  }
+</j:if>
 
   <j:if test="${it.enabled and it.backgroundColor != null and !it.backgroundColor.equals('')}">
 
@@ -132,7 +138,6 @@
 
   &amp; .ch-section-2 {
     gap: 0;
-    background: ${it.backgroundColor};
     min-height: var(--header-height);
     &amp; .jenkins-breadcrumbs {
       width: 100%;
@@ -158,10 +163,4 @@
 div[data-has-links="false"] + .custom-header .ch-section-1 {
   padding-left: calc(var(--section-padding) / 2);
 }
-
-  <j:if test="${it.enabled and it.backgroundColor != null and !it.backgroundColor.equals('')}">
-    .app-page-body__sidebar--sticky, .jenkins-app-bar--sticky {
-      top: calc(var(--header-height) + 1.25rem);
-    }
-  </j:if>
 </j:jelly>
